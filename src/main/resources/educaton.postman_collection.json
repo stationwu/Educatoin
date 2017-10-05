@@ -1,0 +1,192 @@
+{
+	"variables": [],
+	"info": {
+		"name": "educaton",
+		"_postman_id": "9df046e8-85d4-7243-d3d7-51009d2380ab",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create student",
+			"request": {
+				"url": "http://localhost:8080/Student",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"openCode\":\"123456\",\r\n\t\"studentName\":\"Arthur\",\r\n\t\"mobilePhone\":1234566,\r\n\t\"age\":21,\r\n\t\"address\":\"XXXXXXXXXX\",\r\n\t\"classPeriod\":522\r\n}"
+				},
+				"description": "123"
+			},
+			"response": []
+		},
+		{
+			"name": "create course",
+			"request": {
+				"url": "http://localhost:8080/CourseManager",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"courseName\":\"Math\",\r\n\t\"date\":\"2017-05-13\",\r\n\t\"timeFrom\":\"09:00:00\",\r\n\t\"timeTo\":\"18:00:00\"\r\n}"
+				},
+				"description": "123"
+			},
+			"response": []
+		},
+		{
+			"name": "get course",
+			"request": {
+				"url": "http://localhost:8080/Course/date/2017-10-6",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "123"
+			},
+			"response": []
+		},
+		{
+			"name": "student add course",
+			"request": {
+				"url": "http://localhost:8080/Student/1/Sign/1",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "123"
+			},
+			"response": []
+		},
+		{
+			"name": "edit student",
+			"request": {
+				"url": "http://localhost:8080/Student/1",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"openCode\":\"123456\",\r\n\t\"studentName\":\"Arthur Wu\",\r\n\t\"mobilePhone\":1234566,\r\n\t\"age\":21,\r\n\t\"address\":\"XXXXXXXXXX\",\r\n\t\"classPeriod\":522\r\n}"
+				},
+				"description": "123"
+			},
+			"response": []
+		},
+		{
+			"name": "get student by opencode",
+			"request": {
+				"url": "http://localhost:8080/Student/OpenCode/123456",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add classperiod to student",
+			"request": {
+				"url": "http://localhost:8080/StudentManager",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 2,\n  \"classPeriod\": 15\n}"
+				},
+				"description": "123"
+			},
+			"response": []
+		},
+		{
+			"name": "add image to student",
+			"request": {
+				"url": "http://localhost:8080/StudentManager/1",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imageName",
+							"value": "hahahah",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "file",
+							"value": "房屋弱电图.jpg",
+							"type": "file",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get all course by page",
+			"request": {
+				"url": "http://localhost:8080/CourseManager?page=2&size=1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "123"
+			},
+			"response": []
+		}
+	]
+}
