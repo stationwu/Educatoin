@@ -36,13 +36,13 @@ public class CourseController {
 	public static final String RELATIVE_STUDENT_PATH = StudentController.PATH + "/{studentId}" + PATH;
 	private final CourseRepository courseRepository;
 	private final StudentRepository studentRepository;
-	private final Environment environment;
+//	private final Environment environment;
 
 	@Autowired
-	public CourseController(CourseRepository courseRepository, StudentRepository studentRepository, Environment environment) {
+	public CourseController(CourseRepository courseRepository, StudentRepository studentRepository/*, Environment environment*/) {
 		this.courseRepository = courseRepository;
 		this.studentRepository = studentRepository;
-		this.environment = environment;
+//		this.environment = environment;
 	}
 	
 	@RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -80,9 +80,9 @@ public class CourseController {
 	}
 	
 	private Resource<Course> buildResource(Course entity) {
-		String address = InetAddress.getLoopbackAddress().getHostName();
-		String port = environment.getProperty("server.port");
-		String url = "http://" + address + ":" + port;
+//		String address = InetAddress.getLoopbackAddress().getHostName();
+//		String port = environment.getProperty("server.port");
+		String url = "";//"http://" + address + ":" + port;
 		Resource<Course> resource = new Resource<>(entity);
 		// Links
 		resource.add(linkTo(methodOn(CourseController.class).show(entity.getId())).withSelfRel());
