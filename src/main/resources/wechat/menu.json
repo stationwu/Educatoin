@@ -9,9 +9,9 @@
           "name":"我的画室",
           "sub_button":[
           {   
-              "type":"click",
+              "type":"view",
               "name":"学员注册",
-              "key":"MENU_ITEM_2001"
+              "url":"http://101.132.129.129/Education-0.0.1-SNAPSHOT/wechat/redirect"
           },{   
               "type":"click",
               "name":"作品集",
