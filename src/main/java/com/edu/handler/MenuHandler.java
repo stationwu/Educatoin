@@ -15,29 +15,21 @@ import java.util.Map;
 @Component
 public class MenuHandler extends AbstractHandler {
 
-	@Override
-	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService weixinService,
-			WxSessionManager sessionManager) {
+    @Override
+    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
+                                    Map<String, Object> context, WxMpService weixinService,
+                                    WxSessionManager sessionManager) {
 
-		if (WxConsts.BUTTON_CLICK.equals(wxMessage.getEvent())) {
-			
-			if (wxMessage.getEventKey().equals("MENU_ITEM_2001")) {
-				//String redirectUrl = weixinService.oauth2buildAuthorizationUrl(myUrl, WxConsts.OAUTH2_SCOPE_BASE, null);
-				return null;
-			} else {
-				String msg = String.format("type:%s, event:%s, key:%s, fromUser: %s", 
-						wxMessage.getMsgType(),
-						wxMessage.getEvent(), 
-						wxMessage.getEventKey(), 
-						wxMessage.getFromUser());
-	
-				return WxMpXmlOutMessage.TEXT().content(msg).fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
-						.build();
-			}
-		} else {
-			return null;
-		}
+        String msg = String.format("type:%s, event:%s, key:%s, fromUser: %s",
+                wxMessage.getMsgType(), wxMessage.getEvent(),
+                wxMessage.getEventKey(), wxMessage.getFromUser());
+        if (WxConsts.BUTTON_VIEW.equals(wxMessage.getEvent())) {
+            return null;
+        }
 
-	}
+        return WxMpXmlOutMessage.TEXT().content(msg)
+                .fromUser(wxMessage.getToUser()).toUser(wxMessage.getFromUser())
+                .build();
+    }
 
 }
