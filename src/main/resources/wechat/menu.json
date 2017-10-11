@@ -11,7 +11,7 @@
           {   
               "type":"view",
               "name":"学员注册",
-              "url":"http://101.132.129.129/wechat/redirect"
+              "url":"http://101.132.129.129/user/center"
           },{   
               "type":"click",
               "name":"作品集",
