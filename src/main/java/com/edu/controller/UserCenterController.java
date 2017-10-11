@@ -1,5 +1,8 @@
 package com.edu.controller;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +80,11 @@ public class UserCenterController {
 				view = "redirect:/user/center"; // go back
 			}
 		} catch (WxErrorException e) {
-			view = "error500";
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			logger.error(sw.toString());
+			view = "error_500";
 		}
 		
 		return view;
