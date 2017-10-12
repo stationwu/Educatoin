@@ -33,12 +33,14 @@ public class UserCenterController {
 	@Autowired
 	private StudentRepository repository;
 	
+	private final String DUMMY_STATE = "123";
+	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping("/user/center")
 	public String userCenter() {
 		String redirectUrl = hostAddress + "/user/oauth";
-		String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_BASE, null);
+		String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
 		
 		logger.debug(">>> Got request to access the User Center");
 		logger.debug(">>> Redirecting to " + authorizationUrl);
@@ -55,30 +57,29 @@ public class UserCenterController {
 		try {
 			WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(authCode);
 			
-			if(wxMpService.oauth2validateAccessToken(wxMpOAuth2AccessToken)) {
-				logger.debug(">>> The code is valid");
-				String openId = wxMpOAuth2AccessToken.getOpenId();
+//			if(wxMpService.oauth2validateAccessToken(wxMpOAuth2AccessToken)) {
+//				logger.debug(">>> The code is valid");
+			String openId = wxMpOAuth2AccessToken.getOpenId();
+			
+			logger.debug(">>> Your OPENID is: " + openId);
+			if(repository.isStudentAlreadyRegistered(openId)) {
+				logger.debug(">>> You've already registered");
+				logger.debug(">>> Redirecting to user's home page");
 				
-				logger.debug(">>> Your OPENID is: " + openId);
-				if(repository.isStudentAlreadyRegistered(openId)) {
-					logger.debug(">>> You've already registered");
-					logger.debug(">>> Redirecting to user's home page");
-					
-					Student student = repository.findOneByOpenCode(openId);
-					model.addAttribute("student", student);
-					view = "user_info";
-				} else {
-					logger.debug(">>> You're not registered");
-					logger.debug(">>> Redirecting to the signup page");
-					
-					model.addAttribute("openId", openId);
-					view = "user_signup";
-				}
+				Student student = repository.findOneByOpenCode(openId);
+				model.addAttribute("student", student);
+				view = "user_info";
 			} else {
-				logger.debug(">>> The code is invalid");
-				logger.debug(">>> Going back to User Center");
-				view = "redirect:/user/center"; // go back
+				logger.debug(">>> You're not registered");
+				logger.debug(">>> Redirecting to the signup page");
+				
+				model.addAttribute("openId", openId);
+				view = "user_signup";
 			}
+//			} else {
+//				logger.debug(">>> The code is invalid");
+//				view = "error_500";
+//			}
 		} catch (WxErrorException e) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
