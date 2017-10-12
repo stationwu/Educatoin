@@ -10,6 +10,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 import com.edu.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,6 +24,8 @@ public class Student extends BaseEntity {
 
 	private String studentName;
 
+	@NotNull
+	@Digits(integer = 11, fraction = 0)
 	private int mobilePhone;
 
 	private int age;

@@ -5,6 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Hello, you\'re going to sigup. Your OPENID is ' + ${openId}" />
+    <p th:text="'Hello, you\'re going to sigup. Your OPENID is ' + ${student.openCode}" />
+    
+    <h1>Form</h1>
+    <form action="#" th:action="@{/user/signup}" th:object="${student}" method="post">
+    	<p>Name: <input type="text" th:field="*{studentName}" /></p>
+        <p>Phone Number: <input type="text" th:field="*{mobilePhone}" /></p>
+        <p><input type="submit" value="Confirm" /> </p>
+    </form>
 </body>
 </html>

@@ -73,7 +73,10 @@ public class UserCenterController {
 				logger.debug(">>> You're not registered");
 				logger.debug(">>> Redirecting to the signup page");
 				
-				model.addAttribute("openId", openId);
+				Student student = new Student();
+				student.setOpenCode(openId);
+				
+				model.addAttribute("student", student);
 				view = "user_signup";
 			}
 //			} else {
