@@ -4,7 +4,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -35,7 +37,19 @@ public class Image extends BaseEntity {
     
     private String date;
     
-    public String getDate() {
+    @ManyToOne
+    @JoinColumn(name="COURESE_ID")
+    private Course course;
+    
+    public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public String getDate() {
 		return date;
 	}
 

@@ -21,6 +21,11 @@ public class ProductCategory extends BaseEntity{
 	@JsonIgnore
 	private List<Product> products;
 
+	public ProductCategory(String categoryName, String categoryDescription) {
+		this.categoryName = categoryName;
+		this.categoryDescription = categoryDescription;
+	}
+	
 	public String getCategoryName() {
 		return categoryName;
 	}
