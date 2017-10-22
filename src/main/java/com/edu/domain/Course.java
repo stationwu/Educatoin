@@ -35,6 +35,22 @@ public class Course extends BaseEntity{
 	@JsonIgnore
     private Set<Student> studentsSet;
 	
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@JsonIgnore
+	@JoinTable(
+		      name="RESERVED_STUDENT_RESERVED_COURSE",
+		      joinColumns= @JoinColumn(name="RESERVED_COURSE_ID", referencedColumnName="ID"),
+		      inverseJoinColumns= @JoinColumn(name="RESERVED_STUDENT_ID", referencedColumnName="ID"))
+	private Set<Course> reservedStudentsSet;
+	
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@JsonIgnore
+	@JoinTable(
+		      name="STUDENT_NO_SIGN_COURSE",
+		      joinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"),
+		      inverseJoinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"))
+	private Set<Course> studentNotSignSet;
+	
 	public String getCourseName() {
 		return courseName;
 	}

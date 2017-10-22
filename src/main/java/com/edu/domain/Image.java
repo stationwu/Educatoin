@@ -33,7 +33,17 @@ public class Image extends BaseEntity {
     @Lob
     private byte[] thumbnail;
     
-    public String getImageName() {
+    private String date;
+    
+    public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getImageName() {
 		return imageName;
 	}
 

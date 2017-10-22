@@ -9,9 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
 
 import com.edu.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,8 +23,6 @@ public class Student extends BaseEntity {
 
 	private String studentName;
 
-	@NotNull
-	@Digits(integer = 11, fraction = 0)
 	private int mobilePhone;
 
 	private int age;
@@ -46,6 +43,28 @@ public class Student extends BaseEntity {
 		      inverseJoinColumns= @JoinColumn(name="COURSE_ID", referencedColumnName="ID"))
 	private Set<Course> coursesSet;
 
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@JsonIgnore
+	@JoinTable(
+		      name="RESERVED_STUDENT_RESERVED_COURSE",
+		      joinColumns= @JoinColumn(name="RESERVED_STUDENT_ID", referencedColumnName="ID"),
+		      inverseJoinColumns= @JoinColumn(name="RESERVED_COURSE_ID", referencedColumnName="ID"))
+	private Set<Course> reservedCoursesSet;
+	
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@JsonIgnore
+	@JoinTable(
+		      name="STUDENT_NO_SIGN_COURSE",
+		      joinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"),
+		      inverseJoinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"))
+	private Set<Course> courseNotSignSet;
+	
+	@OneToOne
+	private productCart cart;
+	
+	@OneToMany
+	private boolean isChild;
+	
 	public String getOpenCode() {
 		return openCode;
 	}
@@ -84,6 +103,46 @@ public class Student extends BaseEntity {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Set<Course> getReservedCoursesSet() {
+		return reservedCoursesSet;
+	}
+
+	public void setReservedCoursesSet(Set<Course> reservedCoursesSet) {
+		this.reservedCoursesSet = reservedCoursesSet;
+	}
+
+	public Set<Course> getCourseNotSignSet() {
+		return courseNotSignSet;
+	}
+
+	public void setCourseNotSignSet(Set<Course> courseNotSignSet) {
+		this.courseNotSignSet = courseNotSignSet;
+	}
+
+	public productCart getCart() {
+		return cart;
+	}
+
+	public void setCart(productCart cart) {
+		this.cart = cart;
+	}
+
+	public boolean isChild() {
+		return isChild;
+	}
+
+	public void setChild(boolean isChild) {
+		this.isChild = isChild;
+	}
+
+	public void setImagesSet(Set<Image> imagesSet) {
+		this.imagesSet = imagesSet;
+	}
+
+	public void setCoursesSet(Set<Course> coursesSet) {
+		this.coursesSet = coursesSet;
 	}
 
 	public Set<Image> getImagesSet() {
