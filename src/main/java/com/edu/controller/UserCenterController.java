@@ -3,14 +3,18 @@ package com.edu.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.dao.StudentRepository;
@@ -37,7 +41,7 @@ public class UserCenterController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@RequestMapping("/user/center")
+	@GetMapping("/user/center")
 	public String userCenter() {
 		String redirectUrl = hostAddress + "/user/oauth";
 		String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
@@ -48,7 +52,7 @@ public class UserCenterController {
 		return "redirect:" + authorizationUrl;
 	}
 	
-	@RequestMapping("/user/oauth")
+	@GetMapping("/user/oauth")
 	public String authorize(@RequestParam(value="code") String authCode, Model model) {
 		String view = "error404";
 		logger.debug(">>> Redirected back to validate authorization code");
@@ -93,4 +97,20 @@ public class UserCenterController {
 		
 		return view;
 	}
+	
+	@PostMapping("/user/signup")
+	public String signup(@ModelAttribute @Valid Student student, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "user_signup";
+		}
+		
+		logger.debug(">>> Signing up: " + student.toString());
+		
+		student = repository.save(student);
+		
+		logger.debug(">>> Signed up. Id: " + student.getId());
+		
+		return "user_info";
+	}
+	
 }
