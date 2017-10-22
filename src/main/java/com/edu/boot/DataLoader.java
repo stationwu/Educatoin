@@ -21,7 +21,7 @@ import com.edu.dao.CourseRepository;
 import com.edu.domain.Course;
 
 @Component
-
+//test data loader
 public class DataLoader {
 	private static final Logger logger = LoggerFactory.getLogger(WxErrorController.class);
 

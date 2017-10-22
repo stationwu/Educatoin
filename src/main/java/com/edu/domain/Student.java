@@ -60,7 +60,7 @@ public class Student extends BaseEntity {
 	private Set<Course> courseNotSignSet;
 	
 	@OneToOne
-	private productCart cart;
+	private ProductCart cart;
 	
 	@OneToMany
 	private boolean isChild;
@@ -121,11 +121,11 @@ public class Student extends BaseEntity {
 		this.courseNotSignSet = courseNotSignSet;
 	}
 
-	public productCart getCart() {
+	public ProductCart getCart() {
 		return cart;
 	}
 
-	public void setCart(productCart cart) {
+	public void setCart(ProductCart cart) {
 		this.cart = cart;
 	}
 

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="productcart")
-public class productCart {
+public class ProductCart {
 	@OneToOne
 	private Student student;
 	
