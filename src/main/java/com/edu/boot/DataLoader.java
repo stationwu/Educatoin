@@ -38,6 +38,7 @@ import com.edu.dao.ProductCategoryRepository;
 import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
+import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Product;
 import com.edu.domain.Image;
@@ -91,7 +92,6 @@ public class DataLoader {
 		        imageStar.setContentType("JPEG");
 		        imageStar.setData(buffer);
 		        imageStar.setDate(courses.get(0).getDate());
-		        imageStar.setCourse(courses.get(0));
 		        images.add(imageStar);
 		        imagefile = new File("../resource/galaxy.jpg");
 				output = new FileOutputStream(imagefile);
@@ -104,6 +104,7 @@ public class DataLoader {
 		        imageGalaxy.setContentType("JPEG");
 		        imageGalaxy.setData(buffer);
 		        imageGalaxy.setDate(courses.get(1).getDate());
+		        imageGalaxy.setCourse(courses.get(0));
 		        images.add(imageGalaxy);
 			}
 			ArrayList<ProductCategory> productCategories = new ArrayList<>();
@@ -112,18 +113,35 @@ public class DataLoader {
 				productCategories.add(productCategoryRepository.save(new ProductCategory("衍生品", "创新衍生品")));
 			}
 			
-			ArrayList<Product> Products = new ArrayList<>();
+			ArrayList<Product> products = new ArrayList<>();
 			if (0 == productRepository.count()) {
 				Product product = new Product();
 				product.setProductName("星星画布");
 				product.setProductCategory(productCategories.get(0));
 				product.setProductPrice(520D);
 				product.setProductDescription("画布");
+				product.setDerivedProductFlag(false);
 				HashSet<Image> imageSet = new HashSet<>();
 				imageSet.add(images.get(0));
 				product.setProductImages(imageSet);
-				Products.add(productRepository.save(product));
+				products.add(productRepository.save(product));
+				Product derivedProduct = new Product();
+				derivedProduct.setProductName("衍生品");
+				product.setProductCategory(productCategories.get(0));
+				product.setProductPrice(200d);
+				product.setProductDescription("衍生品");
+				product.setDerivedProductFlag(true);
+				product.setProductImages(imageSet);
+				products.add(productRepository.save(product));
 			}
+			ArrayList<DerivedProduct> derivedProducts = new ArrayList<>();
+			if (0 == derivedProductRepository.count()) {
+				DerivedProduct derivedProduct = new DerivedProduct();
+				derivedProduct.setProduct(products.get(1));
+				derivedProduct.setImage(images.get(0));
+				derivedProducts.add(derivedProductRepository.save(derivedProduct));
+			}
+			
 		};
 	}
 }
