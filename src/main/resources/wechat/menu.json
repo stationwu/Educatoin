@@ -11,7 +11,7 @@
           {   
               "type":"view",
               "name":"学员注册",
-              "url":"http://www.dashuxia.xin/user/center"
+              "url":"http://8db5bfe9.ngrok.io/user/center"
           },{   
               "type":"click",
               "name":"作品集",

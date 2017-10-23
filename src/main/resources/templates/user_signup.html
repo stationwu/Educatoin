@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Hello, you\'re going to sigup. Your OPENID is ' + ${student.openCode}" />
+    <p th:text="'Hello, you\'re going to signup. Your OPENID is ' + ${student.openCode}" />
     
     <h1>Form</h1>
     <form action="#" th:action="@{/user/signup}" th:object="${student}" method="post">
