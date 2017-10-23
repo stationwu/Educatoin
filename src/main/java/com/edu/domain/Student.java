@@ -1,5 +1,6 @@
 package com.edu.domain;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ public class Student extends BaseEntity {
 
 	private String studentName;
 
-	private int mobilePhone;
+	private String mobilePhone;
 
 	private int age;
 
@@ -33,7 +34,7 @@ public class Student extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
-	private Set<Image> imagesSet;
+	private List<Image> imagesList;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -41,7 +42,7 @@ public class Student extends BaseEntity {
 		      name="STUDENT_COURSE",
 		      joinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="COURSE_ID", referencedColumnName="ID"))
-	private Set<Course> coursesSet;
+	private List<Course> coursesList;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -49,7 +50,7 @@ public class Student extends BaseEntity {
 		      name="RESERVED_STUDENT_RESERVED_COURSE",
 		      joinColumns= @JoinColumn(name="RESERVED_STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="RESERVED_COURSE_ID", referencedColumnName="ID"))
-	private Set<Course> reservedCoursesSet;
+	private List<Course> reservedCoursesList;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -57,14 +58,29 @@ public class Student extends BaseEntity {
 		      name="STUDENT_NO_SIGN_COURSE",
 		      joinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"))
-	private Set<Course> courseNotSignSet;
+	private List<Course> courseNotSignList;
 	
 	@OneToOne
 	private ProductCart cart;
 	
-	@OneToMany
 	private boolean isChild;
 	
+	public Student(){
+		
+	}
+	
+	public Student(String openCode, String studentName, String mobilePhone, int age, String address, int classPeriod,
+			ProductCart cart, boolean isChild) {
+		this.openCode = openCode;
+		this.studentName = studentName;
+		this.mobilePhone = mobilePhone;
+		this.age = age;
+		this.address = address;
+		this.classPeriod = classPeriod;
+		this.cart = cart;
+		this.isChild = isChild;
+	}
+
 	public String getOpenCode() {
 		return openCode;
 	}
@@ -81,11 +97,11 @@ public class Student extends BaseEntity {
 		this.studentName = studentName;
 	}
 
-	public int getMobilePhone() {
+	public String getMobilePhone() {
 		return mobilePhone;
 	}
 
-	public void setMobilePhone(int mobilePhone) {
+	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
 
@@ -105,22 +121,6 @@ public class Student extends BaseEntity {
 		this.address = address;
 	}
 
-	public Set<Course> getReservedCoursesSet() {
-		return reservedCoursesSet;
-	}
-
-	public void setReservedCoursesSet(Set<Course> reservedCoursesSet) {
-		this.reservedCoursesSet = reservedCoursesSet;
-	}
-
-	public Set<Course> getCourseNotSignSet() {
-		return courseNotSignSet;
-	}
-
-	public void setCourseNotSignSet(Set<Course> courseNotSignSet) {
-		this.courseNotSignSet = courseNotSignSet;
-	}
-
 	public ProductCart getCart() {
 		return cart;
 	}
@@ -137,28 +137,24 @@ public class Student extends BaseEntity {
 		this.isChild = isChild;
 	}
 
-	public void setImagesSet(Set<Image> imagesSet) {
-		this.imagesSet = imagesSet;
-	}
-
-	public void setCoursesSet(Set<Course> coursesSet) {
-		this.coursesSet = coursesSet;
-	}
-
-	public Set<Image> getImagesSet() {
-		return imagesSet;
+	public void setImagesList(List<Image> imagesList) {
+		this.imagesList = imagesList;
 	}
 
 	public void addImage(Image image) {
-		this.imagesSet.add(image);
+		this.imagesList.add(image);
 	}
 
-	public Set<Course> getCoursesSet() {
-		return coursesSet;
+	public List<Course> getCoursesList() {
+		return coursesList;
 	}
-
+	
+	public void setCoursesList(List<Course> coursesList) {
+		this.coursesList = coursesList;
+	}
+	
 	public void addCourse(Course course) {
-		this.coursesSet.add(course);
+		this.coursesList.add(course);
 	}
 
 	public int getClassPeriod() {
@@ -167,6 +163,30 @@ public class Student extends BaseEntity {
 
 	public void setClassPeriod(int classPeriod) {
 		this.classPeriod = classPeriod;
+	}
+
+	public List<Image> getImagesList() {
+		return imagesList;
+	}
+
+	public void setImagesSet(List<Image> imagesList) {
+		this.imagesList = imagesList;
+	}
+
+	public List<Course> getReservedCoursesList() {
+		return reservedCoursesList;
+	}
+
+	public void setReservedCoursesList(List<Course> reservedCoursesList) {
+		this.reservedCoursesList = reservedCoursesList;
+	}
+
+	public List<Course> getCourseNotSignList() {
+		return courseNotSignList;
+	}
+
+	public void setCourseNotSignList(List<Course> courseNotSignList) {
+		this.courseNotSignList = courseNotSignList;
 	}
 
 	public String toString() {

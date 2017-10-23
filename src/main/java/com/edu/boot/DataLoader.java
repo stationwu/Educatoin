@@ -41,6 +41,7 @@ import com.edu.domain.Course;
 import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Product;
+import com.edu.domain.ProductCart;
 import com.edu.domain.Image;
 import com.edu.domain.ProductCategory;
 import com.edu.domain.Student;
@@ -115,24 +116,16 @@ public class DataLoader {
 			
 			ArrayList<Product> products = new ArrayList<>();
 			if (0 == productRepository.count()) {
-				Product product = new Product();
-				product.setProductName("星星画布");
-				product.setProductCategory(productCategories.get(0));
-				product.setProductPrice(520D);
-				product.setProductDescription("画布");
-				product.setDerivedProductFlag(false);
-				HashSet<Image> imageSet = new HashSet<>();
+				Product product = new Product("星星画布",productCategories.get(0),520d,"画布",false);
+				ArrayList<Image> imageSet = new ArrayList<>();
 				imageSet.add(images.get(0));
 				product.setProductImages(imageSet);
 				products.add(productRepository.save(product));
-				Product derivedProduct = new Product();
-				derivedProduct.setProductName("衍生品");
-				product.setProductCategory(productCategories.get(0));
-				product.setProductPrice(200d);
-				product.setProductDescription("衍生品");
-				product.setDerivedProductFlag(true);
-				product.setProductImages(imageSet);
-				products.add(productRepository.save(product));
+				Product derivedProduct = new Product("衍生品",productCategories.get(0),200d,"衍生品",true);
+				imageSet.clear();
+				imageSet.add(images.get(1));
+				derivedProduct.setProductImages(imageSet);
+				products.add(productRepository.save(derivedProduct));
 			}
 			ArrayList<DerivedProduct> derivedProducts = new ArrayList<>();
 			if (0 == derivedProductRepository.count()) {
@@ -141,7 +134,37 @@ public class DataLoader {
 				derivedProduct.setImage(images.get(0));
 				derivedProducts.add(derivedProductRepository.save(derivedProduct));
 			}
-			
+			ArrayList<ImageCollection> imageCollections = new ArrayList<>();
+			if (0 == imageCollectionRepository.count()) {
+				ImageCollection imageCollection = new ImageCollection();
+				ArrayList<Image> imageList =  new ArrayList<>();
+				imageList.add(images.get(1));
+				imageCollection.setImageCollection(imageList);
+				imageCollections.add(imageCollectionRepository.save(imageCollection));
+			}
+			if (0 == studentRepository.count()) {
+				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24, new ProductCart(), false);
+				ArrayList<Image> imagesList = new ArrayList<>();
+				imagesList.add(images.get(1));
+				student.setImagesSet(imagesList);
+				ArrayList<Course> courseList = new ArrayList<>();
+				courseList.add(courses.get(0));
+				courseList.add(courses.get(1));
+				courseList.add(courses.get(2));
+				ArrayList<Course> reservedCourseList = new ArrayList<>();
+				reservedCourseList.add(courses.get(10));
+				reservedCourseList.add(courses.get(11));
+				reservedCourseList.add(courses.get(12));
+				ArrayList<Course> courseNotSignList = new ArrayList<>();
+				courseNotSignList.add(courses.get(3));
+				student.setCoursesList(courseList);
+				student.setReservedCoursesList(reservedCourseList);
+				student.setCourseNotSignList(courseNotSignList);
+				student.getCart().getProducts().add(products.get(0));
+				student.getCart().getDerivedProducts().add(derivedProducts.get(0));
+				student.getCart().getImageCollection().add(imageCollections.get(0));
+				studentRepository.save(student);
+			}
 		};
 	}
 }

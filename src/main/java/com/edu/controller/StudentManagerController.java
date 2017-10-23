@@ -124,14 +124,14 @@ public class StudentManagerController {
 		Resource<Student> resource = new Resource<>(entity);
 		// Links
 		resource.add(linkTo(methodOn(StudentController.class).show(entity.getId())).withSelfRel());
-		if (entity.getCoursesSet() != null) {
-			for (Course course : entity.getCoursesSet()) {
+		if (entity.getCoursesList() != null) {
+			for (Course course : entity.getCoursesList()) {
 				resource.add(
 						new Link(url + CourseController.PATH + "/" + course.getId(), RouteConstant.REL_TO_COURSES));
 			}
 		}
-		if (entity.getImagesSet() != null) {
-			for (Image image : entity.getImagesSet()) {
+		if (entity.getImagesList() != null) {
+			for (Image image : entity.getImagesList()) {
 				resource.add(new Link(url + ImageController.PATH + "/" + image.getId() + "/thumbnail",
 						RouteConstant.REL_TO_IMAGES));
 			}

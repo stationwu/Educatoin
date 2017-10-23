@@ -17,15 +17,15 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "BRAND_ID")
 	private Student student;
 
-	@OneToMany(mappedBy = "productCart", orphanRemoval = true)
+	@OneToMany(mappedBy = "PRODUCT_ID", orphanRemoval = true)
 	@JsonIgnore
 	private List<Product> products;
 
-	@OneToMany(mappedBy = "derivedProductCart", orphanRemoval = true)
+	@OneToMany(mappedBy = "DERIVEDPRODUCT_ID", orphanRemoval = true)
 	@JsonIgnore
 	private List<DerivedProduct> derivedProducts;
 
-	@OneToMany(mappedBy = "imageCollectionCart", orphanRemoval = true)
+	@OneToMany(mappedBy = "IMAGECOLLECTION_ID", orphanRemoval = true)
 	@JsonIgnore
 	private List<ImageCollection> imageCollection;
 

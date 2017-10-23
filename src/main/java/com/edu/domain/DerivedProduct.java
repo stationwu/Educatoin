@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="derprod")
-public class DerivedProduct {
+public class DerivedProduct extends BaseEntity{
 	@ManyToOne
 	private Product product;
 	

@@ -4,27 +4,39 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Set;
-
+import java.util.List;
 
 @Entity
-@Table(name="product")
-public class Product extends BaseEntity{
+@Table(name = "product")
+public class Product extends BaseEntity {
 	private String productName;
-  
-    @ManyToOne
-    @JoinColumn(name="CATEGORY_ID")
-    private ProductCategory productCategory;
-    
-    private double productPrice = 0.0;
-    
-    private String productDescription;
-    
-    @OneToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Image> productImages;
-    
-    private boolean derivedProductFlag;
+
+	@ManyToOne
+	@JoinColumn(name = "CATEGORY_ID")
+	private ProductCategory productCategory;
+
+	private double productPrice = 0.0;
+
+	private String productDescription;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Image> productImages;
+
+	private boolean derivedProductFlag;
+
+	public Product() {
+
+	}
+
+	public Product(String productName, ProductCategory productCategory, double productPrice, String productDescription,
+			boolean derivedProductFlag) {
+		this.productName = productName;
+		this.productCategory = productCategory;
+		this.productPrice = productPrice;
+		this.productDescription = productDescription;
+		this.derivedProductFlag = derivedProductFlag;
+	}
 
 	public boolean getDerivedProductFlag() {
 		return derivedProductFlag;
@@ -66,12 +78,11 @@ public class Product extends BaseEntity{
 		this.productDescription = productDescription;
 	}
 
-	public Set<Image> getProductImages() {
+	public List<Image> getProductImages() {
 		return productImages;
 	}
 
-	public void setProductImages(Set<Image> productImages) {
+	public void setProductImages(List<Image> productImages) {
 		this.productImages = productImages;
 	}
-    
 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="imagecollection")
-public class ImageCollection {
+public class ImageCollection extends BaseEntity{
 	
 	@OneToMany(mappedBy = "imageCollection", orphanRemoval = true)
 	@JsonIgnore

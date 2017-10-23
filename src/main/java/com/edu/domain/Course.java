@@ -1,6 +1,7 @@
 package com.edu.domain;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class Course extends BaseEntity{
 		      joinColumns= @JoinColumn(name="COURSE_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"))
 	@JsonIgnore
-    private Set<Student> studentsSet;
+    private List<Student> studentsSet;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -41,7 +42,7 @@ public class Course extends BaseEntity{
 		      name="RESERVED_STUDENT_RESERVED_COURSE",
 		      joinColumns= @JoinColumn(name="RESERVED_COURSE_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="RESERVED_STUDENT_ID", referencedColumnName="ID"))
-	private Set<Course> reservedStudentsSet;
+	private List<Student> reservedStudentsSet;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -49,7 +50,7 @@ public class Course extends BaseEntity{
 		      name="STUDENT_NO_SIGN_COURSE",
 		      joinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"))
-	private Set<Course> studentNotSignSet;
+	private List<Student> studentNotSignSet;
 	
 	public String getCourseName() {
 		return courseName;
@@ -83,12 +84,28 @@ public class Course extends BaseEntity{
 		this.timeTo = timeTo;
 	}
 	
-	public Set<Student> getStudentsSet() {
+	public List<Student> getStudentsSet() {
 		return studentsSet;
 	}
 
-	public void setStudentsSet(Set<Student> studentsSet) {
+	public void setStudentsSet(List<Student> studentsSet) {
 		this.studentsSet = studentsSet;
+	}
+
+	public List<Student> getReservedStudentsSet() {
+		return reservedStudentsSet;
+	}
+
+	public void setReservedStudentsSet(List<Student> reservedStudentsSet) {
+		this.reservedStudentsSet = reservedStudentsSet;
+	}
+
+	public List<Student> getStudentNotSignSet() {
+		return studentNotSignSet;
+	}
+
+	public void setStudentNotSignSet(List<Student> studentNotSignSet) {
+		this.studentNotSignSet = studentNotSignSet;
 	}
 
 	public Course() {
