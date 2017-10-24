@@ -45,6 +45,7 @@ import com.edu.domain.ProductCart;
 import com.edu.domain.Image;
 import com.edu.domain.ProductCategory;
 import com.edu.domain.Student;
+import com.edu.utils.ImageServiceImpl;
 
 import antlr.collections.List;
 
@@ -59,7 +60,7 @@ public class DataLoader {
 			ProductCategoryRepository productCategoryRepository, ProductRepository productRepository,
 			StudentRepository studentRepository, DerivedProductRepository derivedProductRepository,
 			OrderRepository orderRepository, ProductCartRepository productCartRepository,
-			ImageCollectionRepository imageCollectionRepository, ImageRepository imageRepository) {
+			ImageCollectionRepository imageCollectionRepository, ImageRepository imageRepository, ImageServiceImpl imageServiceImpl) {
 		return (args) -> {
 			ArrayList<Course> courses = new ArrayList<>();
 			if (0 == courseRepository.count()) {
@@ -94,7 +95,7 @@ public class DataLoader {
 		        imageStar.setContentType("JPEG");
 		        imageStar.setData(buffer);
 		        imageStar.setDate(courses.get(0).getDate());
-		        images.add(imageRepository.save(imageStar));
+		        images.add(imageServiceImpl.save(imageStar));
 		        imagefile = new File(path+"\\image\\galaxy.jpg");
 				output = new FileOutputStream(imagefile);
 		        bufferedOutput = new BufferedOutputStream(output);
@@ -107,7 +108,7 @@ public class DataLoader {
 		        imageGalaxy.setData(buffer);
 		        imageGalaxy.setDate(courses.get(1).getDate());
 		        imageGalaxy.setCourse(courses.get(0));
-		        images.add(imageRepository.save(imageGalaxy));
+		        images.add(imageServiceImpl.save(imageGalaxy));
 			}
 			ArrayList<ProductCategory> productCategories = new ArrayList<>();
 			if (0 == productCategoryRepository.count()) {

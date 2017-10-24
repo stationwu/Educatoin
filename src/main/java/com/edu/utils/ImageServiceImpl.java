@@ -36,7 +36,7 @@ public class ImageServiceImpl implements ImageService{
     }
 
 	@Transactional
-    public void save(Image image) {
+    public Image save(Image image) {
 
         try {
             image.setThumbnail(generateThumbnail(image.getData()));
@@ -44,7 +44,7 @@ public class ImageServiceImpl implements ImageService{
             logger.error("Failed to generate thumbnail", e);
             throw new RuntimeException("Failed to generate thumbnail");
         }
-        imageRepository.save(image);
+        return imageRepository.save(image);
     }
 
     private static byte[] generateThumbnail(byte[] image)
