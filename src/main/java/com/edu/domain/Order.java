@@ -1,9 +1,13 @@
 package com.edu.domain;
 
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,17 +21,14 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "BRAND_ID")
 	private Student student;
 
-	@OneToMany(mappedBy = "PRODUCT_ID", orphanRemoval = true)
-	@JsonIgnore
-	private List<Product> products;
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<Product> products;
 
-	@OneToMany(mappedBy = "DERIVEDPRODUCT_ID", orphanRemoval = true)
-	@JsonIgnore
-	private List<DerivedProduct> derivedProducts;
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<DerivedProduct> derivedProducts;
 
-	@OneToMany(mappedBy = "IMAGECOLLECTION_ID", orphanRemoval = true)
-	@JsonIgnore
-	private List<ImageCollection> imageCollection;
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<ImageCollection> imageCollection;
 
 	private String date;
 
@@ -39,27 +40,27 @@ public class Order extends BaseEntity {
 		this.student = student;
 	}
 
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 
-	public List<DerivedProduct> getDerivedProducts() {
+	public Set<DerivedProduct> getDerivedProducts() {
 		return derivedProducts;
 	}
 
-	public void setDerivedProducts(List<DerivedProduct> derivedProducts) {
+	public void setDerivedProducts(Set<DerivedProduct> derivedProducts) {
 		this.derivedProducts = derivedProducts;
 	}
 
-	public List<ImageCollection> getImageCollection() {
+	public Set<ImageCollection> getImageCollection() {
 		return imageCollection;
 	}
 
-	public void setImageCollection(List<ImageCollection> imageCollection) {
+	public void setImageCollection(Set<ImageCollection> imageCollection) {
 		this.imageCollection = imageCollection;
 	}
 

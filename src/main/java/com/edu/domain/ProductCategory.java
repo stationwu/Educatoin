@@ -1,6 +1,6 @@
 package com.edu.domain;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +19,12 @@ public class ProductCategory extends BaseEntity{
 	
 	@OneToMany(mappedBy = "productCategory", orphanRemoval = true)
 	@JsonIgnore
-	private List<Product> products;
-
+	private Set<Product> products;
+	
+	public ProductCategory(){
+		
+	}
+	
 	public ProductCategory(String categoryName, String categoryDescription) {
 		this.categoryName = categoryName;
 		this.categoryDescription = categoryDescription;
@@ -42,11 +46,11 @@ public class ProductCategory extends BaseEntity{
 		this.categoryDescription = categoryDescription;
 	}
 
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 	

@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -21,7 +21,7 @@ public class Product extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Image> productImages;
+	private Set<Image> productImages;
 
 	private boolean derivedProductFlag;
 
@@ -78,11 +78,11 @@ public class Product extends BaseEntity {
 		this.productDescription = productDescription;
 	}
 
-	public List<Image> getProductImages() {
+	public Set<Image> getProductImages() {
 		return productImages;
 	}
 
-	public void setProductImages(List<Image> productImages) {
+	public void setProductImages(Set<Image> productImages) {
 		this.productImages = productImages;
 	}
 }

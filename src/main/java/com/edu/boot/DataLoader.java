@@ -82,7 +82,8 @@ public class DataLoader {
 			}
 			ArrayList<Image> images = new ArrayList<>();
 			if (0 == imageRepository.count()) {
-				File imagefile = new File("../resource/star.jpg");
+				String path = new File(".").getCanonicalPath();
+				File imagefile = new File(path+"\\image\\star.jpg");
 				OutputStream output = new FileOutputStream(imagefile);
 		        BufferedOutputStream bufferedOutput = new BufferedOutputStream(output);
 		        long fileSize = imagefile.length();  
@@ -93,8 +94,8 @@ public class DataLoader {
 		        imageStar.setContentType("JPEG");
 		        imageStar.setData(buffer);
 		        imageStar.setDate(courses.get(0).getDate());
-		        images.add(imageStar);
-		        imagefile = new File("../resource/galaxy.jpg");
+		        images.add(imageRepository.save(imageStar));
+		        imagefile = new File(path+"\\image\\galaxy.jpg");
 				output = new FileOutputStream(imagefile);
 		        bufferedOutput = new BufferedOutputStream(output);
 		        fileSize = imagefile.length();  
@@ -106,7 +107,7 @@ public class DataLoader {
 		        imageGalaxy.setData(buffer);
 		        imageGalaxy.setDate(courses.get(1).getDate());
 		        imageGalaxy.setCourse(courses.get(0));
-		        images.add(imageGalaxy);
+		        images.add(imageRepository.save(imageGalaxy));
 			}
 			ArrayList<ProductCategory> productCategories = new ArrayList<>();
 			if (0 == productCategoryRepository.count()) {
@@ -117,7 +118,7 @@ public class DataLoader {
 			ArrayList<Product> products = new ArrayList<>();
 			if (0 == productRepository.count()) {
 				Product product = new Product("星星画布",productCategories.get(0),520d,"画布",false);
-				ArrayList<Image> imageSet = new ArrayList<>();
+				Set<Image> imageSet = new HashSet<>();
 				imageSet.add(images.get(0));
 				product.setProductImages(imageSet);
 				products.add(productRepository.save(product));
@@ -137,33 +138,42 @@ public class DataLoader {
 			ArrayList<ImageCollection> imageCollections = new ArrayList<>();
 			if (0 == imageCollectionRepository.count()) {
 				ImageCollection imageCollection = new ImageCollection();
-				ArrayList<Image> imageList =  new ArrayList<>();
+				Set<Image> imageList =  new HashSet<>();
 				imageList.add(images.get(1));
 				imageCollection.setImageCollection(imageList);
 				imageCollections.add(imageCollectionRepository.save(imageCollection));
 			}
 			if (0 == studentRepository.count()) {
-				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24, new ProductCart(), false);
-				ArrayList<Image> imagesList = new ArrayList<>();
+				ProductCart cart = productCartRepository.save(new ProductCart());
+				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24,cart , false);
+				Set<Image> imagesList = new HashSet<>();
 				imagesList.add(images.get(1));
 				student.setImagesSet(imagesList);
-				ArrayList<Course> courseList = new ArrayList<>();
+				studentRepository.save(student);
+				Set<Course> courseList = new HashSet<>();
 				courseList.add(courses.get(0));
 				courseList.add(courses.get(1));
 				courseList.add(courses.get(2));
-				ArrayList<Course> reservedCourseList = new ArrayList<>();
+				Set<Course> reservedCourseList = new HashSet<>();
 				reservedCourseList.add(courses.get(10));
 				reservedCourseList.add(courses.get(11));
 				reservedCourseList.add(courses.get(12));
-				ArrayList<Course> courseNotSignList = new ArrayList<>();
+				Set<Course> courseNotSignList = new HashSet<>();
 				courseNotSignList.add(courses.get(3));
 				student.setCoursesList(courseList);
 				student.setReservedCoursesList(reservedCourseList);
 				student.setCourseNotSignList(courseNotSignList);
-				student.getCart().getProducts().add(products.get(0));
-				student.getCart().getDerivedProducts().add(derivedProducts.get(0));
-				student.getCart().getImageCollection().add(imageCollections.get(0));
 				studentRepository.save(student);
+				Set<Product> productSet = new HashSet<>();
+				productSet.add(products.get(0));
+				cart.setProducts(productSet);
+				Set<DerivedProduct> derivedProductSet = new HashSet<>();
+				derivedProductSet.add(derivedProducts.get(0));
+				cart.setDerivedProducts(derivedProductSet);
+				Set<ImageCollection> imageCollectionSet = new HashSet<>();
+				imageCollectionSet.add(imageCollections.get(0));
+				cart.setImageCollection(imageCollectionSet);
+				productCartRepository.save(cart);
 			}
 		};
 	}

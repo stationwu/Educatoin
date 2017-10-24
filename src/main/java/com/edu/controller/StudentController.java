@@ -78,7 +78,7 @@ public class StudentController {
 	@PostMapping(path = PATH + "/{id}" + SIGN_IN_PATH+"/{courseId}")
 	public Resource<Student> studentSign(@PathVariable("id") Long id, @PathVariable("courseId") Long courseId) throws Exception {
 		Student student = studentRepository.findOne(id);
-		List<Course> courses = student.getCoursesList();
+		Set<Course> courses = student.getCoursesList();
 		if(student.getClassPeriod() <= courses.size())
 			throw new Exception("ClassPeriod exceed size of course:" + student.getId());
 		Course course = courseRepository.findOne(courseId);

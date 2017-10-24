@@ -1,6 +1,5 @@
 package com.edu.domain;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -34,7 +33,7 @@ public class Student extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Image> imagesList;
+	private Set<Image> imagesSet;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -42,7 +41,7 @@ public class Student extends BaseEntity {
 		      name="STUDENT_COURSE",
 		      joinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="COURSE_ID", referencedColumnName="ID"))
-	private List<Course> coursesList;
+	private Set<Course> coursesSet;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -50,7 +49,7 @@ public class Student extends BaseEntity {
 		      name="RESERVED_STUDENT_RESERVED_COURSE",
 		      joinColumns= @JoinColumn(name="RESERVED_STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="RESERVED_COURSE_ID", referencedColumnName="ID"))
-	private List<Course> reservedCoursesList;
+	private Set<Course> reservedCoursesSet;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -58,7 +57,7 @@ public class Student extends BaseEntity {
 		      name="STUDENT_NO_SIGN_COURSE",
 		      joinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"))
-	private List<Course> courseNotSignList;
+	private Set<Course> courseNotSignSet;
 	
 	@OneToOne
 	private ProductCart cart;
@@ -137,24 +136,24 @@ public class Student extends BaseEntity {
 		this.isChild = isChild;
 	}
 
-	public void setImagesList(List<Image> imagesList) {
-		this.imagesList = imagesList;
+	public void setImagesList(Set<Image> imagesSet) {
+		this.imagesSet = imagesSet;
 	}
 
 	public void addImage(Image image) {
-		this.imagesList.add(image);
+		this.imagesSet.add(image);
 	}
 
-	public List<Course> getCoursesList() {
-		return coursesList;
+	public Set<Course> getCoursesList() {
+		return coursesSet;
 	}
 	
-	public void setCoursesList(List<Course> coursesList) {
-		this.coursesList = coursesList;
+	public void setCoursesList(Set<Course> coursesSet) {
+		this.coursesSet = coursesSet;
 	}
 	
 	public void addCourse(Course course) {
-		this.coursesList.add(course);
+		this.coursesSet.add(course);
 	}
 
 	public int getClassPeriod() {
@@ -165,28 +164,28 @@ public class Student extends BaseEntity {
 		this.classPeriod = classPeriod;
 	}
 
-	public List<Image> getImagesList() {
-		return imagesList;
+	public Set<Image> getImagesList() {
+		return imagesSet;
 	}
 
-	public void setImagesSet(List<Image> imagesList) {
-		this.imagesList = imagesList;
+	public void setImagesSet(Set<Image> imagesSet) {
+		this.imagesSet = imagesSet;
 	}
 
-	public List<Course> getReservedCoursesList() {
-		return reservedCoursesList;
+	public Set<Course> getReservedCoursesList() {
+		return reservedCoursesSet;
 	}
 
-	public void setReservedCoursesList(List<Course> reservedCoursesList) {
-		this.reservedCoursesList = reservedCoursesList;
+	public void setReservedCoursesList(Set<Course> reservedCoursesSet) {
+		this.reservedCoursesSet = reservedCoursesSet;
 	}
 
-	public List<Course> getCourseNotSignList() {
-		return courseNotSignList;
+	public Set<Course> getCourseNotSignList() {
+		return courseNotSignSet;
 	}
 
-	public void setCourseNotSignList(List<Course> courseNotSignList) {
-		this.courseNotSignList = courseNotSignList;
+	public void setCourseNotSignList(Set<Course> courseNotSignSet) {
+		this.courseNotSignSet = courseNotSignSet;
 	}
 
 	public String toString() {
