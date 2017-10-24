@@ -4,17 +4,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.edu</groupId>
-	<artifactId>Education</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>education</artifactId>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
-	<name>Education</name>
-	<description>Education project for Spring Boot</description>
+	<name>education</name>
+	<description>Education Project</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.7.RELEASE</version>
+		<version>1.5.8.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
