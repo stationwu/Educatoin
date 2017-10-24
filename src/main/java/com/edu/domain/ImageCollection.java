@@ -21,6 +21,8 @@ public class ImageCollection extends BaseEntity{
 	@JsonIgnore
 	private Set<Image> imageSet;
 
+	private double price = 0.0d;
+	
 	public Set<Image> getImageCollection() {
 		return imageSet;
 	}
@@ -28,5 +30,13 @@ public class ImageCollection extends BaseEntity{
 	public void setImageCollection(Set<Image> imageSet) {
 		this.imageSet = imageSet;
 	}
-	
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 }

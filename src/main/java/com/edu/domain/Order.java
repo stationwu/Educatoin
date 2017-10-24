@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "productorder")
 public class Order extends BaseEntity {
 	@ManyToOne
-	@JoinColumn(name = "BRAND_ID")
+	@JoinColumn(name = "STUDENT_ID")
+	@JsonIgnore
 	private Student student;
 
 	@OneToMany(fetch = FetchType.LAZY)
@@ -32,6 +33,8 @@ public class Order extends BaseEntity {
 
 	private String date;
 
+	private double totalAmount;
+	
 	public Student getStudent() {
 		return student;
 	}
@@ -70,5 +73,13 @@ public class Order extends BaseEntity {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 }

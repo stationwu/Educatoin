@@ -130,8 +130,8 @@ public class StudentManagerController {
 						new Link(url + CourseController.PATH + "/" + course.getId(), RouteConstant.REL_TO_COURSES));
 			}
 		}
-		if (entity.getImagesList() != null) {
-			for (Image image : entity.getImagesList()) {
+		if (entity.getImagesSet() != null) {
+			for (Image image : entity.getImagesSet()) {
 				resource.add(new Link(url + ImageController.PATH + "/" + image.getId() + "/thumbnail",
 						RouteConstant.REL_TO_IMAGES));
 			}

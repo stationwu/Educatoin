@@ -1,5 +1,6 @@
 package com.edu.domain;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -63,6 +64,9 @@ public class Student extends BaseEntity {
 	private ProductCart cart;
 	
 	private boolean isChild;
+	
+	@OneToMany(mappedBy = "student")
+	private Set<Order> orders;
 	
 	public Student(){
 		
@@ -148,7 +152,7 @@ public class Student extends BaseEntity {
 		return coursesSet;
 	}
 	
-	public void setCoursesList(Set<Course> coursesSet) {
+	public void setCoursesSet(Set<Course> coursesSet) {
 		this.coursesSet = coursesSet;
 	}
 	
@@ -164,7 +168,7 @@ public class Student extends BaseEntity {
 		this.classPeriod = classPeriod;
 	}
 
-	public Set<Image> getImagesList() {
+	public Set<Image> getImagesSet() {
 		return imagesSet;
 	}
 
@@ -172,22 +176,43 @@ public class Student extends BaseEntity {
 		this.imagesSet = imagesSet;
 	}
 
-	public Set<Course> getReservedCoursesList() {
+	
+	public Set<Course> getReservedCoursesSet() {
 		return reservedCoursesSet;
 	}
 
-	public void setReservedCoursesList(Set<Course> reservedCoursesSet) {
+	public void setReservedCoursesSet(Set<Course> reservedCoursesSet) {
 		this.reservedCoursesSet = reservedCoursesSet;
 	}
+	
+	public void addReservedCourse(Course reservedCourse) {
+		this.reservedCoursesSet.add(reservedCourse);
+	}
 
-	public Set<Course> getCourseNotSignList() {
+	public Set<Course> getCourseNotSignSet() {
 		return courseNotSignSet;
 	}
 
-	public void setCourseNotSignList(Set<Course> courseNotSignSet) {
+	public void setCourseNotSignSet(Set<Course> courseNotSignSet) {
 		this.courseNotSignSet = courseNotSignSet;
 	}
 
+	public void addCourseNotSign(Course courseNotSign) {
+		this.courseNotSignSet.add(courseNotSign);
+	}
+	
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+
+	public void addOrder(Order order) {
+		this.orders.add(order);
+	}
+	
 	public String toString() {
 		String str = "user.id" + this.getId() + "/nuser.openCode:" + this.getOpenCode() + "/nuser.name" + this.getStudentName()
 				+ "/nuser.phone" + this.getMobilePhone() + "/nuser.classperiod" + this.getClassPeriod();

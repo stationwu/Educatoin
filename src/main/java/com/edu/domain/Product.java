@@ -15,7 +15,7 @@ public class Product extends BaseEntity {
 	@JoinColumn(name = "CATEGORY_ID")
 	private ProductCategory productCategory;
 
-	private double productPrice = 0.0;
+	private double productPrice = 0.0d;
 
 	private String productDescription;
 
