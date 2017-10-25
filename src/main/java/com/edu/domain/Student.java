@@ -148,7 +148,7 @@ public class Student extends BaseEntity {
 		this.imagesSet.add(image);
 	}
 
-	public Set<Course> getCoursesList() {
+	public Set<Course> getCoursesSet() {
 		return coursesSet;
 	}
 	

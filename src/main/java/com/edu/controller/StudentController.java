@@ -78,7 +78,7 @@ public class StudentController {
 	@PostMapping(path = PATH + "/{id}" + SIGN_IN_PATH+"/{courseId}")
 	public Resource<Student> studentSign(@PathVariable("id") Long id, @PathVariable("courseId") Long courseId) throws Exception {
 		Student student = studentRepository.findOne(id);
-		Set<Course> courses = student.getCoursesList();
+		Set<Course> courses = student.getCoursesSet();
 		if(student.getClassPeriod() <= courses.size())
 			throw new Exception("ClassPeriod exceed size of course:" + student.getId());
 		Course course = courseRepository.findOne(courseId);
@@ -126,8 +126,8 @@ public class StudentController {
 		Resource<Student> resource = new Resource<>(entity);
 		// Links
 		resource.add(linkTo(methodOn(StudentController.class).show(entity.getId())).withSelfRel());
-		if (entity.getCoursesList() != null) {
-			for (Course course : entity.getCoursesList()) {
+		if (entity.getCoursesSet() != null) {
+			for (Course course : entity.getCoursesSet()) {
 				resource.add(new Link(url + CourseController.PATH + "/" + course.getId(), RouteConstant.REL_TO_COURSES));
 			}
 		}

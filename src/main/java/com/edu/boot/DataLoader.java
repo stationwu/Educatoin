@@ -124,22 +124,46 @@ public class DataLoader {
 				DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 				for (int i = 0; i < 10; i++) {
 					LocalDate date = localDate.plusDays(i);
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom1)), timeFormat.format(Date.from(instantTo1)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom2)), timeFormat.format(Date.from(instantTo2)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom3)), timeFormat.format(Date.from(instantTo3)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom4)), timeFormat.format(Date.from(instantTo4)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom5)), timeFormat.format(Date.from(instantTo5)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom6)), timeFormat.format(Date.from(instantTo6)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom7)), timeFormat.format(Date.from(instantTo7)))));
-					courses.add(courseRepository.save(new Course(date.toString(), date.toString(),
-							timeFormat.format(Date.from(instantFrom8)), timeFormat.format(Date.from(instantTo8)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom1)) + " "
+									+ timeFormat.format(Date.from(instantTo1)),
+							date.toString(), timeFormat.format(Date.from(instantFrom1)),
+							timeFormat.format(Date.from(instantTo1)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom2)) + " "
+									+ timeFormat.format(Date.from(instantTo2)),
+							date.toString(), timeFormat.format(Date.from(instantFrom2)),
+							timeFormat.format(Date.from(instantTo2)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom3)) + " "
+									+ timeFormat.format(Date.from(instantTo3)),
+							date.toString(), timeFormat.format(Date.from(instantFrom3)),
+							timeFormat.format(Date.from(instantTo3)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom4)) + " "
+									+ timeFormat.format(Date.from(instantTo4)),
+							date.toString(), timeFormat.format(Date.from(instantFrom4)),
+							timeFormat.format(Date.from(instantTo4)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom5)) + " "
+									+ timeFormat.format(Date.from(instantTo5)),
+							date.toString(), timeFormat.format(Date.from(instantFrom5)),
+							timeFormat.format(Date.from(instantTo5)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom6)) + " "
+									+ timeFormat.format(Date.from(instantTo6)),
+							date.toString(), timeFormat.format(Date.from(instantFrom6)),
+							timeFormat.format(Date.from(instantTo6)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom7)) + " "
+									+ timeFormat.format(Date.from(instantTo7)),
+							date.toString(), timeFormat.format(Date.from(instantFrom7)),
+							timeFormat.format(Date.from(instantTo7)))));
+					courses.add(courseRepository.save(new Course(
+							date.toString() + " " + timeFormat.format(Date.from(instantFrom8)) + " "
+									+ timeFormat.format(Date.from(instantTo8)),
+							date.toString(), timeFormat.format(Date.from(instantFrom8)),
+							timeFormat.format(Date.from(instantTo8)))));
 				}
 			}
 			ArrayList<Image> images = new ArrayList<>();
@@ -249,7 +273,7 @@ public class DataLoader {
 				productCartRepository.save(cart);
 				students.add(student);
 			}
-			if (0 == orderRepository.count()){
+			if (0 == orderRepository.count()) {
 				Order order = new Order();
 				Set<Product> productSet = new HashSet<>();
 				productSet.add(products.get(0));

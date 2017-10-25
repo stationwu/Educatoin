@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Display student related courses</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<ul class="list-group" th:each="signedCourse : ${signedCourses}">
+		<li class="list-group-item"  th:text="${{signedCourse.CourseName}}">signedCourse</li>
+	</ul>
+</body>
+</html>
