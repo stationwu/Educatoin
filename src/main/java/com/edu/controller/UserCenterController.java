@@ -3,8 +3,10 @@ package com.edu.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.edu.utils.URLUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,6 @@ public class UserCenterController {
 	@Autowired
 	private WxMpService wxMpService;
 	
-	@Value("${app.host.address}")
-	private String hostAddress;
-	
 	@Autowired
 	private StudentRepository repository;
 	
@@ -42,7 +41,9 @@ public class UserCenterController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@GetMapping("/user/center")
-	public String userCenter() {
+	public String userCenter(HttpServletRequest request) {
+		String requestUrl = request.getRequestURL().toString();
+        String hostAddress = URLUtil.getHost(requestUrl);
 		String redirectUrl = hostAddress + "/user/oauth";
 		String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
 		
