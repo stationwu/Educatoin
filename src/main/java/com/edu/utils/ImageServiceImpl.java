@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.imageio.ImageIO;
 
@@ -44,6 +45,8 @@ public class ImageServiceImpl implements ImageService{
             logger.error("Failed to generate thumbnail", e);
             throw new RuntimeException("Failed to generate thumbnail");
         }
+        LocalDate localDate = LocalDate.now();
+        image.setDate(localDate.toString());
         return imageRepository.save(image);
     }
 

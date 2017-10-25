@@ -14,19 +14,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
+import com.edu.domain.Image;
+import com.edu.domain.ImageContainer;
 import com.edu.domain.Student;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 
 @Controller
-public class CourseCenterController {
+public class ImageCenterController {
 	@Autowired
 	private WxMpService wxMpService;
 
 	@Autowired
 	private StudentRepository repository;
 
-	@GetMapping("/user/course")
+	@GetMapping("/user/image")
 	public String authorize(@RequestParam(value = "code") String authCode, Model model) {
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
@@ -35,19 +37,14 @@ public class CourseCenterController {
 			model.addAttribute("student", newStudent);
 			return "user_signup";
 		} else {
-			Set<Course> signedCourses = student.getCoursesSet();
-			Set<Course> notSignedCourses = student.getCourseNotSignSet();
-			Set<Course> reservedCourses = student.getReservedCoursesSet();
-			model.addAttribute("signedCourses",
-					signedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-							.collect(Collectors.toCollection(ArrayList::new)));
-			model.addAttribute("notSignedCourses",
-					notSignedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-							.collect(Collectors.toCollection(ArrayList::new)));
-			model.addAttribute("reservedCourses",
-					reservedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-							.collect(Collectors.toCollection(ArrayList::new)));
-			return "user_courses";
+			Set<Image> images = student.getImagesSet();
+			ArrayList<ImageContainer> imagesContainer = (ArrayList<ImageContainer>) images.stream()
+					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
+					.map(x -> new ImageContainer(x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
+					.collect(Collectors.toCollection(ArrayList::new));
+
+			model.addAttribute("images", imagesContainer);
+			return "user_images";
 		}
 	}
 }
