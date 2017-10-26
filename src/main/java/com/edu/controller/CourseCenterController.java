@@ -27,7 +27,7 @@ public class CourseCenterController {
 	private StudentRepository repository;
 
 	@GetMapping("/user/course")
-	public String authorize(@RequestParam(value = "code") String authCode, Model model) {
+	public String getCourses(@RequestParam(value = "code") String authCode, Model model) {
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
 			Student newStudent = new Student();
@@ -48,6 +48,20 @@ public class CourseCenterController {
 					reservedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
 							.collect(Collectors.toCollection(ArrayList::new)));
 			return "user_courses";
+		}
+	}
+	
+	@GetMapping("/user/signcourse")
+	public String navToSignCourse(@RequestParam(value = "code") String authCode, Model model) {
+		Student student = repository.findOneByOpenCode(authCode);
+		if (student == null) {
+			Student newStudent = new Student();
+			newStudent.setOpenCode(authCode);
+			model.addAttribute("student", newStudent);
+			return "user_signup";
+		} else {
+			model.addAttribute("code", authCode);
+			return "user_sign_course";
 		}
 	}
 }
