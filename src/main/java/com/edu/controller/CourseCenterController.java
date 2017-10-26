@@ -64,4 +64,18 @@ public class CourseCenterController {
 			return "user_sign_course";
 		}
 	}
+	
+	@GetMapping("/user/reservecourse")
+	public String navToReserveCourse(@RequestParam(value = "code") String authCode, Model model) {
+		Student student = repository.findOneByOpenCode(authCode);
+		if (student == null) {
+			Student newStudent = new Student();
+			newStudent.setOpenCode(authCode);
+			model.addAttribute("student", newStudent);
+			return "user_signup";
+		} else {
+			model.addAttribute("code", authCode);
+			return "user_reserve_course";
+		}
+	}
 }

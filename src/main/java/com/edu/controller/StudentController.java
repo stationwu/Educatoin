@@ -42,6 +42,7 @@ import com.edu.domain.Student;
 public class StudentController {
 	public static final String PATH = "/Student";
 	public static final String SIGN_IN_PATH = "/Sign";
+	public static final String RESERVE_PATH = "/Reserve";
 	public static final String RELATIVE_COURSE_PATH = CourseController.PATH + "/{courseId}" + PATH;
 	private final StudentRepository studentRepository;
 	private final CourseRepository courseRepository;
@@ -83,6 +84,16 @@ public class StudentController {
 			throw new Exception("ClassPeriod exceed size of course:" + student.getId());
 		Course course = courseRepository.findOne(courseId);
 		student.addCourse(course);
+		Student entity = studentRepository.save(student);
+		return buildResource(entity);
+	}
+	
+	@PostMapping(path = PATH + "/{openCode}" + RESERVE_PATH+"/{courseId}")
+	public Resource<Student> studentReserve(@PathVariable("openCode") String openCode, @PathVariable("courseId") Long courseId) throws Exception {
+		Student student = studentRepository.findOneByOpenCode(openCode);
+		Set<Course> courses = student.getReservedCoursesSet();
+		Course course = courseRepository.findOne(courseId);
+		student.addReservedCourse(course);
 		Student entity = studentRepository.save(student);
 		return buildResource(entity);
 	}
