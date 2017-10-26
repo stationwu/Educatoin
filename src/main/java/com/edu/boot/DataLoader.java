@@ -1,5 +1,6 @@
 package com.edu.boot;
 
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -169,7 +170,7 @@ public class DataLoader {
 			ArrayList<Image> images = new ArrayList<>();
 			if (0 == imageRepository.count()) {
 				String path = new File(".").getCanonicalPath();
-				File imagefile = new File(path + "\\image\\star.png");
+				File imagefile = new File(Paths.get(path, "image", "star.png").toString());
 				FileInputStream fs = new FileInputStream(imagefile);
 				FileChannel channel = fs.getChannel();
 				ByteBuffer byteBuffer = ByteBuffer.allocate((int) channel.size());
@@ -186,7 +187,7 @@ public class DataLoader {
 
 				imageStar.setDate(courses.get(0).getDate());
 				images.add(imageServiceImpl.save(imageStar));
-				File imagefile2 = new File(path + "\\image\\star.png");
+				File imagefile2 = new File(Paths.get(path, "image", "star.png").toString());
 				FileInputStream fs2 = new FileInputStream(imagefile2);
 				FileChannel channel2 = fs2.getChannel();
 				ByteBuffer byteBuffer2 = ByteBuffer.allocate((int) channel2.size());
