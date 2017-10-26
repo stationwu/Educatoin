@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>课程预约</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+	<h3>课程预约</h3>
+	<div style="overflow:hidden;">
+	    <div class="form-group">
+	        <div class="row">
+	            <div class="col-md-12">
+	                <div id="datetimepicker"></div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<div id="courseList">
+		<h4 v-for="(course, index) in courseArray" class="col-md-8">{{ course.courseName }}
+			<button type="button" class="btn btn-default col-md-3" v-on:click="sign(index,$event)">预约</button>
+		</h4>
+	</div>
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/moment-with-locales.js"></script>
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+	<script type="text/javascript">
+		function formatDate(date) {
+			var day = date.getDate();
+			var month = date.getMonth() + 1;
+			var year = date.getFullYear();
+			
+			return year + '-' + month + '-' + day;
+		}
+		var courseArray = [];
+		var courses = {}
+	    $(document).ready(function () {
+    		 $('#alter').alert('close');
+	    	 $.get( "/Course/date/"+formatDate(new Date())).done(function(data){
+	    		courseArray = data._embedded.courseList;
+				courses = new Vue({
+					el: '#courseList',
+					methods: {
+						sign: function(index, event){
+							$.post("/Student/"+$('#code').text()+"/Reserve/"+courses.courseArray[index].id).done(
+								function(data){
+									alert("预约成功");
+							})
+						}
+					},
+					data: {
+					 	courseArray: courseArray
+					}
+				})
+	    	});
+		    this.datapicker = $('#datetimepicker').datetimepicker({
+                inline: true,
+                sideBySide: false,
+                locale: 'zh-cn',
+                viewMode: 'days',
+                format: 'L',
+                format: "YYYY-MM-DD",
+            });
+
+		    $('#datetimepicker').on("dp.change",function(e){
+		    	$.get( "/Course/date/"+e.date.format("YYYY-MM-DD")).done(function( data ){
+		    		courseArray = data._embedded.courseList;
+		    		courses.courseArray = courseArray;
+		    	});
+			})
+    	});
+	 </script>
+	 <div id="code" style="visibility:hidden" th:text="${{code}}" />
+</body>
+</html>

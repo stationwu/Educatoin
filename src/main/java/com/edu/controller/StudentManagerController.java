@@ -124,8 +124,8 @@ public class StudentManagerController {
 		Resource<Student> resource = new Resource<>(entity);
 		// Links
 		resource.add(linkTo(methodOn(StudentController.class).show(entity.getId())).withSelfRel());
-		if (entity.getCoursesList() != null) {
-			for (Course course : entity.getCoursesList()) {
+		if (entity.getCoursesSet() != null) {
+			for (Course course : entity.getCoursesSet()) {
 				resource.add(
 						new Link(url + CourseController.PATH + "/" + course.getId(), RouteConstant.REL_TO_COURSES));
 			}
