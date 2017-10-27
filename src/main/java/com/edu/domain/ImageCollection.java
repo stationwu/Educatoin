@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="imagecollection")
 public class ImageCollection extends BaseEntity{
-	
+	public String collectionName;
+	public String collectionDescription;
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Image> imageSet;
@@ -39,4 +40,20 @@ public class ImageCollection extends BaseEntity{
 		this.price = price;
 	}
 
+	public String getCollectionName() {
+		return collectionName;
+	}
+
+	public void setCollectionName(String collectionName) {
+		this.collectionName = collectionName;
+	}
+
+	public String getCollectionDescription() {
+		return collectionDescription;
+	}
+
+	public void setCollectionDescription(String collectionDescription) {
+		this.collectionDescription = collectionDescription;
+	}
+	
 }
