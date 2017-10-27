@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>生成作品集</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/style.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+	<h3>作品集</h3>
+	<ul th:each="image : ${images}">
+	  <li class="col-xs-5" >
+	      <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
+	  </li>
+	</ul>
+	<button class="send navbar-fixed-bottom" data-counter="0">生成作品集</button>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    var items=[];
+    // item selection
+	$('li').click(function () {
+	  $(this).toggleClass('selected');
+	  if ($('li.selected').length == 0){
+	    $('.select').removeClass('selected');
+	  	items.splice(items.indexOf($(this)[0].getElementsByTagName('img')[0].alt),1);
+	  }
+	  else{
+	    $('.select').addClass('selected');
+	  	items.push($(this)[0].getElementsByTagName('img')[0].alt);
+	  }
+	  counter();
+	});
+	
+	// all item selection
+	$('.select').click(function () {
+	  if ($('li.selected').length == 0) {
+	    $('li').addClass('selected');
+	    $('.select').addClass('selected');
+	  }
+	  else {
+	    $('li').removeClass('selected');
+	    $('.select').removeClass('selected');
+	  }
+	  counter();
+	});
+	
+	// number of selected items
+	function counter() {
+	  if ($('li.selected').length > 0)
+	    $('.send').addClass('selected');
+	  else
+	    $('.send').removeClass('selected');
+	  $('.send').attr('data-counter',$('li.selected').length);
+	}
+	</script>
+</body>
+</html>

@@ -24,7 +24,7 @@ public class Product extends BaseEntity {
 	private Set<Image> productImages;
 
 	private boolean derivedProductFlag;
-
+	
 	public Product() {
 
 	}

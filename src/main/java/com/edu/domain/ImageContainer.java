@@ -13,7 +13,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ImageContainer extends BaseEntity {
-
+	private long id;
+	
 	private String imageName;
     
     private String date;
@@ -24,8 +25,9 @@ public class ImageContainer extends BaseEntity {
     
     private String thumbnailUrl;
 
-	public ImageContainer(String imageName, String date, Course course, String imageUrl, String thumbnailUrl) {
+	public ImageContainer(long id,String imageName, String date, Course course, String imageUrl, String thumbnailUrl) {
 		super();
+		this.id = id;
 		this.imageName = imageName;
 		this.date = date;
 		this.course = course;
@@ -71,5 +73,13 @@ public class ImageContainer extends BaseEntity {
 
 	public void setThumbnailUrl(String thumbnailUrl) {
 		this.thumbnailUrl = thumbnailUrl;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 }

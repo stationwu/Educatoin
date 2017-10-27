@@ -1,14 +1,22 @@
 package com.edu.domain;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyClass;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,49 +30,34 @@ public class Order extends BaseEntity {
 	@JsonIgnore
 	private Student student;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<Product> products;
+	@ElementCollection
+    @CollectionTable(name="PRODUCT_ORDER", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="PRODUCT_ID", referencedColumnName="ID")
+	@Column(name="COPIES_IN_ORDER")
+	private Map<Product,Integer > productsMap;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<DerivedProduct> derivedProducts;
+	@ElementCollection
+    @CollectionTable(name="DERIVEDPRODUCT_ORDER", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="DERIVEDPRODUCT_ID", referencedColumnName="ID")
+	@Column(name="COPIES_IN_ORDER")
+	private Map<DerivedProduct, Integer> derivedProductsMap;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<ImageCollection> imageCollection;
+	@ElementCollection
+    @CollectionTable(name="IMAGECOLLECTION_ORDER", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID")
+	@Column(name="COPIES_IN_ORDER")
+	private Map<ImageCollection, Integer> imageCollectionMap;
 
 	private String date;
 
 	private double totalAmount;
-	
+
 	public Student getStudent() {
 		return student;
 	}
 
 	public void setStudent(Student student) {
 		this.student = student;
-	}
-
-	public Set<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(Set<Product> products) {
-		this.products = products;
-	}
-
-	public Set<DerivedProduct> getDerivedProducts() {
-		return derivedProducts;
-	}
-
-	public void setDerivedProducts(Set<DerivedProduct> derivedProducts) {
-		this.derivedProducts = derivedProducts;
-	}
-
-	public Set<ImageCollection> getImageCollection() {
-		return imageCollection;
-	}
-
-	public void setImageCollection(Set<ImageCollection> imageCollection) {
-		this.imageCollection = imageCollection;
 	}
 
 	public String getDate() {
@@ -82,4 +75,29 @@ public class Order extends BaseEntity {
 	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
+
+	public Map<Product, Integer> getProductsMap() {
+		return productsMap;
+	}
+
+	public void setProductsMap(Map<Product, Integer> productsMap) {
+		this.productsMap = productsMap;
+	}
+
+	public Map<DerivedProduct, Integer> getDerivedProductsMap() {
+		return derivedProductsMap;
+	}
+
+	public void setDerivedProductsMap(Map<DerivedProduct, Integer> derivedProductsMap) {
+		this.derivedProductsMap = derivedProductsMap;
+	}
+
+	public Map<ImageCollection, Integer> getImageCollectionMap() {
+		return imageCollectionMap;
+	}
+
+	public void setImageCollectionMap(Map<ImageCollection, Integer> imageCollectionMap) {
+		this.imageCollectionMap = imageCollectionMap;
+	}
+
 }

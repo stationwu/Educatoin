@@ -276,15 +276,15 @@ public class DataLoader {
 			}
 			if (0 == orderRepository.count()) {
 				Order order = new Order();
-				Set<Product> productSet = new HashSet<>();
-				productSet.add(products.get(0));
-				order.setProducts(productSet);
-				Set<DerivedProduct> derivedProductSet = new HashSet<>();
-				derivedProductSet.add(derivedProducts.get(0));
-				order.setDerivedProducts(derivedProductSet);
-				Set<ImageCollection> imageCollectionSet = new HashSet<>();
-				imageCollectionSet.add(imageCollections.get(0));
-				order.setImageCollection(imageCollectionSet);
+				Map<Product, Integer> productMap = new HashMap<>();
+				productMap.put( products.get(0),2);
+				order.setProductsMap(productMap);
+				Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
+				derivedProductMap.put(derivedProducts.get(0), 3);
+				order.setDerivedProductsMap(derivedProductMap);
+				Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
+				imageCollectionMap.put(imageCollections.get(0),5);
+				order.setImageCollectionMap(imageCollectionMap);
 				order.setTotalAmount(1000d);
 				Set<Order> orderSet = new HashSet<>();
 				order.setStudent(students.get(0));

@@ -14,16 +14,19 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="imagecollection")
-public class ImageCollection extends BaseEntity{
+@Table(name = "imagecollection")
+public class ImageCollection extends BaseEntity {
+	
 	public String collectionName;
+	
 	public String collectionDescription;
+	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Image> imageSet;
 
 	private double price = 0.0d;
-	
+
 	public Set<Image> getImageCollection() {
 		return imageSet;
 	}
@@ -55,5 +58,5 @@ public class ImageCollection extends BaseEntity{
 	public void setCollectionDescription(String collectionDescription) {
 		this.collectionDescription = collectionDescription;
 	}
-	
+
 }

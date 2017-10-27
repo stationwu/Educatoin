@@ -29,7 +29,7 @@ public class ImageCenterController {
 	private StudentRepository repository;
 
 	@GetMapping("/user/image")
-	public String authorize(@RequestParam(value = "code") String authCode, Model model) {
+	public String getImages(@RequestParam(value = "code") String authCode, Model model) {
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
 			Student newStudent = new Student();
@@ -40,11 +40,31 @@ public class ImageCenterController {
 			Set<Image> images = student.getImagesSet();
 			ArrayList<ImageContainer> imagesContainer = (ArrayList<ImageContainer>) images.stream()
 					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
-					.map(x -> new ImageContainer(x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
+					.map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
 					.collect(Collectors.toCollection(ArrayList::new));
 
 			model.addAttribute("images", imagesContainer);
 			return "user_images";
+		}
+	}
+	
+	@GetMapping("/user/imagecollection")
+	public String createImageCollection(@RequestParam(value = "code") String authCode, Model model) {
+		Student student = repository.findOneByOpenCode(authCode);
+		if (student == null) {
+			Student newStudent = new Student();
+			newStudent.setOpenCode(authCode);
+			model.addAttribute("student", newStudent);
+			return "user_signup";
+		} else {
+			Set<Image> images = student.getImagesSet();
+			ArrayList<ImageContainer> imagesContainer = (ArrayList<ImageContainer>) images.stream()
+					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
+					.map(x -> new ImageContainer(x.getId() ,x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
+					.collect(Collectors.toCollection(ArrayList::new));
+
+			model.addAttribute("images", imagesContainer);
+			return "user_imagecollection";
 		}
 	}
 }
