@@ -1,5 +1,7 @@
 package com.edu.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +31,7 @@ import com.edu.domain.Course;
 import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Order;
+import com.edu.domain.OrderContainer;
 import com.edu.domain.Product;
 import com.edu.domain.ProductCart;
 import com.edu.domain.ProductContainer;
@@ -44,22 +47,23 @@ public class OrderCenterController {
 
 	@Autowired
 	private StudentRepository repository;
-	
+
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private DerivedProductRepository derivedProductRepository;
-	
+
 	@Autowired
 	private ImageCollectionRepository imageCollectionRepository;
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
 
 	@PostMapping("/user/order")
 	@ResponseBody
-	public String getCart(@RequestParam(value = "code") String authCode, @RequestBody List<ProductContainer> products, Model model) {
+	public String createOrder(@RequestParam(value = "code") String authCode,
+			@RequestBody List<ProductContainer> products, Model model) {
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
 			Student newStudent = new Student();
@@ -72,20 +76,22 @@ public class OrderCenterController {
 			Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
 			Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
 			double amount = 0d;
-			for(ProductContainer productContainer : products){
+			for (ProductContainer productContainer : products) {
 				switch (productContainer.getType()) {
-					case 1:
-						productMap.put(productRepository.findOne(productContainer.getId()), productContainer.getQuantity());
-						amount+=productContainer.getProductPrice()*productContainer.getQuantity();
-						break;
-					case 2:
-						derivedProductMap.put(derivedProductRepository.findOne(productContainer.getId()), productContainer.getQuantity());
-						amount+=productContainer.getProductPrice()*productContainer.getQuantity();
-						break;
-					case 3:
-						imageCollectionMap.put(imageCollectionRepository.findOne(productContainer.getId()), productContainer.getQuantity());
-						amount+=productContainer.getProductPrice()*productContainer.getQuantity();
-						break;
+				case 1:
+					productMap.put(productRepository.findOne(productContainer.getId()), productContainer.getQuantity());
+					amount += productContainer.getProductPrice() * productContainer.getQuantity();
+					break;
+				case 2:
+					derivedProductMap.put(derivedProductRepository.findOne(productContainer.getId()),
+							productContainer.getQuantity());
+					amount += productContainer.getProductPrice() * productContainer.getQuantity();
+					break;
+				case 3:
+					imageCollectionMap.put(imageCollectionRepository.findOne(productContainer.getId()),
+							productContainer.getQuantity());
+					amount += productContainer.getProductPrice() * productContainer.getQuantity();
+					break;
 				}
 			}
 			order.setProductsMap(productMap);
@@ -94,9 +100,18 @@ public class OrderCenterController {
 			order.setTotalAmount(amount);
 			LocalDate localDate = LocalDate.now();
 			order.setDate(localDate.toString());
-			student.addOrder(orderRepository.save(order));
-			repository.save(student);
+			order.setStudent(student);
+			orderRepository.save(order);
 			return "下单成功";
 		}
+	}
+
+	@GetMapping("/user/orderList")
+	@ResponseBody
+	public List<OrderContainer> getOrderList(@RequestParam(value = "code") String authCode, Model model) {
+		Student student = repository.findOneByOpenCode(authCode);
+		return student.getOrders().stream().map(
+				x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(), x.getImageCollectionMap()))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }

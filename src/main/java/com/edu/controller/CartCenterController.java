@@ -54,7 +54,7 @@ public class CartCenterController {
 							"/Images/" + x.getProductImages().stream().findFirst().get().getId() + "/thumbnail", 1,
 							x.getId(), 1));
 			Stream<ProductContainer> derivedProductsStream = derivedProducts.stream()
-					.map(x -> new ProductContainer(x.getProduct().getProductName(), "衍生品",
+					.map(x -> new ProductContainer(x.getProduct().getProductName(), x.getProduct().getProductCategory().getCategoryName(),
 							x.getProduct().getProductPrice(), x.getProduct().getProductDescription(),
 							"/Images/" + x.getImage().getId() + "/thumbnail", 1, x.getId(), 2));
 			Stream<ProductContainer> imageCollectionStream = imageCollection.stream()
