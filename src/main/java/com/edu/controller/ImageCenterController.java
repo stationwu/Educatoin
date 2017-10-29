@@ -25,7 +25,6 @@ import com.edu.domain.Image;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.ImageContainer;
 import com.edu.domain.Student;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 

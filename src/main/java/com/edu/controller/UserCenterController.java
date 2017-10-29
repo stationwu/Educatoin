@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.edu.utils.URLUtil;
@@ -54,7 +55,7 @@ public class UserCenterController {
 	}
 	
 	@GetMapping("/user/oauth")
-	public String authorize(@RequestParam(value="code") String authCode, Model model) {
+	public String authorize(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
 		String view = "error404";
 		logger.debug(">>> Redirected back to validate authorization code");
 		logger.debug(">>> The code is: " + authCode);
@@ -79,9 +80,10 @@ public class UserCenterController {
 				logger.debug(">>> Redirecting to the signup page");
 				
 				Student student = new Student();
-				student.setOpenCode(openId);
-				
-				model.addAttribute("student", student);
+                model.addAttribute("student", student);
+
+                session.setAttribute("openId", openId); // We have to use Http Session to pass OpenID
+
 				view = "user_signup";
 			}
 //			} else {
@@ -100,10 +102,18 @@ public class UserCenterController {
 	}
 	
 	@PostMapping("/user/signup")
-	public String signup(@ModelAttribute @Valid Student student, BindingResult bindingResult) {
+	public String signup(@ModelAttribute @Valid Student student, BindingResult bindingResult, HttpSession session) {
 		if (bindingResult.hasErrors()) {
 			return "user_signup";
 		}
+
+		Object attributeValue = session.getAttribute("openId");
+		if (attributeValue == null) {
+		    return "error_500";
+        }
+
+        String openId = (String)attributeValue;
+		student.setOpenCode(openId);
 		
 		logger.debug(">>> Signing up: " + student.toString());
 		
