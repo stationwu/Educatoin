@@ -2,36 +2,36 @@
     "button":[
       {   
           "type":"click",
-          "name":"ç­¾åˆ°",
+          "name":"Ç©µ½",
           "key":"MENU_ITEM_1000" 
       },
       { 
-          "name":"æˆ‘çš„ç”»å®¤",
+          "name":"ÎÒµÄ»­ÊÒ",
           "sub_button":[
           {   
               "type":"view",
-              "name":"å­¦å‘˜æ³¨å†Œ",
-              "url":"http://8db5bfe9.ngrok.io/user/center"
+              "name":"Ñ§Ô±×¢²á",
+              "url":"http://guogin.ngrok.io/user/center"
           },{   
               "type":"click",
-              "name":"ä½œå“é›†",
+              "name":"×÷Æ·¼¯",
               "key":"MENU_ITEM_2002"
           },{   
               "type":"click",
-              "name":"å†å²æ¶ˆæ¯",
+              "name":"ÀúÊ·ÏûÏ¢",
               "key":"MENU_ITEM_2003"
           }]
       },
       {
-          "name":"åœ¨çº¿å•†åº—",
+          "name":"ÔÚÏßÉÌµê",
           "sub_button":[
           {   
               "type":"click",
-              "name":"è´§æ¶",
+              "name":"»õ¼Ü",
               "key":"MENU_ITEM_3001"
           },{   
               "type":"click",
-              "name":"æˆ‘çš„è®¢å•",
+              "name":"ÎÒµÄ¶©µ¥",
               "key":"MENU_ITEM_3002"
           }]
       }

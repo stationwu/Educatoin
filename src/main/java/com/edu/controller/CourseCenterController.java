@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +30,18 @@ public class CourseCenterController {
 	private StudentRepository repository;
 
 	@GetMapping("/user/course")
-	public String getCourses(@RequestParam(value = "code") String authCode, Model model) {
+	public String getCourses(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Object openCodeObject = session.getAttribute("openCode");
+
+		if (null == openCodeObject) {
+			return "error_500";
+		}
+
+		String authCode = openCodeObject.toString();
+
 		Student student = repository.findOneByOpenCode(authCode);
+
 		if (student == null) {
 			Student newStudent = new Student();
 			newStudent.setOpenCode(authCode);
@@ -50,9 +63,18 @@ public class CourseCenterController {
 			return "user_courses";
 		}
 	}
-	
+
 	@GetMapping("/user/signcourse")
-	public String navToSignCourse(@RequestParam(value = "code") String authCode, Model model) {
+	public String navToSignCourse(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Object openCodeObject = session.getAttribute("openCode");
+
+		if (null == openCodeObject) {
+			return "error_500";
+		}
+
+		String authCode = openCodeObject.toString();
+		
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
 			Student newStudent = new Student();
@@ -64,9 +86,18 @@ public class CourseCenterController {
 			return "user_sign_course";
 		}
 	}
-	
+
 	@GetMapping("/user/reservecourse")
-	public String navToReserveCourse(@RequestParam(value = "code") String authCode, Model model) {
+	public String navToReserveCourse(HttpServletRequest request,  Model model) {
+		HttpSession session = request.getSession();
+		Object openCodeObject = session.getAttribute("openCode");
+
+		if (null == openCodeObject) {
+			return "error_500";
+		}
+
+		String authCode = openCodeObject.toString();
+		
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
 			Student newStudent = new Student();

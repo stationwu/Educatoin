@@ -97,6 +97,8 @@ public class ImageCenterController {
 		
 		imageCollection.setImageCollection(imageList);
 		imageCollection.setPrice(200d);
+		imageCollection.setCollectionName("作品集");
+		imageCollection.setCollectionDescription(imageList.size()+"幅作品");
 		ImageCollection entity = imageCollectionRepository.save(imageCollection);
 		student.getCart().addImageCollection(entity);
 		repository.save(student);
