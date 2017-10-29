@@ -11,6 +11,7 @@
     <form action="#" th:action="@{/user/signup}" th:object="${student}" method="post">
     	<p>Name: <input type="text" th:field="*{studentName}" /></p>
         <p>Phone Number: <input type="text" th:field="*{mobilePhone}" /></p>
+        <p>OpenID: <input type="text" th:field="*{openCode}" /></p>
         <p><input type="submit" value="Confirm" /> </p>
     </form>
 </body>
