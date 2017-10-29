@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.edu.utils.URLUtil;
@@ -24,6 +25,8 @@ import com.edu.domain.Student;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.common.session.WxSession;
+import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 
@@ -35,10 +38,13 @@ public class UserCenterController {
 	
 	@Autowired
 	private StudentRepository repository;
+
 	
 	private final String DUMMY_STATE = "123";
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	
 	
 	@GetMapping("/user/center")
 	public String userCenter(HttpServletRequest request) {
@@ -54,7 +60,7 @@ public class UserCenterController {
 	}
 	
 	@GetMapping("/user/oauth")
-	public String authorize(@RequestParam(value="code") String authCode, Model model) {
+	public String authorize(HttpServletRequest request, @RequestParam(value="code") String authCode, Model model) {
 		String view = "error404";
 		logger.debug(">>> Redirected back to validate authorization code");
 		logger.debug(">>> The code is: " + authCode);
@@ -67,6 +73,10 @@ public class UserCenterController {
 			String openId = wxMpOAuth2AccessToken.getOpenId();
 			
 			logger.debug(">>> Your OPENID is: " + openId);
+			
+			HttpSession session = request.getSession(true);
+			session.setAttribute("openCode", openId);
+			
 			if(repository.isStudentAlreadyRegistered(openId)) {
 				logger.debug(">>> You've already registered");
 				logger.debug(">>> Redirecting to user's home page");
