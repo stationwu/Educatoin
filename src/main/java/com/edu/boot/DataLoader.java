@@ -187,7 +187,7 @@ public class DataLoader {
 
 				imageStar.setDate(courses.get(0).getDate());
 				images.add(imageServiceImpl.save(imageStar));
-				File imagefile2 = new File(Paths.get(path, "image", "star.png").toString());
+				File imagefile2 = new File(Paths.get(path, "image", "galaxy.png").toString());
 				FileInputStream fs2 = new FileInputStream(imagefile2);
 				FileChannel channel2 = fs2.getChannel();
 				ByteBuffer byteBuffer2 = ByteBuffer.allocate((int) channel2.size());
@@ -218,7 +218,7 @@ public class DataLoader {
 				imageSet.add(images.get(0));
 				product.setProductImages(imageSet);
 				products.add(productRepository.save(product));
-				Product derivedProduct = new Product("衍生品", productCategories.get(0), 200d, "衍生品", true);
+				Product derivedProduct = new Product("T恤衍生品", productCategories.get(0), 200d, "衍生品", true);
 				imageSet.clear();
 				imageSet.add(images.get(1));
 				derivedProduct.setProductImages(imageSet);
@@ -238,6 +238,8 @@ public class DataLoader {
 				imageList.add(images.get(1));
 				imageCollection.setImageCollection(imageList);
 				imageCollection.setPrice(200d);
+				imageCollection.setCollectionName("作品集");
+				imageCollection.setCollectionDescription(imageList.size()+"幅作品");
 				imageCollections.add(imageCollectionRepository.save(imageCollection));
 			}
 			ArrayList<Student> students = new ArrayList<>();

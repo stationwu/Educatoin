@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 public class ProductContainer extends BaseEntity {
+
 	private String productName;
 
 	private String category;
@@ -16,8 +17,12 @@ public class ProductContainer extends BaseEntity {
 	private String productDescription;
 
 	private String imageUrl;
-	
+
 	private int quantity;
+
+	private int type;
+	
+	private final boolean checked = false;
 
 	public String getProductName() {
 		return productName;
@@ -58,7 +63,7 @@ public class ProductContainer extends BaseEntity {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -67,8 +72,22 @@ public class ProductContainer extends BaseEntity {
 		this.quantity = quantity;
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public boolean getChecked() {
+		return checked;
+	}
+	public ProductContainer(){
+		
+	}
 	public ProductContainer(String productName, String category, double productPrice, String productDescription,
-			String imageUrl, int quantity) {
+			String imageUrl, int quantity, Long id, int type) {
 		super();
 		this.productName = productName;
 		this.category = category;
@@ -76,5 +95,7 @@ public class ProductContainer extends BaseEntity {
 		this.productDescription = productDescription;
 		this.imageUrl = imageUrl;
 		this.quantity = quantity;
+		this.id = id;
+		this.type = type;
 	}
 }

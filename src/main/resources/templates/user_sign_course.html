@@ -41,7 +41,6 @@
 		var courseArray = [];
 		var courses = {}
 	    $(document).ready(function () {
-    		 $('#alter').alert('close');
 	    	 $.get( "/Course/date/"+formatDate(new Date())).done(function(data){
 	    		courseArray = data._embedded.courseList;
 				courses = new Vue({
