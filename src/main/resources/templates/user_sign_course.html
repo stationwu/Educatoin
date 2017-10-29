@@ -24,6 +24,7 @@
 			<button type="button" class="btn btn-default col-md-3" v-on:click="sign(index,$event)">签到</button>
 		</h4>
 	</div>
+	<div id="code" style="visibility:hidden" th:text="${{code}}" />
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/moment-with-locales.js"></script>
@@ -50,6 +51,9 @@
 							$.post("/Student/"+$('#code').text()+"/Sign/"+courses.courseArray[index].id).done(
 								function(data){
 									alert("签到成功");
+							}).fail(
+								function(data){
+									alert("预约失败");
 							})
 						}
 					},
@@ -75,6 +79,5 @@
 			})
     	});
 	 </script>
-	 <div id="code" style="visibility:hidden" th:text="${{code}}" />
 </body>
 </html>

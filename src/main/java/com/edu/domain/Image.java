@@ -1,11 +1,16 @@
 package com.edu.domain;
 
+import java.util.Set;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -40,6 +45,14 @@ public class Image extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="COURESE_ID")
     private Course course;
+    
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@JsonIgnore
+	@JoinTable(
+		      name="IMAGE_IMAGECOLLECTION",
+		      joinColumns= @JoinColumn(name="IMAGE_ID", referencedColumnName="ID"),
+		      inverseJoinColumns= @JoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID"))
+	private Set<ImageCollection> imageCollections;
     
     public Course getCourse() {
 		return course;
@@ -94,4 +107,12 @@ public class Image extends BaseEntity {
     public void setThumbnail(byte[] thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+	public Set<ImageCollection> getImageCollections() {
+		return imageCollections;
+	}
+
+	public void setImageCollections(Set<ImageCollection> imageCollections) {
+		this.imageCollections = imageCollections;
+	}
 }

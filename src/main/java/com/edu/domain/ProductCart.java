@@ -41,6 +41,10 @@ public class ProductCart extends BaseEntity{
 		return products;
 	}
 
+	public void addProducts(Product product) {
+		this.products.add(product);
+	}
+	
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
@@ -49,6 +53,10 @@ public class ProductCart extends BaseEntity{
 		return derivedProducts;
 	}
 
+	public void addDerivedProducts(DerivedProduct derivedProduct) {
+		this.derivedProducts.add(derivedProduct);
+	}
+	
 	public void setDerivedProducts(Set<DerivedProduct> derivedProducts) {
 		this.derivedProducts = derivedProducts;
 	}
@@ -57,6 +65,10 @@ public class ProductCart extends BaseEntity{
 		return imageCollection;
 	}
 
+	public void addImageCollection(ImageCollection imageCollection) {
+		this.imageCollection.add(imageCollection);
+	}
+	
 	public void setImageCollection(Set<ImageCollection> imageCollection) {
 		this.imageCollection = imageCollection;
 	}

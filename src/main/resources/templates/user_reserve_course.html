@@ -50,6 +50,9 @@
 							$.post("/Student/"+$('#code').text()+"/Reserve/"+courses.courseArray[index].id).done(
 								function(data){
 									alert("预约成功");
+							}).fail(
+								function(data){
+									alert("预约失败");
 							})
 						}
 					},

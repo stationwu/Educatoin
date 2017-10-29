@@ -36,7 +36,7 @@ public class Student extends BaseEntity {
 	@JsonIgnore
 	private Set<Image> imagesSet;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="STUDENT_COURSE",
@@ -44,7 +44,7 @@ public class Student extends BaseEntity {
 		      inverseJoinColumns= @JoinColumn(name="COURSE_ID", referencedColumnName="ID"))
 	private Set<Course> coursesSet;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="RESERVED_STUDENT_RESERVED_COURSE",
@@ -52,7 +52,7 @@ public class Student extends BaseEntity {
 		      inverseJoinColumns= @JoinColumn(name="RESERVED_COURSE_ID", referencedColumnName="ID"))
 	private Set<Course> reservedCoursesSet;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="STUDENT_NO_SIGN_COURSE",
@@ -60,12 +60,12 @@ public class Student extends BaseEntity {
 		      inverseJoinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"))
 	private Set<Course> courseNotSignSet;
 	
-	@OneToOne
+	@OneToOne(cascade = { CascadeType.ALL })
 	private ProductCart cart;
 	
 	private boolean isChild;
 	
-	@OneToMany(mappedBy = "student")
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "student")
 	private Set<Order> orders;
 	
 	public Student(){

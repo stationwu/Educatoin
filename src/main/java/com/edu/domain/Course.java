@@ -28,7 +28,7 @@ public class Course extends BaseEntity{
 
 	private String timeTo;
 
-	@ManyToMany(cascade={CascadeType.MERGE,CascadeType.PERSIST},fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 		      name="STUDENT_COURSE",
 		      joinColumns= @JoinColumn(name="COURSE_ID", referencedColumnName="ID"),
@@ -36,7 +36,7 @@ public class Course extends BaseEntity{
 	@JsonIgnore
     private Set<Student> studentsSet;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@ManyToMany( fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="RESERVED_STUDENT_RESERVED_COURSE",
@@ -44,7 +44,7 @@ public class Course extends BaseEntity{
 		      inverseJoinColumns= @JoinColumn(name="RESERVED_STUDENT_ID", referencedColumnName="ID"))
 	private Set<Student> reservedStudentsSet;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
+	@ManyToMany( fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="STUDENT_NO_SIGN_COURSE",

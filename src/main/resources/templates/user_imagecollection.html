@@ -15,9 +15,11 @@
 	      <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
 	  </li>
 	</ul>
-	<button class="send navbar-fixed-bottom" data-counter="0">生成作品集</button>
+	<button class="send navbar-fixed-bottom col-xs-12" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
+	<div id="code" style="visibility:hidden" th:text="${{code}}" />
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
     <script type="text/javascript">
     var items=[];
     // item selection
@@ -54,6 +56,13 @@
 	  else
 	    $('.send').removeClass('selected');
 	  $('.send').attr('data-counter',$('li.selected').length);
+	}
+	
+	function generateImageCollection(){
+		$.post("/user/generateImagecollection?code="+$('#code').text(),"images="+items.join(',')).done(
+			function(data){
+				alert(data);
+		})
 	}
 	</script>
 </body>

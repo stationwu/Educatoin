@@ -147,8 +147,6 @@ li.selected img {
 
 button {
   height: 45px;
-  margin: 0 7px;
-  padding: 5px 0;
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 2px;
@@ -206,7 +204,7 @@ button.select.selected:after {
 button.send {
   float: right;
   background: #aaa;
-  padding: 0px 15px;
+/*  padding: 0px 15px;*/
   transition:         0.3s linear;
   -o-transition:      0.3s linear;
   -ms-transition:     0.3s linear;
@@ -222,8 +220,8 @@ button.send.selected {
 button.send:after {
   position: absolute;
   content:  attr(data-counter);
-  padding: 5px 8px;
-  margin: -29px 0 0 0px;
+  padding: 5px 9px;
+  margin: -29px 0 0 90px;
   line-height: 100%;
   border: 2px #fff solid;
   border-radius: 60px;

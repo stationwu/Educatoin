@@ -48,15 +48,15 @@ public class CartCenterController {
 			Stream<ProductContainer> productsStream = products.stream()
 					.map(x -> new ProductContainer(x.getProductName(), x.getProductCategory().getCategoryName(),
 							x.getProductPrice(), x.getProductDescription(), "/Images/"
-									+ x.getProductImages().stream().findFirst().get().getId() + "/thumbnail"));
+									+ x.getProductImages().stream().findFirst().get().getId() + "/thumbnail", 1));
 			Stream<ProductContainer> derivedProductsStream = derivedProducts.stream()
 					.map(x -> new ProductContainer(x.getProduct().getProductName(), "衍生品",
 							x.getProduct().getProductPrice(), x.getProduct().getProductDescription(),
-							"/Images/" + x.getImage().getId() + "/thumbnail"));
+							"/Images/" + x.getImage().getId() + "/thumbnail", 1));
 			Stream<ProductContainer> imageCollectionStream = imageCollection.stream()
 					.map(x -> new ProductContainer(x.getCollectionName(), "作品集", x.getPrice(),
 							x.getCollectionDescription(), "/Images/"
-									+ x.getImageCollection().stream().findFirst().get().getId() + "/thumbnail"));
+									+ x.getImageCollection().stream().findFirst().get().getId() + "/thumbnail", 1));
 			model.addAttribute("products",
 					Stream.of(productsStream, derivedProductsStream, imageCollectionStream).flatMap(i -> i)
 							.collect(Collectors.toCollection(ArrayList::new)));

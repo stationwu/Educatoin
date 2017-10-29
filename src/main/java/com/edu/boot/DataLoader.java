@@ -242,8 +242,7 @@ public class DataLoader {
 			}
 			ArrayList<Student> students = new ArrayList<>();
 			if (0 == studentRepository.count()) {
-				ProductCart cart = productCartRepository.save(new ProductCart());
-				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24, cart, false);
+				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24, new ProductCart(),false);
 				Set<Image> imagesList = new HashSet<>();
 				imagesList.add(images.get(1));
 				student.setImagesSet(imagesList);
@@ -261,18 +260,18 @@ public class DataLoader {
 				student.setCoursesSet(courseList);
 				student.setReservedCoursesSet(reservedCourseList);
 				student.setCourseNotSignSet(courseNotSignList);
-				studentRepository.save(student);
+				Student student1 = studentRepository.save(student);
 				Set<Product> productSet = new HashSet<>();
 				productSet.add(products.get(0));
-				cart.setProducts(productSet);
+				student1.getCart().setProducts(productSet);
 				Set<DerivedProduct> derivedProductSet = new HashSet<>();
 				derivedProductSet.add(derivedProducts.get(0));
-				cart.setDerivedProducts(derivedProductSet);
+				student1.getCart().setDerivedProducts(derivedProductSet);
 				Set<ImageCollection> imageCollectionSet = new HashSet<>();
 				imageCollectionSet.add(imageCollections.get(0));
-				cart.setImageCollection(imageCollectionSet);
-				productCartRepository.save(cart);
-				students.add(student);
+				student1.getCart().setImageCollection(imageCollectionSet);
+				Student student2 = studentRepository.save(student1);
+				students.add(student2);
 			}
 			if (0 == orderRepository.count()) {
 				Order order = new Order();

@@ -16,6 +16,8 @@ public class ProductContainer extends BaseEntity {
 	private String productDescription;
 
 	private String imageUrl;
+	
+	private int quantity;
 
 	public String getProductName() {
 		return productName;
@@ -56,14 +58,23 @@ public class ProductContainer extends BaseEntity {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+	
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
 	public ProductContainer(String productName, String category, double productPrice, String productDescription,
-			String imageUrl) {
+			String imageUrl, int quantity) {
 		super();
 		this.productName = productName;
 		this.category = category;
 		this.productPrice = productPrice;
 		this.productDescription = productDescription;
 		this.imageUrl = imageUrl;
+		this.quantity = quantity;
 	}
 }

@@ -21,8 +21,12 @@ public class ImageCollection extends BaseEntity {
 	
 	public String collectionDescription;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JsonIgnore
+	@JoinTable(
+		      name="IMAGE_IMAGECOLLECTION",
+		      joinColumns= @JoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID"),
+		      inverseJoinColumns= @JoinColumn(name="IMAGE_ID", referencedColumnName="ID"))
 	private Set<Image> imageSet;
 
 	private double price = 0.0d;
