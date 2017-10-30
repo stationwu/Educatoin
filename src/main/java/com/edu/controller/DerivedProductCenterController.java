@@ -1,12 +1,12 @@
 package com.edu.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,37 +16,44 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edu.dao.ImageCollectionRepository;
+import com.edu.dao.DerivedProductRepository;
 import com.edu.dao.ImageRepository;
+import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
+import com.edu.domain.DerivedProduct;
 import com.edu.domain.Image;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.ImageContainer;
+import com.edu.domain.Product;
+import com.edu.domain.ProductCart;
+import com.edu.domain.ProductContainer;
+import com.edu.domain.ProductType;
 import com.edu.domain.Student;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 
 @Controller
-public class ImageCenterController {
+public class DerivedProductCenterController {
 	@Autowired
 	private WxMpService wxMpService;
 
 	@Autowired
 	private StudentRepository repository;
-	
+
 	@Autowired
 	private ImageRepository imageRepository;
-	
-	@Autowired
-	private ImageCollectionRepository imageCollectionRepository;
 
-	@GetMapping("/user/image")
+	@Autowired
+	private DerivedProductRepository derivedProductRepository;
+
+	@Autowired
+	private ProductRepository productRepository;
+		
+	@GetMapping("/user/relatedimage")
 	public String getImages(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		Object openCodeObject = session.getAttribute("openCode");
@@ -68,14 +75,15 @@ public class ImageCenterController {
 					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
 					.map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
 					.collect(Collectors.toCollection(ArrayList::new));
-
+			model.addAttribute("code", authCode);
 			model.addAttribute("images", imagesContainer);
-			return "user_images";
+			return "user_imagelist";
 		}
 	}
-	
-	@GetMapping("/user/imagecollection")
-	public String getImageCollection(HttpServletRequest request, Model model) {
+
+	@GetMapping("/user/derivedproduct")
+	public String getDerivedProduct(HttpServletRequest request,
+			@RequestParam(value = "imgcontainer") String imageId, Model model) {
 		HttpSession session = request.getSession();
 		Object openCodeObject = session.getAttribute("openCode");
 
@@ -91,21 +99,23 @@ public class ImageCenterController {
 			model.addAttribute("student", newStudent);
 			return "user_signup";
 		} else {
-			Set<Image> images = student.getImagesSet();
-			ArrayList<ImageContainer> imagesContainer = (ArrayList<ImageContainer>) images.stream()
-					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
-					.map(x -> new ImageContainer(x.getId() ,x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
+			Image image = imageRepository.findOne(Long.parseLong(imageId));
+			model.addAttribute("image", new ImageContainer(image.getId(), image.getImageName(), image.getDate(), image.getCourse(), "/Images/" + image.getId(), "/Images/" + image.getId() + "/thumbnail"));
+			ArrayList<ProductContainer> products = productRepository.getDerivedProductList().stream()
+					.map(x -> new ProductContainer(x.getProductName(), x.getProductCategory().getCategoryName(),
+							x.getProductPrice(), x.getProductDescription(),
+							"/Images/" + x.getProductImages().stream().findFirst().get().getId(), 1,
+							x.getId(), 2))
 					.collect(Collectors.toCollection(ArrayList::new));
-
-			model.addAttribute("images", imagesContainer);
-			model.addAttribute("code", authCode);
-			return "user_imagecollection";
+			model.addAttribute("products", products);
+			return "user_derivedproduct";
 		}
 	}
 	
-	@PostMapping("/user/generateImagecollection")
+	@PostMapping("/user/createderivedproduct")
 	@ResponseBody
-	public String createImageCollection(HttpServletRequest request, @RequestParam(value = "images") String images, Model model) {
+	public String createDerivedProduct(HttpServletRequest request,
+			@RequestParam(value = "productid") String productid, @RequestParam(value = "imageid") String imageid, Model model) {
 		HttpSession session = request.getSession();
 		Object openCodeObject = session.getAttribute("openCode");
 
@@ -115,20 +125,18 @@ public class ImageCenterController {
 
 		String authCode = openCodeObject.toString();
 		Student student = repository.findOneByOpenCode(authCode);
-		ImageCollection imageCollection = new ImageCollection();
-		List<String> imagesWithId = Arrays.asList(images.split(","));
-		Set<Image> imageList = new HashSet<>();
-		for(String id : imagesWithId){
-			imageList.add(imageRepository.findOne(Long.parseLong(id)));
+		if (student == null) {
+			Student newStudent = new Student();
+			newStudent.setOpenCode(authCode);
+			model.addAttribute("student", newStudent);
+			return "user_signup";
+		} else {
+			DerivedProduct derivedProduct = new DerivedProduct();
+			derivedProduct.setProduct(productRepository.findOne(Long.parseLong(productid)));
+			derivedProduct.setImage(imageRepository.findOne(Long.parseLong(imageid)));
+			student.getCart().addDerivedProducts(derivedProductRepository.save(derivedProduct));
+			repository.save(student);
+			return "请至购物车查看";
 		}
-		
-		imageCollection.setImageCollection(imageList);
-		imageCollection.setPrice(200d);
-		imageCollection.setCollectionName("作品集");
-		imageCollection.setCollectionDescription(imageList.size()+"幅作品");
-		ImageCollection entity = imageCollectionRepository.save(imageCollection);
-		student.getCart().addImageCollection(entity);
-		repository.save(student);
-		return "请到购物车查看生成的作品集";
 	}
 }

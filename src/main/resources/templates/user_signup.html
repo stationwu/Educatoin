@@ -1,18 +1,70 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>用户注册</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- head 中 -->
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+<link href="/css/app.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
-    <p th:text="'Hello, you\'re going to signup. Your OPENID is ' + ${student.openCode}" />
-    
-    <h1>Form</h1>
-    <form action="#" th:action="@{/user/signup}" th:object="${student}" method="post">
-    	<p>Name: <input type="text" th:field="*{studentName}" /></p>
-        <p>Phone Number: <input type="text" th:field="*{mobilePhone}" /></p>
-        <p>OpenID: <input type="text" th:field="*{openCode}" /></p>
-        <p><input type="submit" value="Confirm" /> </p>
-    </form>
+    <div class="weui-flex">
+	  <div class="weui-flex__item">
+	  		<img src="/images/logo.jpg" alt="" height="200" width="200" style="display: block;margin: 0 auto;" />
+	  </div>
+	</div>
+	<form action="#" th:action="@{/user/signup}" th:object="${student}" method="post">
+		<div class="weui-cells">
+			<div class="weui-cell">
+				<div class="weui-cell__bd">
+					<input class="weui-input" type="text" placeholder="请输入姓名" th:field="*{studentName}" />
+				</div>
+			</div>
+		</div>
+		<div class="weui-cell weui-cell_select weui-cell_select-before">
+			<div class="weui-cell__hd">
+				<select class="weui-select" name="select2">
+					<option value="1">+86</option>
+				</select>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入号码" th:field="*{mobilePhone}" />
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">年龄</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="number" pattern="[0-9]*" th:field="*{age}" />
+			</div>
+		</div>
+		<div class="weui-cells">
+			<div class="weui-cell">
+				<div class="weui-cell__bd">
+					<input class="weui-input" type="text" placeholder="家庭住址" th:field="*{address}" />
+				</div>
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">课时</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="number" pattern="[0-9]*" th:field="*{classPeriod}" />
+			</div>
+		</div>
+		<p>
+			<input type="submit" value="确认" class="weui-btn weui-btn_warn" />
+		</p>
+		<input type="hidden" th:field="*{openCode}"/>
+	</form>
+	<!-- body 最后 -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
 </body>
 </html>

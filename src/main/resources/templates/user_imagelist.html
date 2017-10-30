@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>作品相关衍生品</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+	<h3>请选择一项作品</h3>
+	<div th:each="image : ${images}">
+	  <div class="col-xs-6">
+      	<img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
+	  </div>
+	</div>
+	<div id="code" style="visibility:hidden" th:text="${{code}}" />
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    /*<![CDATA[*/
+	    $(document).ready(function () {
+	    	$("img").click(function(){
+	    		window.location.href = "/user/derivedproduct?code="+$('#code').text()+"&imgcontainer="+this.alt;
+	    	});
+	    })
+   	/*]]>*/
+    </script>
+</body>
+</html>

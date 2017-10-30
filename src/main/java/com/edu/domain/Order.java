@@ -31,19 +31,19 @@ public class Order extends BaseEntity {
 	private Student student;
 
 	@ElementCollection
-    @CollectionTable(name="PRODUCT_ORDER", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+    @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="PRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<Product,Integer > productsMap;
 
 	@ElementCollection
-    @CollectionTable(name="DERIVEDPRODUCT_ORDER", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+    @CollectionTable(name="ORDER_DERIVEDPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="DERIVEDPRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<DerivedProduct, Integer> derivedProductsMap;
 
 	@ElementCollection
-    @CollectionTable(name="IMAGECOLLECTION_ORDER", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+    @CollectionTable(name="ORDER_IMAGECOLLECTION", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<ImageCollection, Integer> imageCollectionMap;

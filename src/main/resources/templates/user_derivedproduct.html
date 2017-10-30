@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>相关衍生品</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/main.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+	<h3>相关衍生品</h3>
+	<div class="waterfall">
+		<ul class="list-group">
+			<li class="list-group-item">
+				<img th:src="${{image.imageUrl}}" style="max-width: 100%;"/>
+			</li>
+			<li class="list-group-item" style="height:50px">
+				<h4 class="col-xs-7" th:text="${{image.imageName}}"/>
+				<h4 class="col-xs-5" th:text="${{image.date}}"/>
+			</li>	
+		</ul>
+	</div>
+	<div id="waterfall-container" class="waterfall">
+		<div th:each="product : ${products}">
+			<ul class="pin list-group">
+			  <li class="list-group-item">
+			      <img th:src="${{product.imageUrl}}" style="max-width: 100%;"/>
+			  </li>
+			  <li class="list-group-item">
+			      <h3 class="col-xs-8" th:text="${{product.productName}}"/>
+			      <h3 class="col-xs-4" th:text="${{product.productPrice}}"/>
+			      <p class="col-xs-12" th:text="${{product.productDescription}}">product description</p>
+			      <button class="btn btn-default cart" onclick="addToCart()" role="button" th:id="${{product.id}}" th:alt="${{image.id}}">加入购物车</button>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap-waterfall.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    /*<![CDATA[*/
+		$('.waterfall')
+		  .data('bootstrap-waterfall-template', $('#waterfall-template').html())
+		  .waterfall();
+    
+		function addToCart(){
+			debugger;
+		}
+		
+		$(document).ready(function () {
+	    	$(".cart").click(function(){
+	    		debugger;
+	    		//$.post("/user/createderivedproduct?code="+$('#code').text(),"&productid="+items.join(',')).done(
+	    		//		function(data){
+	    		//			alert(data);
+	    		//})
+	    	});
+	    })
+    /*]]>*/  
+    </script> 
+</body>
+</html>
