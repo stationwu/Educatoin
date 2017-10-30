@@ -3,22 +3,18 @@ package com.edu.controller;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -43,12 +39,13 @@ public class CourseManagerController {
 	public static final String RELATIVE_STUDENT_PATH = StudentController.PATH + "/{studentId}" + PATH;
 	private final CourseRepository courseRepository;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-//	private final Environment environment;
+	// private final Environment environment;
 
 	@Autowired
-	public CourseManagerController(CourseRepository courseRepository/*, Environment environment*/) {
+	public CourseManagerController(
+			CourseRepository courseRepository/* , Environment environment */) {
 		this.courseRepository = courseRepository;
-//		this.environment = environment;
+		// this.environment = environment;
 	}
 
 	@RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,9 +96,9 @@ public class CourseManagerController {
 	}
 
 	private Resource<Course> buildResource(Course entity) {
-//		String address = InetAddress.getLoopbackAddress().getHostName();
-//		String port = environment.getProperty("server.port");
-		String url = "";//"http://" + address + ":" + port;
+		// String address = InetAddress.getLoopbackAddress().getHostName();
+		// String port = environment.getProperty("server.port");
+		String url = "";// "http://" + address + ":" + port;
 		Resource<Course> resource = new Resource<>(entity);
 		// Links
 		resource.add(linkTo(methodOn(CourseManagerController.class).show(entity.getId())).withSelfRel());

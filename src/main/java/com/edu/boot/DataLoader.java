@@ -9,18 +9,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -51,8 +46,6 @@ import com.edu.domain.Image;
 import com.edu.domain.ProductCategory;
 import com.edu.domain.Student;
 import com.edu.utils.ImageServiceImpl;
-
-import antlr.collections.List;
 
 @Component
 // test data loader
@@ -239,12 +232,13 @@ public class DataLoader {
 				imageCollection.setImageCollection(imageList);
 				imageCollection.setPrice(200d);
 				imageCollection.setCollectionName("作品集");
-				imageCollection.setCollectionDescription(imageList.size()+"幅作品");
+				imageCollection.setCollectionDescription(imageList.size() + "幅作品");
 				imageCollections.add(imageCollectionRepository.save(imageCollection));
 			}
 			ArrayList<Student> students = new ArrayList<>();
 			if (0 == studentRepository.count()) {
-				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24, new ProductCart(),false);
+				Student student = new Student("123456", "Arthur", "13585813816", 30, "XXX路", 24, new ProductCart(),
+						false);
 				Set<Image> imagesList = new HashSet<>();
 				imagesList.add(images.get(1));
 				student.setImagesSet(imagesList);
@@ -278,13 +272,13 @@ public class DataLoader {
 			if (0 == orderRepository.count()) {
 				Order order = new Order();
 				Map<Product, Integer> productMap = new HashMap<>();
-				productMap.put( products.get(0),2);
+				productMap.put(products.get(0), 2);
 				order.setProductsMap(productMap);
 				Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
 				derivedProductMap.put(derivedProducts.get(0), 3);
 				order.setDerivedProductsMap(derivedProductMap);
 				Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
-				imageCollectionMap.put(imageCollections.get(0),5);
+				imageCollectionMap.put(imageCollections.get(0), 5);
 				order.setImageCollectionMap(imageCollectionMap);
 				order.setTotalAmount(1000d);
 				Set<Order> orderSet = new HashSet<>();

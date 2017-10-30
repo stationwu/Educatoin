@@ -2,7 +2,6 @@ package com.edu.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,20 +15,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.ImageRepository;
 import com.edu.dao.StudentRepository;
-import com.edu.domain.Course;
 import com.edu.domain.Image;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.ImageContainer;
 import com.edu.domain.Student;
-import com.mysql.fabric.xmlrpc.base.Array;
-
 import me.chanjar.weixin.mp.api.WxMpService;
 
 @Controller
@@ -64,7 +59,7 @@ public class ImageCenterController {
 			return "user_signup";
 		} else {
 			Set<Image> images = student.getImagesSet();
-			ArrayList<ImageContainer> imagesContainer = (ArrayList<ImageContainer>) images.stream()
+			ArrayList<ImageContainer> imagesContainer = images.stream()
 					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
 					.map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
 					.collect(Collectors.toCollection(ArrayList::new));
@@ -92,7 +87,7 @@ public class ImageCenterController {
 			return "user_signup";
 		} else {
 			Set<Image> images = student.getImagesSet();
-			ArrayList<ImageContainer> imagesContainer = (ArrayList<ImageContainer>) images.stream()
+			ArrayList<ImageContainer> imagesContainer = images.stream()
 					.sorted((x,y) -> y.getDate().compareTo(x.getDate()))
 					.map(x -> new ImageContainer(x.getId() ,x.getImageName(), x.getDate(), x.getCourse(), "/Images/"+x.getId(), "/Images/"+x.getId()+"/thumbnail"))
 					.collect(Collectors.toCollection(ArrayList::new));

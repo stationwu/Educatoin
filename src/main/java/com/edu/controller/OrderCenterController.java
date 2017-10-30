@@ -1,18 +1,11 @@
 package com.edu.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.dao.DerivedProductRepository;
@@ -30,15 +22,12 @@ import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.OrderRepository;
 import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
-import com.edu.domain.Course;
 import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Order;
 import com.edu.domain.OrderContainer;
 import com.edu.domain.Product;
-import com.edu.domain.ProductCart;
 import com.edu.domain.ProductContainer;
-import com.edu.domain.ProductType;
 import com.edu.domain.Student;
 
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -124,7 +113,7 @@ public class OrderCenterController {
 		Object openCodeObject = session.getAttribute("openCode");
 
 		if (null == openCodeObject) {
-			return new ArrayList<>();
+			return new ArrayList<OrderContainer>();
 		}
 
 		String authCode = openCodeObject.toString();
