@@ -10,7 +10,7 @@
 </head>
 <body>
 	<h3>相关衍生品</h3>
-	<div class="waterfall">
+	<div>
 		<ul class="list-group">
 			<li class="list-group-item">
 				<img th:src="${{image.imageUrl}}" style="max-width: 100%;"/>
@@ -31,7 +31,7 @@
 			      <h3 class="col-xs-8" th:text="${{product.productName}}"/>
 			      <h3 class="col-xs-4" th:text="${{product.productPrice}}"/>
 			      <p class="col-xs-12" th:text="${{product.productDescription}}">product description</p>
-			      <button class="btn btn-default cart" onclick="addToCart()" role="button" th:id="${{product.id}}" th:alt="${{image.id}}">加入购物车</button>
+			      <button class="btn btn-default cart" onclick="addToCart()" role="button" th:id="${{product.id}}" th:name="${{image.id}}">加入购物车</button>
 			  </li>
 			</ul>
 		</div>
@@ -46,8 +46,10 @@
 		  .data('bootstrap-waterfall-template', $('#waterfall-template').html())
 		  .waterfall();
     
-		function addToCart(){
-			debugger;
+		function addToCart(event){
+			$.post("/user/createderivedproduct?productid="+window.event.toElement.id,"imageid="+window.event.toElement.name).done(function(data){
+				alert(data);
+			})
 		}
 		
 		$(document).ready(function () {
