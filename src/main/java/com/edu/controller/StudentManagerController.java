@@ -4,7 +4,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +13,10 @@ import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -47,20 +44,22 @@ public class StudentManagerController {
 	public static final String PATH = "/StudentManager";
 	private final StudentRepository studentRepository;
 	private final ImageServiceImpl imageServiceImpl;
-//	private final Environment environment;
+	// private final Environment environment;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	public StudentManagerController(StudentRepository studentRepository, ImageServiceImpl imageServiceImpl/*,
-			Environment environment*/) {
+	public StudentManagerController(StudentRepository studentRepository,
+			ImageServiceImpl imageServiceImpl/*
+												 * , Environment environment
+												 */) {
 		this.studentRepository = studentRepository;
 		this.imageServiceImpl = imageServiceImpl;
-//		this.environment = environment;
+		// this.environment = environment;
 	}
 
 	@RequestMapping(path = PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public HttpEntity<Resources<Resource<Student>>> index(
-			@PageableDefault(value = 15, sort = { "studentName" }, direction = Sort.Direction.ASC) Pageable pageRequest) {
+	public HttpEntity<Resources<Resource<Student>>> index(@PageableDefault(value = 15, sort = {
+			"studentName" }, direction = Sort.Direction.ASC) Pageable pageRequest) {
 		Page<Student> entityPage = studentRepository.findAll(pageRequest);
 		List<Student> entities = entityPage.getContent();
 		return new ResponseEntity<>(buildResources(entities), HttpStatus.OK);
@@ -118,9 +117,9 @@ public class StudentManagerController {
 	}
 
 	private Resource<Student> buildResource(Student entity) {
-//		String address = InetAddress.getLoopbackAddress().getHostName();
-//		String port = environment.getProperty("server.port");
-		String url = "";//"http://" + address + ":" + port;
+		// String address = InetAddress.getLoopbackAddress().getHostName();
+		// String port = environment.getProperty("server.port");
+		String url = "";// "http://" + address + ":" + port;
 		Resource<Student> resource = new Resource<>(entity);
 		// Links
 		resource.add(linkTo(methodOn(StudentController.class).show(entity.getId())).withSelfRel());

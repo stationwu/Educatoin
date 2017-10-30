@@ -1,17 +1,5 @@
 package com.edu.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class ImageContainer extends BaseEntity {
 	private long id;
 	
@@ -75,10 +63,12 @@ public class ImageContainer extends BaseEntity {
 		this.thumbnailUrl = thumbnailUrl;
 	}
 
+	@Override
 	public long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(long id) {
 		this.id = id;
 	}

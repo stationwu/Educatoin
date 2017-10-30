@@ -1,6 +1,5 @@
 package com.edu.domain;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -213,6 +212,7 @@ public class Student extends BaseEntity {
 		this.orders.add(order);
 	}
 	
+	@Override
 	public String toString() {
 		String str = "user.id" + this.getId() + "/nuser.openCode:" + this.getOpenCode() + "/nuser.name" + this.getStudentName()
 				+ "/nuser.phone" + this.getMobilePhone() + "/nuser.classperiod" + this.getClassPeriod();

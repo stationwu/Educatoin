@@ -1,17 +1,13 @@
 package com.edu.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.dao.DerivedProductRepository;
@@ -27,15 +22,12 @@ import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.OrderRepository;
 import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
-import com.edu.domain.Course;
 import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Order;
 import com.edu.domain.OrderContainer;
 import com.edu.domain.Product;
-import com.edu.domain.ProductCart;
 import com.edu.domain.ProductContainer;
-import com.edu.domain.ProductType;
 import com.edu.domain.Student;
 
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -62,8 +54,16 @@ public class OrderCenterController {
 
 	@PostMapping("/user/order")
 	@ResponseBody
-	public String createOrder(@RequestParam(value = "code") String authCode,
+	public String createOrder(HttpServletRequest request,
 			@RequestBody List<ProductContainer> products, Model model) {
+		HttpSession session = request.getSession();
+		Object openCodeObject = session.getAttribute("openCode");
+
+		if (null == openCodeObject) {
+			return "error_500";
+		}
+
+		String authCode = openCodeObject.toString();
 		Student student = repository.findOneByOpenCode(authCode);
 		if (student == null) {
 			Student newStudent = new Student();
@@ -108,7 +108,15 @@ public class OrderCenterController {
 
 	@GetMapping("/user/orderList")
 	@ResponseBody
-	public List<OrderContainer> getOrderList(@RequestParam(value = "code") String authCode, Model model) {
+	public List<OrderContainer> getOrderList(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Object openCodeObject = session.getAttribute("openCode");
+
+		if (null == openCodeObject) {
+			return new ArrayList<OrderContainer>();
+		}
+
+		String authCode = openCodeObject.toString();
 		Student student = repository.findOneByOpenCode(authCode);
 		return student.getOrders().stream().map(
 				x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(), x.getImageCollectionMap()))
