@@ -14,4 +14,13 @@ public class URLUtil {
         }
         return host;
     }
+
+    public static String getServiceURLBeforePath(String url, String subPath) {
+        int index = url.indexOf(subPath);
+        if (index != -1) {
+            return url.substring(0, index);
+        } else {
+            return "";
+        }
+    }
 }
