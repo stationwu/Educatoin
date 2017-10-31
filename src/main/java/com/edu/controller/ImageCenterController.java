@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.edu.utils.WxUserOAuthHelper;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +43,14 @@ public class ImageCenterController {
 	@Autowired
 	private ImageCollectionRepository imageCollectionRepository;
 
+    @Autowired
+    private WxUserOAuthHelper oauthHelper;
+
+    public final static String SESSION_OPENID_KEY = "openCode";
+
+    public final static String IMAGE_COLLECTION_PATH = "/user/imagecollection";
+    public final static String IMAGE_COLLECTION_CALLBACK_PATH = "/user/imagecollection/cb";
+
 	@GetMapping("/user/image")
 	public String getImages(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
@@ -68,21 +78,41 @@ public class ImageCenterController {
 			return "user_images";
 		}
 	}
-	
-	@GetMapping("/user/imagecollection")
-	public String getImageCollection(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		Object openCodeObject = session.getAttribute("openCode");
 
-		if (null == openCodeObject) {
-			return "error_500";
-		}
+	@GetMapping(IMAGE_COLLECTION_PATH)
+    public String imageCollection(HttpServletRequest request, HttpSession session, Model model) {
+        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
 
-		String authCode = openCodeObject.toString();
-		Student student = repository.findOneByOpenCode(authCode);
+        if (openIdInSession == null) { // OAuth to get OpenID
+            return oauthHelper.buildOAuth2RedirectURL(request, IMAGE_COLLECTION_PATH, IMAGE_COLLECTION_CALLBACK_PATH);
+        } else {
+            return doShowImageCollection((String) openIdInSession, model);
+        }
+    }
+
+    @GetMapping(IMAGE_COLLECTION_CALLBACK_PATH)
+    public String imageCollectionCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
+        String openId = null;
+
+        try {
+            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+            return "error_500";
+        }
+
+        return doShowImageCollection(openId, model);
+    }
+
+	private String doShowImageCollection(String openId, Model model) {
+        if (openId == null) {
+            return "error_500";
+        }
+
+		Student student = repository.findOneByOpenCode(openId);
 		if (student == null) {
 			Student newStudent = new Student();
-			newStudent.setOpenCode(authCode);
+			newStudent.setOpenCode(openId);
 			model.addAttribute("student", newStudent);
 			return "user_signup";
 		} else {
@@ -93,7 +123,7 @@ public class ImageCenterController {
 					.collect(Collectors.toCollection(ArrayList::new));
 
 			model.addAttribute("images", imagesContainer);
-			model.addAttribute("code", authCode);
+			model.addAttribute("code", openId);
 			return "user_imagecollection";
 		}
 	}
