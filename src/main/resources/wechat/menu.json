@@ -23,45 +23,45 @@
 		{
 			"name": "个人中心",
 			"sub_button": [
-				{
-					"type": "view",
-					"name": "学生注册",
-					"url": "http://www.dashuxia.xin/user/center"
-				},
+                {
+                    "type": "view",
+                    "name": "我的作品",
+                    "url": "http://www.dashuxia.xin/user/relatedimage"
+                },
                 {
                     "type": "view",
                     "name": "生产作品集",
                     "url": "http://www.dashuxia.xin/user/imagecollection"
                 },
-				{
-					"type": "view",
-					"name": "我的作品",
-					"url": "http://www.dashuxia.xin/user/relatedimage"
-				}
+                {
+                    "type": "view",
+                    "name": "学生注册",
+                    "url": "http://www.dashuxia.xin/user/center"
+                },
 			]
 		},
 		{
 			"name": "大树夏",
 			"sub_button": [
-				{
-					"type": "view",
-					"name": "关于我们",
-					"url": "http://www.dashuxia.xin/site/about"
-				},
+                {
+                    "type": "view",
+                    "name": "商城",
+                    "url": "http://www.dashuxia.xin/shop/mall"
+                },
+                {
+                    "type": "view",
+                    "name": "购物车",
+                    "url": "http://www.dashuxia.xin/user/cart"
+                },
                 {
                     "type": "view",
                     "name": "我的订单",
                     "url": "http://www.dashuxia.xin/user/order"
                 },
-				{
-					"type": "view",
-					"name": "购物车",
-					"url": "http://www.dashuxia.xin/user/cart"
-				},
                 {
                     "type": "view",
-                    "name": "商城",
-                    "url": "http://www.dashuxia.xin/shop/mall"
+                    "name": "关于我们",
+                    "url": "http://www.dashuxia.xin/site/about"
                 }
 			]
 		}
