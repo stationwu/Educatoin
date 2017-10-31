@@ -30,7 +30,7 @@
                 },
                 {
                     "type": "view",
-                    "name": "生产作品集",
+                    "name": "生成作品集",
                     "url": "http://guogin.ngrok.io/user/imagecollection"
                 },
                 {
@@ -56,7 +56,7 @@
                 {
                     "type": "view",
                     "name": "我的订单",
-                    "url": "http://guogin.ngrok.io/user/order"
+                    "url": "http://guogin.ngrok.io/user/orderList"
                 },
                 {
                     "type": "view",

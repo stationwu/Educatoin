@@ -30,7 +30,7 @@
                 },
                 {
                     "type": "view",
-                    "name": "生产作品集",
+                    "name": "生成作品集",
                     "url": "http://www.dashuxia.xin/user/imagecollection"
                 },
                 {
@@ -56,7 +56,7 @@
                 {
                     "type": "view",
                     "name": "我的订单",
-                    "url": "http://www.dashuxia.xin/user/order"
+                    "url": "http://www.dashuxia.xin/user/orderList"
                 },
                 {
                     "type": "view",

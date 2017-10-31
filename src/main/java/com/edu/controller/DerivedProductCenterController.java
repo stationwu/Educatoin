@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.edu.utils.WxUserOAuthHelper;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,20 +45,48 @@ public class DerivedProductCenterController {
 	@Autowired
 	private ProductRepository productRepository;
 
-	@GetMapping("/user/relatedimage")
-	public String getImages(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		Object openCodeObject = session.getAttribute("openCode");
+	@Autowired
+	private WxUserOAuthHelper oauthHelper;
 
-		if (null == openCodeObject) {
-			return "error_500";
-		}
+	public final static String SESSION_OPENID_KEY = "openCode";
 
-		String authCode = openCodeObject.toString();
-		Student student = repository.findOneByOpenCode(authCode);
+	public final static String RELATED_IMAGE_PATH = "/user/relatedimage";
+	public final static String RELATED_IMAGE_CALLBACK_PATH = "/user/relatedimage/cb";
+
+	@GetMapping(RELATED_IMAGE_PATH)
+    public String relatedImage(HttpServletRequest request, HttpSession session, Model model) {
+        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
+
+        if (openIdInSession == null) { // OAuth to get OpenID
+            return oauthHelper.buildOAuth2RedirectURL(request, RELATED_IMAGE_PATH, RELATED_IMAGE_CALLBACK_PATH);
+        } else {
+            return doShowRelatedImage((String) openIdInSession, model);
+        }
+    }
+
+    @GetMapping(RELATED_IMAGE_CALLBACK_PATH)
+    public String relatedImageCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
+        String openId = null;
+
+        try {
+            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+            return "error_500";
+        }
+
+        return doShowRelatedImage(openId, model);
+    }
+
+	private String doShowRelatedImage(String openId, Model model) {
+        if (openId == null) {
+            return "error_500";
+        }
+
+		Student student = repository.findOneByOpenCode(openId);
 		if (student == null) {
 			Student newStudent = new Student();
-			newStudent.setOpenCode(authCode);
+			newStudent.setOpenCode(openId);
 			model.addAttribute("student", newStudent);
 			return "user_signup";
 		} else {
@@ -66,7 +96,7 @@ public class DerivedProductCenterController {
 					.map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(),
 							"/Images/" + x.getId(), "/Images/" + x.getId() + "/thumbnail"))
 					.collect(Collectors.toCollection(ArrayList::new));
-			model.addAttribute("code", authCode);
+			model.addAttribute("code", openId);
 			model.addAttribute("images", imagesContainer);
 			return "user_imagelist";
 		}
