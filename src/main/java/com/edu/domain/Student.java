@@ -68,7 +68,7 @@ public class Student extends BaseEntity {
 	private Set<Order> orders;
 	
 	public Student(){
-		
+		this.cart = new ProductCart();
 	}
 	
 	public Student(String openCode, String studentName, String mobilePhone, int age, String address, int classPeriod,
