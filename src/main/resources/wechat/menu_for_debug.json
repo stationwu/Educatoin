@@ -1,0 +1,69 @@
+{
+	"button": [
+		{
+			"name": "课程中心",
+			"sub_button": [
+				{
+					"type": "view",
+					"name": "课程预约",
+					"url": "http://guogin.ngrok.io/user/reservecourse"
+				},
+				{
+					"type": "view",
+					"name": "课程签到",
+					"url": "http://guogin.ngrok.io/user/signcourse"
+				},
+				{
+					"type": "view",
+					"name": "我的课程",
+					"url": "http://guogin.ngrok.io/user/course"
+				}
+			]
+		},
+		{
+			"name": "个人中心",
+			"sub_button": [
+                {
+                    "type": "view",
+                    "name": "我的作品",
+                    "url": "http://guogin.ngrok.io/user/relatedimage"
+                },
+                {
+                    "type": "view",
+                    "name": "生产作品集",
+                    "url": "http://guogin.ngrok.io/user/imagecollection"
+                },
+                {
+                    "type": "view",
+                    "name": "学生注册",
+                    "url": "http://guogin.ngrok.io/user/center"
+                },
+			]
+		},
+		{
+			"name": "大树夏",
+			"sub_button": [
+                {
+                    "type": "view",
+                    "name": "商城",
+                    "url": "http://guogin.ngrok.io/shop/mall"
+                },
+                {
+                    "type": "view",
+                    "name": "购物车",
+                    "url": "http://guogin.ngrok.io/user/cart"
+                },
+                {
+                    "type": "view",
+                    "name": "我的订单",
+                    "url": "http://guogin.ngrok.io/user/order"
+                },
+                {
+                    "type": "view",
+                    "name": "关于我们",
+                    "url": "http://guogin.ngrok.io/site/about"
+                }
+			]
+		}
+	]
+}
