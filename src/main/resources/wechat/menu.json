@@ -1,39 +1,69 @@
 {
-    "button":[
-      {   
-          "type":"click",
-          "name":"ǩ��",
-          "key":"MENU_ITEM_1000" 
-      },
-      { 
-          "name":"�ҵĻ���",
-          "sub_button":[
-          {   
-              "type":"view",
-              "name":"ѧԱע��",
-              "url":"http://guogin.ngrok.io/user/center"
-          },{   
-              "type":"click",
-              "name":"��Ʒ��",
-              "key":"MENU_ITEM_2002"
-          },{   
-              "type":"click",
-              "name":"��ʷ��Ϣ",
-              "key":"MENU_ITEM_2003"
-          }]
-      },
-      {
-          "name":"�����̵�",
-          "sub_button":[
-          {   
-              "type":"click",
-              "name":"����",
-              "key":"MENU_ITEM_3001"
-          },{   
-              "type":"click",
-              "name":"�ҵĶ���",
-              "key":"MENU_ITEM_3002"
-          }]
-      }
-    ]
+	"button": [
+		{
+			"name": "课程中心",
+			"sub_button": [
+				{
+					"type": "view",
+					"name": "课程预约",
+					"url": "http://www.dashuxia.xin/user/reservecourse"
+				},
+				{
+					"type": "view",
+					"name": "课程签到",
+					"url": "http://www.dashuxia.xin/user/signcourse"
+				},
+				{
+					"type": "view",
+					"name": "我的课程",
+					"url": "http://www.dashuxia.xin/user/course"
+				}
+			]
+		},
+		{
+			"name": "个人中心",
+			"sub_button": [
+				{
+					"type": "view",
+					"name": "学生注册",
+					"url": "http://www.dashuxia.xin/user/center"
+				},
+                {
+                    "type": "view",
+                    "name": "生产作品集",
+                    "url": "http://www.dashuxia.xin/user/imagecollection"
+                },
+				{
+					"type": "view",
+					"name": "我的作品",
+					"url": "http://www.dashuxia.xin/user/relatedimage"
+				}
+			]
+		},
+		{
+			"name": "大树夏",
+			"sub_button": [
+				{
+					"type": "view",
+					"name": "关于我们",
+					"url": "http://www.dashuxia.xin/site/about"
+				},
+                {
+                    "type": "view",
+                    "name": "我的订单",
+                    "url": "http://www.dashuxia.xin/user/order"
+                },
+				{
+					"type": "view",
+					"name": "购物车",
+					"url": "http://www.dashuxia.xin/user/cart"
+				},
+                {
+                    "type": "view",
+                    "name": "商城",
+                    "url": "http://www.dashuxia.xin/shop/mall"
+                }
+			]
+		}
+	]
 }
