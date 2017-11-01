@@ -2,24 +2,17 @@ package com.edu.domain;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import com.edu.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.edu.domain.Image;
 
 @Entity
 @Table(name = "student")
-public class Student extends BaseEntity {
-	private String openCode;
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected long id;
+    private String openCode;
 
 	private String studentName;
 
@@ -218,4 +211,12 @@ public class Student extends BaseEntity {
 				+ "/nuser.phone" + this.getMobilePhone() + "/nuser.classperiod" + this.getClassPeriod();
 		return str;
 	}
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

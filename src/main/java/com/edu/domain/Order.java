@@ -1,21 +1,17 @@
 package com.edu.domain;
 
 import java.util.Map;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "productorder")
-public class Order extends BaseEntity {
-	@ManyToOne
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @ManyToOne
 	@JoinColumn(name = "STUDENT_ID")
 	@JsonIgnore
 	private Student student;
@@ -90,4 +86,11 @@ public class Order extends BaseEntity {
 		this.imageCollectionMap = imageCollectionMap;
 	}
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

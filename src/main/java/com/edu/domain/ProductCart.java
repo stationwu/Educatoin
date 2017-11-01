@@ -2,16 +2,16 @@ package com.edu.domain;
 
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="productcart")
-public class ProductCart extends BaseEntity{
-	@OneToOne
+public class ProductCart {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @OneToOne
 	private Student student;
 	
 	@OneToMany(fetch = FetchType.LAZY)
@@ -66,5 +66,12 @@ public class ProductCart extends BaseEntity{
 	public void setImageCollection(Set<ImageCollection> imageCollection) {
 		this.imageCollection = imageCollection;
 	}
-	
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

@@ -1,18 +1,18 @@
 package com.edu.domain;
 
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "course")
-public class Course extends BaseEntity{
-	private String courseName;
+public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String courseName;
 
 	private String date;
 
@@ -110,5 +110,12 @@ public class Course extends BaseEntity{
 		this.timeFrom = timeFrom;
 		this.timeTo = timeTo;
 	}
-	
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }
