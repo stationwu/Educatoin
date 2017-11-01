@@ -25,6 +25,8 @@ public class Product extends BaseEntity {
 
 	private boolean derivedProductFlag;
 	
+	private int priority;
+	
 	public Product() {
 
 	}
@@ -84,5 +86,13 @@ public class Product extends BaseEntity {
 
 	public void setProductImages(Set<Image> productImages) {
 		this.productImages = productImages;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 }
