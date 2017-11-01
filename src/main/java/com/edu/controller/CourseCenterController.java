@@ -111,7 +111,7 @@ public class CourseCenterController {
         }
     }
 
-    @GetMapping
+    @GetMapping(SIGN_COURSE_CALLBACK_PATH)
     public String signCourseCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
         String openId = null;
 
