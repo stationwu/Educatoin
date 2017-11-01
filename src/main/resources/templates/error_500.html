@@ -1,10 +1,30 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>系统正在维护，请耐心等待</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
 </head>
 <body>
-    <p th:text="Something went wrong. Check your server log." />
+	<div class="weui-msg">
+		<div class="weui-msg__icon-area">
+			<i class="weui-icon-success weui-icon_msg"></i>
+		</div>
+		<div class="weui-msg__text-area">
+			<h2 class="weui-msg__title">系统消息</h2>
+			<p class="weui-msg__desc">
+				系统正在维护，请耐心等待！给您造成不便，敬请谅解
+			</p>
+		</div>
+	</div>
+	<div class="weui-msg__extra-area">
+		<div class="weui-footer">
+			<p class="weui-footer__text">Copyright © 2008-2017 dashuxia.mobi</p>
+		</div>
+	</div> 
+	<!-- body 最后 -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
 </body>
 </html>
