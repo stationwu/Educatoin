@@ -1,28 +1,29 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>大树夏欢迎您</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
-	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+    <title>大树夏欢迎您</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css"/>
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css"/>
+    <link href="/css/app.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
-	<header class="demos-header">
-      <h1 class="demos-title"><span th:text="'您好,' +  ${student.studentName}"></span></h1>
-    </header>
-	<div class="weui-form-preview">
-		<div class="weui-form-preview__hd">
-			<label class="weui-form-preview__label">手机号</label> 
-			<em class="weui-form-preview__value"><span th:text="${student.mobilePhone}"></span></em>
-		</div>
-		<div class="weui-form-preview__hd">
-			<label class="weui-form-preview__label">家庭住址</label> 
-			<em class="weui-form-preview__value"><span th:text="${student.address}"></span></em>
-		</div>
-	</div>
-	<!-- body 最后 -->
-	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+<header class="demos-header">
+    <h1 class="demos-title"><span th:text="'您好,' +  ${student.studentName}"></span></h1>
+</header>
+<div class="weui-form-preview">
+    <div class="weui-form-preview__hd">
+        <label class="weui-form-preview__label">手机号</label>
+        <em class="weui-form-preview__value"><span th:text="${student.mobilePhone}"></span></em>
+    </div>
+    <div class="weui-form-preview__hd">
+        <label class="weui-form-preview__label">家庭住址</label>
+        <em class="weui-form-preview__value"><span th:text="${student.address}"></span></em>
+    </div>
+</div>
+<!-- body 最后 -->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
 </body>
 </html>
