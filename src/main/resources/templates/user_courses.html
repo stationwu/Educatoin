@@ -7,13 +7,19 @@
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
-	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />    
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+	<link href="/css/app.css" rel="stylesheet" media="screen"/>    
 </head>
 <body>
-	<h3>已签到课程</h3>
-	<ul class="list-group" th:each="signedCourse : ${signedCourses}">
-		<li class="list-group-item"  th:text="${{signedCourse.CourseName}}">signedCourse</li>
-	</ul>
+	<div class="weui-cells">
+		<div class="weui-cell" th:each="signedCourse : ${signedCourses}">
+			<div class="weui-cell__hd"></div>
+			<div class="weui-cell__bd">
+				<p>已签到课程</p>
+			</div>
+			<div class="weui-cell__ft" th:text="${{signedCourse.CourseName}}"></div>
+		</div>
+	</div>
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
 </body>
