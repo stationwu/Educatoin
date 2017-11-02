@@ -29,6 +29,8 @@ public class Product {
 
 	private boolean derivedProductFlag;
 	
+	private int priority;
+	
 	public Product() {
 
 	}
@@ -91,10 +93,18 @@ public class Product {
 	}
 
 	public void setId(long id) {
-        this.id = id;
-    }
+            this.id = id;
+        }
 
 	public long getId() {
-        return id;
-    }
+            return id;
+        }
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
 }
