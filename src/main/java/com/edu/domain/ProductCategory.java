@@ -2,17 +2,18 @@ package com.edu.domain;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="productcategory")
-public class ProductCategory extends BaseEntity{
-	@Column( unique = true )
+public class ProductCategory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column( unique = true )
 	private String categoryName;
 	
 	private String categoryDescription;
@@ -53,5 +54,12 @@ public class ProductCategory extends BaseEntity{
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
-	
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

@@ -2,25 +2,23 @@ package com.edu.domain;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "imagecollection")
-public class ImageCollection extends BaseEntity {
+public class ImageCollection {
 	
 	public String collectionName;
 	
 	public String collectionDescription;
-	
-	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="IMAGE_IMAGECOLLECTION",
@@ -62,4 +60,26 @@ public class ImageCollection extends BaseEntity {
 		this.collectionDescription = collectionDescription;
 	}
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ImageCollection)) return false;
+
+        ImageCollection that = (ImageCollection) o;
+
+        return getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (getId() ^ (getId() >>> 32));
+    }
 }

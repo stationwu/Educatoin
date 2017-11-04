@@ -8,7 +8,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "product")
-public class Product extends BaseEntity {
+public class Product {
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
 	private String productName;
 
 	@ManyToOne
@@ -87,6 +91,14 @@ public class Product extends BaseEntity {
 	public void setProductImages(Set<Image> productImages) {
 		this.productImages = productImages;
 	}
+
+	public void setId(long id) {
+            this.id = id;
+        }
+
+	public long getId() {
+            return id;
+        }
 
 	public int getPriority() {
 		return priority;

@@ -69,34 +69,34 @@ public class StudentController {
 		return new ResponseEntity<>(buildResources(entities), HttpStatus.OK);
 	}
 
-	@GetMapping(path = PATH + "/OpenCode/{openCode}")
-	public Resource<Student> showStudentbyOpenCode(@PathVariable("openCode") String openCode) {
-		Student entity = studentRepository.findOneByOpenCode(openCode);
-		return buildResource(entity);
-	}
+//	@GetMapping(path = PATH + "/OpenCode/{openCode}")
+//	public Resource<Student> showStudentbyOpenCode(@PathVariable("openCode") String openCode) {
+//		Student entity = studentRepository.findOneByOpenCode(openCode);
+//		return buildResource(entity);
+//	}
 
-	@PostMapping(path = PATH + "/{openCode}" + SIGN_IN_PATH + "/{courseId}")
-	public Resource<Student> studentSign(@PathVariable("openCode") String openCode,
-			@PathVariable("courseId") Long courseId) throws Exception {
-		Student student = studentRepository.findOneByOpenCode(openCode);
-		Set<Course> courses = student.getCoursesSet();
-		if (student.getClassPeriod() <= courses.size())
-			throw new Exception("ClassPeriod exceed size of course:" + student.getId());
-		Course course = courseRepository.findOne(courseId);
-		student.addCourse(course);
-		Student entity = studentRepository.save(student);
-		return buildResource(entity);
-	}
+//	@PostMapping(path = PATH + "/{openCode}" + SIGN_IN_PATH + "/{courseId}")
+//	public Resource<Student> studentSign(@PathVariable("openCode") String openCode,
+//			@PathVariable("courseId") Long courseId) throws Exception {
+//		Student student = studentRepository.findOneByOpenCode(openCode);
+//		Set<Course> courses = student.getCoursesSet();
+//		if (student.getClassPeriod() <= courses.size())
+//			throw new Exception("ClassPeriod exceed size of course:" + student.getId());
+//		Course course = courseRepository.findOne(courseId);
+//		student.addCourse(course);
+//		Student entity = studentRepository.save(student);
+//		return buildResource(entity);
+//	}
 
-	@PostMapping(path = PATH + "/{openCode}" + RESERVE_PATH + "/{courseId}")
-	public Resource<Student> studentReserve(@PathVariable("openCode") String openCode,
-			@PathVariable("courseId") Long courseId) throws Exception {
-		Student student = studentRepository.findOneByOpenCode(openCode);
-		Course course = courseRepository.findOne(courseId);
-		student.addReservedCourse(course);
-		Student entity = studentRepository.save(student);
-		return buildResource(entity);
-	}
+//	@PostMapping(path = PATH + "/{openCode}" + RESERVE_PATH + "/{courseId}")
+//	public Resource<Student> studentReserve(@PathVariable("openCode") String openCode,
+//			@PathVariable("courseId") Long courseId) throws Exception {
+//		Student student = studentRepository.findOneByOpenCode(openCode);
+//		Course course = courseRepository.findOne(courseId);
+//		student.addReservedCourse(course);
+//		Student entity = studentRepository.save(student);
+//		return buildResource(entity);
+//	}
 
 	@PostMapping(path = PATH)
 	public Resource<Student> createStudent(@RequestBody @Valid Student student) throws HttpException {
@@ -105,17 +105,17 @@ public class StudentController {
 		return buildResource(entity);
 	}
 
-	@PostMapping(path = PATH + "/{id}")
-	public Resource<Student> editStudent(@PathVariable(value = "id") Long id, @RequestBody @Valid Student student)
-			throws HttpException {
-		Student entity = studentRepository.findOne(id);
-		entity.setStudentName(student.getStudentName());
-		entity.setMobilePhone(student.getMobilePhone());
-		entity.setAge(student.getAge());
-		entity.setAddress(student.getAddress());
-		Student entityUser = studentRepository.save(entity);
-		return buildResource(entityUser);
-	}
+//	@PostMapping(path = PATH + "/{id}")
+//	public Resource<Student> editStudent(@PathVariable(value = "id") Long id, @RequestBody @Valid Student student)
+//			throws HttpException {
+//		Student entity = studentRepository.findOne(id);
+//		entity.setStudentName(student.getStudentName());
+//		entity.setMobilePhone(student.getMobilePhone());
+//		entity.setAge(student.getAge());
+//		entity.setAddress(student.getAddress());
+//		Student entityUser = studentRepository.save(entity);
+//		return buildResource(entityUser);
+//	}
 
 	private Resources<Resource<Student>> buildResources(Iterable<Student> entities) {
 		List<Resource<Student>> resourceList = new ArrayList<>();

@@ -1,13 +1,20 @@
 package com.edu.domain;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class OrderContainer extends BaseEntity {
-	private Order order;
+public class OrderContainer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private Order order;
 	private List<ProductContainer> productContainers;
 
 	public Order getOrder() {
@@ -51,4 +58,11 @@ public class OrderContainer extends BaseEntity {
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

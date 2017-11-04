@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.edu.dao.CustomerRepository;
+import com.edu.domain.*;
 import com.edu.utils.WxUserOAuthHelper;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.dao.StudentRepository;
-import com.edu.domain.DerivedProduct;
-import com.edu.domain.ImageCollection;
-import com.edu.domain.Product;
-import com.edu.domain.ProductContainer;
-import com.edu.domain.Student;
 
 import me.chanjar.weixin.mp.api.WxMpService;
 
@@ -34,6 +31,8 @@ public class CartCenterController {
 
 	@Autowired
 	private StudentRepository repository;
+	@Autowired
+	private CustomerRepository custRepo;
 
 	@Autowired
 	private WxUserOAuthHelper oauthHelper;
@@ -72,17 +71,17 @@ public class CartCenterController {
         if (openId == null) {
             return "error_500";
         }
-		
-		Student student = repository.findOneByOpenCode(openId);
-		if (student == null) {
-			Student newStudent = new Student();
-			newStudent.setOpenCode(openId);
-			model.addAttribute("student", newStudent);
+
+		Customer customer = custRepo.findOneByOpenCode(openId);
+		if (customer == null) {
+			Customer newCustomer = new Customer();
+			newCustomer.setOpenCode(openId);
+			model.addAttribute("customer", newCustomer);
 			return "user_signup";
 		} else {
-			Set<Product> products = student.getCart().getProducts();
-			Set<DerivedProduct> derivedProducts = student.getCart().getDerivedProducts();
-			Set<ImageCollection> imageCollection = student.getCart().getImageCollection();
+			Set<Product> products = customer.getCart().getProducts();
+			Set<DerivedProduct> derivedProducts = customer.getCart().getDerivedProducts();
+			Set<ImageCollection> imageCollection = customer.getCart().getImageCollection();
 
 			Stream<ProductContainer> productsStream = products.stream()
 					.map(x -> new ProductContainer(x.getProductName(), x.getProductCategory().getCategoryName(),
@@ -115,11 +114,11 @@ public class CartCenterController {
 			return new ArrayList<>();
 		}
 
-		String authCode = openCodeObject.toString();
-		Student student = repository.findOneByOpenCode(authCode);
-		Set<Product> products = student.getCart().getProducts();
-		Set<DerivedProduct> derivedProducts = student.getCart().getDerivedProducts();
-		Set<ImageCollection> imageCollection = student.getCart().getImageCollection();
+		String openId = openCodeObject.toString();
+		Customer customer = custRepo.findOneByOpenCode(openId);
+		Set<Product> products = customer.getCart().getProducts();
+		Set<DerivedProduct> derivedProducts = customer.getCart().getDerivedProducts();
+		Set<ImageCollection> imageCollection = customer.getCart().getImageCollection();
 
 		Stream<ProductContainer> productsStream = products.stream()
 				.map(x -> new ProductContainer(x.getProductName(), x.getProductCategory().getCategoryName(),

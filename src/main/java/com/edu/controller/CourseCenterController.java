@@ -1,12 +1,15 @@
 package com.edu.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.edu.dao.CustomerRepository;
+import com.edu.domain.Customer;
 import com.edu.utils.WxUserOAuthHelper;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
@@ -32,6 +35,9 @@ public class CourseCenterController {
 
 	@Autowired
 	private StudentRepository repository;
+
+	@Autowired
+    private CustomerRepository custRepo;
 
 	public final static String USER_COURSE_PATH = "/user/course";
 	public final static String USER_COURSE_CALLBACK_PATH = "/user/course/cb";
@@ -76,28 +82,40 @@ public class CourseCenterController {
             return "error_500";
         }
 
-		Student student = repository.findOneByOpenCode(openId);
+        Customer customer = custRepo.findOneByOpenCode(openId);
+		if (customer == null) {
+		    Customer newCustomer = new Customer();
+		    newCustomer.setOpenCode(openId);
+		    model.addAttribute("customer", newCustomer);
+		    return "user_signup";
+        }
 
-		if (student == null) {
-			Student newStudent = new Student();
-			newStudent.setOpenCode(openId);
-			model.addAttribute("student", newStudent);
-			return "user_signup";
-		} else {
-			Set<Course> signedCourses = student.getCoursesSet();
-			Set<Course> notSignedCourses = student.getCourseNotSignSet();
-			Set<Course> reservedCourses = student.getReservedCoursesSet();
-			model.addAttribute("signedCourses",
-					signedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-							.collect(Collectors.toCollection(ArrayList::new)));
-			model.addAttribute("notSignedCourses",
-					notSignedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-							.collect(Collectors.toCollection(ArrayList::new)));
-			model.addAttribute("reservedCourses",
-					reservedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-							.collect(Collectors.toCollection(ArrayList::new)));
-			return "user_courses";
-		}
+        Set<Student> students = customer.getStudents();
+        List<Student> listOfStudents = new ArrayList<>(students);
+		model.addAttribute("students", listOfStudents);
+
+        /**
+         * TODO: Below loop is wrong. We must show also the students list. So view also needs change.
+         * Model was WeChat user = Student, Student has-many courses
+         * It's now WeChat user = Customer, Customer has-many students, Student has-many courses
+         * So it's necessary to display a list of students, then under each student list his courses
+         */
+        for (Student student : customer.getStudents()) {
+            Set<Course> signedCourses = student.getCoursesSet();
+            Set<Course> notSignedCourses = student.getCourseNotSignSet();
+            Set<Course> reservedCourses = student.getReservedCoursesSet();
+            model.addAttribute("signedCourses",
+                    signedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
+                            .collect(Collectors.toCollection(ArrayList::new)));
+            model.addAttribute("notSignedCourses",
+                    notSignedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
+                            .collect(Collectors.toCollection(ArrayList::new)));
+            model.addAttribute("reservedCourses",
+                    reservedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
+                            .collect(Collectors.toCollection(ArrayList::new)));
+        }
+
+        return "user_courses";
 	}
 
 	@GetMapping(SIGN_COURSE_PATH)
@@ -129,12 +147,12 @@ public class CourseCenterController {
         if (openId == null) {
             return "error_500";
         }
-		
-		Student student = repository.findOneByOpenCode(openId);
-		if (student == null) {
-			Student newStudent = new Student();
-			newStudent.setOpenCode(openId);
-			model.addAttribute("student", newStudent);
+
+        Customer customer = custRepo.findOneByOpenCode(openId);
+		if (customer == null) {
+			Customer newCustomer = new Customer();
+            newCustomer.setOpenCode(openId);
+			model.addAttribute("customer", newCustomer);
 			return "user_signup";
 		} else {
 			model.addAttribute("code", openId);
@@ -171,13 +189,13 @@ public class CourseCenterController {
         if (openId == null) {
             return "error_500";
         }
-		
-		Student student = repository.findOneByOpenCode(openId);
-		if (student == null) {
-			Student newStudent = new Student();
-			newStudent.setOpenCode(openId);
-			model.addAttribute("student", newStudent);
-			return "user_signup";
+
+        Customer customer = custRepo.findOneByOpenCode(openId);
+		if (customer == null) {
+            Customer newCustomer = new Customer();
+            newCustomer.setOpenCode(openId);
+            model.addAttribute("customer", newCustomer);
+            return "user_signup";
 		} else {
 			model.addAttribute("code", openId);
 			return "user_reserve_course";

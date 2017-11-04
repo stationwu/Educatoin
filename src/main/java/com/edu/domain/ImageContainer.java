@@ -1,6 +1,12 @@
 package com.edu.domain;
 
-public class ImageContainer extends BaseEntity {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+public class ImageContainer {
+	@Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;
 	
 	private String imageName;
@@ -63,12 +69,10 @@ public class ImageContainer extends BaseEntity {
 		this.thumbnailUrl = thumbnailUrl;
 	}
 
-	@Override
 	public long getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(long id) {
 		this.id = id;
 	}

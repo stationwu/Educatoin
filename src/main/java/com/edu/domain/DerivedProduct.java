@@ -1,13 +1,14 @@
 package com.edu.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="derprod")
-public class DerivedProduct extends BaseEntity{
-	@ManyToOne
+public class DerivedProduct {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected long id;
+    @ManyToOne
 	private Product product;
 	
 	@ManyToOne
@@ -28,5 +29,12 @@ public class DerivedProduct extends BaseEntity{
 	public void setImage(Image image) {
 		this.image = image;
 	}
-	
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

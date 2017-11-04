@@ -2,28 +2,18 @@ package com.edu.domain;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import com.edu.domain.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.edu.domain.Image;
 
 @Entity
 @Table(name = "student")
-public class Student extends BaseEntity {
-	private String openCode;
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected long id;
 
 	private String studentName;
-
-	private String mobilePhone;
 
 	private int age;
 
@@ -31,11 +21,15 @@ public class Student extends BaseEntity {
 
 	private int classPeriod;
 
+	@ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer customer;
+
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Image> imagesSet;
 
-	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	@JoinTable(
 		      name="STUDENT_COURSE",
@@ -58,37 +52,19 @@ public class Student extends BaseEntity {
 		      joinColumns= @JoinColumn(name="STUDENT_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="NO_SIGN_COURSE_ID", referencedColumnName="ID"))
 	private Set<Course> courseNotSignSet;
-	
-	@OneToOne(cascade = { CascadeType.ALL })
-	private ProductCart cart;
-	
+
 	private boolean isChild;
 	
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "student")
-	private Set<Order> orders;
-	
-	public Student(){
-		this.cart = new ProductCart();
+	public Student() {
 	}
 	
-	public Student(String openCode, String studentName, String mobilePhone, int age, String address, int classPeriod,
-			ProductCart cart, boolean isChild) {
-		this.openCode = openCode;
+	public Student(String studentName, int age, String address, int classPeriod,
+			boolean isChild) {
 		this.studentName = studentName;
-		this.mobilePhone = mobilePhone;
 		this.age = age;
 		this.address = address;
 		this.classPeriod = classPeriod;
-		this.cart = cart;
 		this.isChild = isChild;
-	}
-
-	public String getOpenCode() {
-		return openCode;
-	}
-
-	public void setOpenCode(String openCode) {
-		this.openCode = openCode;
 	}
 
 	public String getStudentName() {
@@ -97,14 +73,6 @@ public class Student extends BaseEntity {
 
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
-	}
-
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
-
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
 	}
 
 	public int getAge() {
@@ -121,14 +89,6 @@ public class Student extends BaseEntity {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public ProductCart getCart() {
-		return cart;
-	}
-
-	public void setCart(ProductCart cart) {
-		this.cart = cart;
 	}
 
 	public boolean isChild() {
@@ -174,7 +134,6 @@ public class Student extends BaseEntity {
 	public void setImagesSet(Set<Image> imagesSet) {
 		this.imagesSet = imagesSet;
 	}
-
 	
 	public Set<Course> getReservedCoursesSet() {
 		return reservedCoursesSet;
@@ -199,23 +158,27 @@ public class Student extends BaseEntity {
 	public void addCourseNotSign(Course courseNotSign) {
 		this.courseNotSignSet.add(courseNotSign);
 	}
-	
-	public Set<Order> getOrders() {
-		return orders;
-	}
 
-	public void setOrders(Set<Order> orders) {
-		this.orders = orders;
-	}
+    public Customer getCustomer() {
+        return customer;
+    }
 
-	public void addOrder(Order order) {
-		this.orders.add(order);
-	}
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 	
 	@Override
 	public String toString() {
-		String str = "user.id" + this.getId() + "/nuser.openCode:" + this.getOpenCode() + "/nuser.name" + this.getStudentName()
-				+ "/nuser.phone" + this.getMobilePhone() + "/nuser.classperiod" + this.getClassPeriod();
+		String str = "Student.id" + this.getId() + "/nStudent.name" + this.getStudentName()
+                + "/nStudent.classperiod" + this.getClassPeriod();
 		return str;
 	}
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

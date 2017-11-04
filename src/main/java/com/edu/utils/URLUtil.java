@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class URLUtil {
-    private static final Pattern p = Pattern.compile("http://\\w+\\.\\w+\\.\\w+");
+    private static final Pattern p = Pattern.compile("https?://\\w+\\.\\w+\\.\\w+");
 
     public static String getHost(String url) {
         Matcher m = p.matcher(url);

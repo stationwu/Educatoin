@@ -1,10 +1,11 @@
 package com.edu.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
+import com.edu.dao.CustomerRepository;
+import com.edu.domain.Customer;
+import com.edu.domain.Student;
 import com.edu.utils.WxUserOAuthHelper;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.edu.dao.StudentRepository;
-import com.edu.domain.Student;
-
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 public class UserCenterController {
@@ -33,7 +31,7 @@ public class UserCenterController {
     private WxUserOAuthHelper oauthHelper;
 	
 	@Autowired
-	private StudentRepository repository;
+	private CustomerRepository repository;
 	
 	private final String DUMMY_STATE = "123";
 
@@ -86,21 +84,21 @@ public class UserCenterController {
 
 	    String view = null;
 
-        if(repository.isStudentAlreadyRegistered(openId)) {
+        if(repository.isCustomerAlreadyRegistered(openId)) {
             logger.debug(">>> You've already registered");
             logger.debug(">>> Redirecting to user's home page");
 
-            Student student = repository.findOneByOpenCode(openId);
-            model.addAttribute("student", student);
+            Customer customer = repository.findOneByOpenCode(openId);
+            model.addAttribute("customer", customer);
             view = "user_info";
         } else {
             logger.debug(">>> You're not registered");
             logger.debug(">>> Redirecting to the signup page");
 
-            Student student = new Student();
-            student.setOpenCode(openId);
+            Customer customer = new Customer();
+            customer.setOpenCode(openId);
 
-            model.addAttribute("student", student);
+            model.addAttribute("customer", customer);
             view = "user_signup";
         }
 
@@ -108,7 +106,7 @@ public class UserCenterController {
     }
 	
 	@PostMapping(USER_SIGNUP_PATH)
-	public String signup(@ModelAttribute @Valid Student student, BindingResult bindingResult, HttpSession session) {
+	public String signup(@ModelAttribute @Valid Customer customer, BindingResult bindingResult, HttpSession session) {
 		if (bindingResult.hasErrors()) {
 			return "user_signup";
 		}
@@ -119,13 +117,13 @@ public class UserCenterController {
         }
 
         String openId = (String)openIdInSession;
-        student.setOpenCode(openId);
+        customer.setOpenCode(openId);
 		
-		logger.debug(">>> Signing up: " + student.toString());
+		logger.debug(">>> Signing up: " + customer.toString());
+
+        customer = repository.save(customer);
 		
-		student = repository.save(student);
-		
-		logger.debug(">>> Signed up. Id: " + student.getId());
+		logger.debug(">>> Signed up. Id: " + customer.getId());
 		
 		return "user_info";
 	}

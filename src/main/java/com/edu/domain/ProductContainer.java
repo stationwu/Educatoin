@@ -1,8 +1,16 @@
 package com.edu.domain;
 
-public class ProductContainer extends BaseEntity {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-	private String productName;
+public class ProductContainer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String productName;
 
 	private String category;
 
@@ -92,4 +100,12 @@ public class ProductContainer extends BaseEntity {
 		this.id = id;
 		this.type = type;
 	}
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 }

@@ -1,24 +1,21 @@
 package com.edu.domain;
 
 import java.util.Map;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "productorder")
-public class Order extends BaseEntity {
-	@ManyToOne
-	@JoinColumn(name = "STUDENT_ID")
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @ManyToOne
+	@JoinColumn(name = "CUSTOMER_ID")
 	@JsonIgnore
-	private Student student;
+	private Customer customer;
 
 	@ElementCollection
     @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
@@ -41,14 +38,6 @@ public class Order extends BaseEntity {
 	private String date;
 
 	private double totalAmount;
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
 
 	public String getDate() {
 		return date;
@@ -90,4 +79,19 @@ public class Order extends BaseEntity {
 		this.imageCollectionMap = imageCollectionMap;
 	}
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }
