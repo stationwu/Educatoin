@@ -11,10 +11,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @ManyToOne
-	@JoinColumn(name = "STUDENT_ID")
+	@JoinColumn(name = "CUSTOMER_ID")
 	@JsonIgnore
-	private Student student;
+	private Customer customer;
 
 	@ElementCollection
     @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
@@ -37,14 +38,6 @@ public class Order {
 	private String date;
 
 	private double totalAmount;
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
 
 	public String getDate() {
 		return date;
@@ -92,5 +85,13 @@ public class Order {
 
     public long getId() {
         return id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

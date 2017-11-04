@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.edu.dao.*;
+import com.edu.domain.*;
 import com.edu.utils.URLUtil;
 import com.edu.utils.WxUserOAuthHelper;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -23,19 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.edu.dao.DerivedProductRepository;
-import com.edu.dao.ImageCollectionRepository;
-import com.edu.dao.OrderRepository;
-import com.edu.dao.ProductRepository;
-import com.edu.dao.StudentRepository;
-import com.edu.domain.DerivedProduct;
-import com.edu.domain.ImageCollection;
-import com.edu.domain.Order;
-import com.edu.domain.OrderContainer;
-import com.edu.domain.Product;
-import com.edu.domain.ProductContainer;
-import com.edu.domain.Student;
-
 import me.chanjar.weixin.mp.api.WxMpService;
 
 @Controller
@@ -45,6 +34,8 @@ public class OrderCenterController {
 
 	@Autowired
 	private StudentRepository repository;
+	@Autowired
+	private CustomerRepository custRepo;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -76,13 +67,13 @@ public class OrderCenterController {
 			return "error_500";
 		}
 
-		String authCode = openCodeObject.toString();
-		Student student = repository.findOneByOpenCode(authCode);
-		if (student == null) {
-			Student newStudent = new Student();
-			newStudent.setOpenCode(authCode);
-			model.addAttribute("student", newStudent);
-			return "user_signup";
+		String openId = openCodeObject.toString();
+        Customer customer = custRepo.findOneByOpenCode(openId);
+        if (customer == null) {
+            Customer newCustomer = new Customer();
+            newCustomer.setOpenCode(openId);
+            model.addAttribute("customer", newCustomer);
+            return "user_signup";
 		} else {
 			Order order = new Order();
 			Map<Product, Integer> productMap = new HashMap<>();
@@ -113,7 +104,7 @@ public class OrderCenterController {
 			order.setTotalAmount(amount);
 			LocalDate localDate = LocalDate.now();
 			order.setDate(localDate.toString());
-			order.setStudent(student);
+			order.setCustomer(customer);
 			orderRepository.save(order);
 			return "下单成功";
 		}
@@ -141,7 +132,13 @@ public class OrderCenterController {
             return getOrderList((String) openIdInSession);
         }
 
-        return null; // Ugly and probably not working //TODO: Fix this
+		/**
+		 * TODO: Separate the view controller and api controller
+		 * Let the view controller returns "view_name"
+		 * and let the api controller returns the data which JS will request
+		 * The auto sign-in or sign-up should then be in the view controller (or in interceptor)
+		 */
+        return null; // Ugly and probably not working
     }
 
     @GetMapping(ORDER_LIST_CALLBACK_PATH)
@@ -170,8 +167,8 @@ public class OrderCenterController {
 			return new ArrayList<OrderContainer>();
 		}
 
-		Student student = repository.findOneByOpenCode(openId);
-		return student.getOrders().stream().map(
+        Customer customer = custRepo.findOneByOpenCode(openId);
+		return customer.getOrders().stream().map(
 				x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(), x.getImageCollectionMap()))
 				.collect(Collectors.toCollection(ArrayList::new));
 	}

@@ -3,6 +3,7 @@ package com.edu.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.edu.dao.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
     private WxMpService wxMpService;
 	
 	@Autowired
-	private StudentRepository repository;
+	private CustomerRepository repository;
 	
 	private final static String DUMMY_STATE = "1";
 	
@@ -45,7 +46,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 			return false;
 		}else if (null != authCode) {
 			String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, request.getSession());
-			if(!repository.isStudentAlreadyRegistered(openId)){
+			if(!repository.isCustomerAlreadyRegistered(openId)){
 				response.sendRedirect(Constant.USER_SIGNUP_PATH); 
 				return false;
 			}else{
