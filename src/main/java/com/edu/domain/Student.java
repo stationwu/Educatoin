@@ -1,5 +1,6 @@
 package com.edu.domain;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -20,6 +21,8 @@ public class Student {
 	private String address;
 
 	private int classPeriod;
+	
+    private String birthday;  
 
 	@ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
@@ -181,4 +184,12 @@ public class Student {
     public long getId() {
         return id;
     }
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>已签到课程</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
+	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+</head>
+<body>
+	<div class="weui-search-bar" id="searchBar">
+	  <form class="weui-search-bar__form">
+	    <div class="weui-search-bar__box">
+	      <i class="weui-icon-search"></i>
+	      <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="" onkeydown="if(event.keyCode==13){return false;}"/>
+	      <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+	    </div>
+	    <label class="weui-search-bar__label" id="searchText">
+	      <i class="weui-icon-search"></i>
+	      <span>学生相关信息</span>
+	    </label>
+	  </form>
+	  <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+	</div>
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>	
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.edu.controller;
 
 import com.edu.dao.CustomerRepository;
+import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
 import com.edu.utils.WxUserOAuthHelper;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +36,9 @@ public class UserCenterController {
 	
 	@Autowired
 	private CustomerRepository repository;
+	
+	@Autowired
+	private StudentRepository studentRepository;
 	
 	private final String DUMMY_STATE = "123";
 
@@ -126,6 +133,29 @@ public class UserCenterController {
 		logger.debug(">>> Signed up. Id: " + customer.getId());
 		
 		return "user_info";
+	}
+	
+	@PostMapping("user/search")
+	@ResponseBody
+	public List<Student> searchStudent(@RequestParam(value="keyword") String keyword, HttpSession session) {
+		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
+		List<Student> students = studentRepository.search(keyword);
+		return students;
+	}
+	
+	@GetMapping("user/search")
+	public String getSearchPage(HttpSession session) {
+		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
+		return "user_search";
+	}
+	
+	@GetMapping("user/session")
+	@ResponseBody
+	public String createSession(HttpSession session) {
+		String openId = "123456";
+        session.setAttribute(SESSION_OPENID_KEY, openId);
+		
+		return "true";
 	}
 	
 }
