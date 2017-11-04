@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -16,7 +17,7 @@ import com.edu.utils.WxUserOAuthHelper;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
-
+@Component
 public class SessionInterceptor extends HandlerInterceptorAdapter{
 	private static final Logger logger = LoggerFactory
 			.getLogger(SessionInterceptor.class);
@@ -41,12 +42,15 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 		if (null == openIdInSession && null == authCode) {  
 			String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(requestUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
 			response.sendRedirect(authorizationUrl); 
+			return false;
 		}else if (null != authCode) {
 			String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, request.getSession());
 			if(!repository.isStudentAlreadyRegistered(openId)){
 				response.sendRedirect(Constant.USER_SIGNUP_PATH); 
+				return false;
 			}else{
 				response.sendRedirect(request.getRequestURI());
+				return false;
 			}
 		}
 		return true;
