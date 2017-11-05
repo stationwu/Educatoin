@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.*;
 import com.edu.domain.*;
+import com.edu.utils.Constant;
 import com.edu.utils.WxUserOAuthHelper;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,33 +49,9 @@ public class DerivedProductCenterController {
     public final static String RELATED_IMAGE_PATH = "/user/relatedimage";
     public final static String RELATED_IMAGE_CALLBACK_PATH = "/user/relatedimage/cb";
 
-    
-    public String relatedImage(HttpServletRequest request, HttpSession session, Model model) {
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        if (openIdInSession == null) { // OAuth to get OpenID
-            return oauthHelper.buildOAuth2RedirectURL(request, RELATED_IMAGE_PATH, RELATED_IMAGE_CALLBACK_PATH);
-        } else {
-            return doShowRelatedImage((String) openIdInSession, model);
-        }
-    }
-
-    @GetMapping(RELATED_IMAGE_CALLBACK_PATH)
-    public String relatedImageCallback(@RequestParam(value = "code") String authCode, Model model, HttpSession session) {
-        String openId = null;
-
-        try {
-            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-            return "error_500";
-        }
-
-        return doShowRelatedImage(openId, model);
-    }
-    
     @GetMapping(RELATED_IMAGE_PATH)
-    private String doShowRelatedImage(String openId, Model model) {
+    private String doShowRelatedImage(HttpServletRequest request, Model model) {
+    	String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
         if (openId == null) {
             return "error_500";
         }
