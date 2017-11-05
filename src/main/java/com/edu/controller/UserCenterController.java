@@ -10,6 +10,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -119,28 +120,4 @@ public class UserCenterController {
 		
 		return "user_info";
 	}
-	
-	@PostMapping("user/search")
-	@ResponseBody
-	public List<Student> searchStudent(@RequestParam(value="keyword") String keyword, HttpSession session) {
-		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
-		List<Student> students = studentRepository.search(keyword);
-		return students;
-	}
-	
-	@GetMapping("user/search")
-	public String getSearchPage(HttpSession session) {
-		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
-		return "user_search";
-	}
-	
-	@GetMapping("user/session")
-	@ResponseBody
-	public String createSession(HttpSession session) {
-		String openId = "123456";
-        session.setAttribute(SESSION_OPENID_KEY, openId);
-		
-		return "true";
-	}
-	
 }

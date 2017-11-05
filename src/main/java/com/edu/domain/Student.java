@@ -32,6 +32,7 @@ public class Student {
 
 	@ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
+	@JsonIgnore
     private Customer customer;
 
 	@OneToMany(fetch = FetchType.LAZY)
@@ -67,9 +68,10 @@ public class Student {
 	public Student() {
 	}
 	
-	public Student(String studentName, int age, int classPeriod,
+	public Student(String studentName,String birthday, int age, int classPeriod,
 			boolean isChild) {
 		this.studentName = studentName;
+		this.birthday =birthday;
 		this.age = age;
 		this.classPeriod = classPeriod;
 		this.isChild = isChild;

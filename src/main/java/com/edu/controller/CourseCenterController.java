@@ -40,13 +40,8 @@ public class CourseCenterController {
     private CustomerRepository custRepo;
 
 	public final static String USER_COURSE_PATH = "/user/course";
-	public final static String USER_COURSE_CALLBACK_PATH = "/user/course/cb";
-
-	public final static String SIGN_COURSE_PATH = "/user/signcourse";
-	public final static String SIGN_COURSE_CALLBACK_PATH = "/user/signcourse/cb";
 
     public final static String BOOK_COURSE_PATH = "/user/reservecourse";
-    public final static String BOOK_COURSE_CALLBACK_PATH = "/user/reservecourse/cb";
     
     public final static String SESSION_OPENID_KEY = "openCode";
 
@@ -101,25 +96,6 @@ public class CourseCenterController {
         return "user_courses";
 	}
 
-    @GetMapping(SIGN_COURSE_PATH)
-	private String doSignCourse(HttpSession session, Model model) {
-    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
-        if (openId == null) {
-            return "error_500";
-        }
-
-        Customer customer = custRepo.findOneByOpenCode(openId);
-		if (customer == null) {
-			Customer newCustomer = new Customer();
-            newCustomer.setOpenCode(openId);
-			model.addAttribute("customer", newCustomer);
-			return "user_signup";
-		} else {
-			model.addAttribute("code", openId);
-			return "user_sign_course";
-		}
-	}
-    
     /**
      * TODO: now only the one of the student could book the courese
      */
