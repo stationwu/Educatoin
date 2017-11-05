@@ -12,12 +12,10 @@
 </head>
 <body>
 	<div class="weui-cells">
-		<div class="weui-cell" th:each="signedCourse : ${signedCourses}">
+		<div class="weui-cell demo-weui-cell" th:each="signedCourse : ${signedCourses}">
 			<div class="weui-cell__hd"></div>
-			<div class="weui-cell__bd">
-				<p>已签到课程</p>
-			</div>
-			<div class="weui-cell__ft" th:text="${{signedCourse.CourseName}}"></div>
+			<div class="weui-cell__bd"> 已签到课程 </div>
+			<div class="weui-cell__ft" th:text="${#dates.format(signedCourse.CourseName,'MM-dd HH:mm HH:mm')}"></div>
 		</div>
 	</div>
     <script src="/js/jquery-3.2.1.min.js"></script>
