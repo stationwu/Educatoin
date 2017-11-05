@@ -15,11 +15,11 @@
 	  		<img src="/images/logo.jpg" alt="" height="200" width="200" style="display: block;margin: 0 auto;" />
 	  </div>
 	</div>
-	<form action="#" th:action="@{/user/signup}" th:object="${student}" method="post">
+	<form action="#" th:action="@{/user/signup}" th:object="${customer}" method="post">
 		<div class="weui-cells">
 			<div class="weui-cell">
 				<div class="weui-cell__bd">
-					<input class="weui-input" type="text" placeholder="请输入姓名" th:field="*{studentName}" />
+					<input class="weui-input" type="text" placeholder="请输入姓名" th:field="*{name}" />
 				</div>
 			</div>
 		</div>
@@ -40,14 +40,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="weui-cell">
+<!--  		<div class="weui-cell">
 			<div class="weui-cell__hd">
 				<label class="weui-label">课时</label>
 			</div>
 			<div class="weui-cell__bd">
 				<input class="weui-input" type="number" pattern="[0-9]*" th:field="*{classPeriod}" />
 			</div>
-		</div>
+		</div>-->
 		<p>
 			<input type="submit" value="确认" class="weui-btn weui-btn_warn" />
 		</p>

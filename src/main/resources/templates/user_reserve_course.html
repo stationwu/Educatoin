@@ -5,108 +5,92 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-    <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen"/>
+	<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen" />
     <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css"/>
     <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css"/>
     <link href="/css/app.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
-    <div class="demo-panel">
-        <div style="overflow:hidden;">
-            <div class="form-group">
-                <div class="row demo-row">
-                    <div class="col-md-12">
-                        <div id="datetimepicker"></div>
-                    </div>
-                </div>
+<header class="demos-header">
+    <h1 class="demos-title">课程预约</h1>
+</header>
+<div style="overflow:hidden;">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="datetimepicker"></div>
             </div>
         </div>
     </div>
-    <div class="demo-panel">
-        <div class="weui-cells" id="courseList">
-            <div class="weui-cell demo-weui-cell" v-for="(course, index) in courseArray">
-                <div class="weui-cell__hd"></div>
-                <div class="weui-cell__bd" > 
-                    {{ course.courseName }}
-                </div>
-                <div class="weui-cell__ft">
-                    <button 
-                    	type="button" 
-                    	class="weui-btn weui-btn_mini weui-btn_primary" 
-                    	v-on:click="reserve(index,$event)">预约
-                    </button>
-                </div>
-            </div>
+</div>
+<div class="weui-cells" id="courseList">
+    <div class="weui-cell" v-for="(course, index) in courseArray">
+        <div class="weui-cell__hd"></div>
+        <div class="weui-cell__bd">
+            {{ course.courseName }}
+        </div>
+        <div class="weui-cell__ft">
+            <button type="button" class="weui-btn weui-btn_mini weui-btn_primary" v-on:click="sign(index,$event)">预约
+            </button>
         </div>
     </div>
-	<!-- body 最后 -->
-	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/moment-with-locales.js"></script>
-	<script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
-	<script src="https://unpkg.com/vue"></script>
-	<script type="text/javascript">
-		
-	    function formatDate(date) {
-	        var day = date.getDate();
-	        var month = date.getMonth() + 1;
-	        var year = date.getFullYear();
-	
-	        return year + '-' + month + '-' + day;
-	    }
-	    
-	    var courseArray = [];
-	    var courses = {}
-	    
-	    $(document).ready(function () {
-	        $('#alter').alert('close');
-	        var sCourseUrl = "/Course/date/" + formatDate(new Date());
-	        $.get(sCourseUrl).done(function (data) {
-	            courseArray = data._embedded.courseList;
-	            courses = new Vue({
-	                el: '#courseList',
-	                methods: {
-	                    reserve: function (index, event) {
-	                    	var sUrl = "/Student/" + $('#code').text() + "/Reserve/" + courses.courseArray[index].id;
-	                    	var fnDone = function (data) {
-	                            $.alert("预约成功", "消息！");
-	                        };
-	                        var fnFail = function (data) {
-	                            $.alert("预约失败", "消息！");
-	                        };
-	                        $.post(sUrl).done(fnDone).fail(fnFail);
-	                    }
-	                },
-	                data: {
-	                    courseArray: courseArray
-	                },
-	                data: {
-	                    moment: moment
-	                }
-	            })
-	        });
-	
-	        this.datapicker = $('#datetimepicker').datetimepicker({
-	            inline: true,
-	            sideBySide: false,
-	            locale: 'zh-cn',
-	            viewMode: 'days',
-	            format: 'L',
-	            format: "YYYY-MM-DD",
-	        });
-	
-	        $('#datetimepicker').on("dp.change", function (e) {
-	        	var sCourseUrl = "/Course/date/" + e.date.format("YYYY-MM-DD");
-	            $.get(sCourseUrl).done(function (data) {
-	                courseArray = data._embedded.courseList;
-	                courses.courseArray = courseArray;
-	            });
-	        })
-	    });
-	</script>
-<div id="code" style="visibility:hidden" th:text="${{code}}"/>
+</div>
+<!-- body 最后 -->
+<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment-with-locales.js"></script>
+<script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script type="text/javascript">
+    function formatDate(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
 
+        return year + '-' + month + '-' + day;
+    }
+    var courseArray = [];
+    var courses = {}
+    $(document).ready(function () {
+        $.get("/Course/date/" + formatDate(new Date())).done(function (data) {
+            courseArray = data._embedded.courseList;
+            courses = new Vue({
+                el: '#courseList',
+                methods: {
+                    sign: function (index, event) {
+                        $.post("/Student/" + $('#code').text() + "/Reserve/" + courses.courseArray[index].id).done(
+                                function (data) {
+                                	$.alert("预约成功", "消息！");
+                                }).fail(
+                                function (data) {
+                                	$.alert("预约成功", "消息！");
+                                })
+                    }
+                },
+                data: {
+                    courseArray: courseArray
+                }
+            })
+        });
+        this.datapicker = $('#datetimepicker').datetimepicker({
+            inline: true,
+            sideBySide: false,
+            locale: 'zh-cn',
+            viewMode: 'days',
+            format: 'L',
+            format: "YYYY-MM-DD",
+        });
+
+        $('#datetimepicker').on("dp.change", function (e) {
+            $.get("/Course/date/" + e.date.format("YYYY-MM-DD")).done(function (data) {
+                courseArray = data._embedded.courseList;
+                courses.courseArray = courseArray;
+            });
+        })
+    });
+</script>
+<div id="code" style="visibility:hidden" th:text="${{code}}"/>
 </body>
 </html>

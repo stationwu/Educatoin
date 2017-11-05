@@ -43,31 +43,8 @@ public class CartCenterController {
     public final static String SESSION_OPENID_KEY = "openCode";
 
     @GetMapping(CART_PATH)
-    public String cart(HttpServletRequest request, HttpSession session, Model model) {
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        if (openIdInSession == null) { // OAuth to get OpenID
-            return oauthHelper.buildOAuth2RedirectURL(request, CART_PATH, CART_CALLBACK_PATH);
-        } else {
-            return doShowCart((String) openIdInSession, model);
-        }
-    }
-
-    @GetMapping(CART_CALLBACK_PATH)
-    public String cartCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
-        String openId = null;
-
-        try {
-            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-            return "error_500";
-        }
-
-        return doShowCart(openId, model);
-    }
-
-	private String doShowCart(String openId, Model model) {
+	private String doShowCart(HttpSession session, Model model) {
+    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
         if (openId == null) {
             return "error_500";
         }

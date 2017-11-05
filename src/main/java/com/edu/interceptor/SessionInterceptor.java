@@ -47,10 +47,16 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 		}else if (null != authCode) {
 			String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, request.getSession());
 			if(!repository.isCustomerAlreadyRegistered(openId)){
-				response.sendRedirect(Constant.USER_SIGNUP_PATH); 
+				request.getRequestDispatcher(Constant.USER_CENTER_PATH).forward(request,response);
 				return false;
 			}else{
 				response.sendRedirect(request.getRequestURI());
+				return false;
+			}
+		}else{
+			String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, request.getSession());
+			if(!repository.isCustomerAlreadyRegistered(openId)){
+				request.getRequestDispatcher(Constant.USER_CENTER_PATH).forward(request,response);
 				return false;
 			}
 		}
