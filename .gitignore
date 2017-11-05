@@ -26,3 +26,4 @@ nbdist/
 ### Application Configuration
 application.properties
 application.yml
+application_prod.properties
