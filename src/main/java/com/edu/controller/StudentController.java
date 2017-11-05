@@ -56,7 +56,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Resource<Student>> show(@PathVariable("id") Long id) {
+	public ResponseEntity<Resource<Student>> show(@PathVariable("id") String id) {
 		Student entity = studentRepository.findOne(id);
 		return new ResponseEntity<>(buildResource(entity), HttpStatus.OK);
 	}

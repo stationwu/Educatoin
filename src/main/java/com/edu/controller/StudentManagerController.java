@@ -66,7 +66,7 @@ public class StudentManagerController {
 	}
 
 	@RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Resource<Student>> show(@PathVariable("id") Long id) {
+	public ResponseEntity<Resource<Student>> show(@PathVariable("id") String id) {
 		Student entity = studentRepository.findOne(id);
 		return new ResponseEntity<>(buildResource(entity), HttpStatus.OK);
 	}
@@ -80,7 +80,7 @@ public class StudentManagerController {
 	}
 
 	@PostMapping(path = PATH + "/{id}")
-	public HttpEntity<Resource<Student>> addImage(@PathVariable("id") Long studentId,
+	public HttpEntity<Resource<Student>> addImage(@PathVariable("id") String studentId,
 			@RequestParam(value = "imageName") String imageName, @RequestParam("file") MultipartFile files[])
 			throws HttpException {
 		Student student = studentRepository.findOne(studentId);

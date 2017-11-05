@@ -38,7 +38,8 @@ public class DataLoader {
                                                      ProductCartRepository productCartRepository,
                                                      ImageCollectionRepository imageCollectionRepository,
                                                      ImageRepository imageRepository,
-                                                     ImageServiceImpl imageServiceImpl) {
+                                                     ImageServiceImpl imageServiceImpl,
+                                                     TesterRepository testerRepository) {
         return (args) -> {
             ArrayList<Course> courses = new ArrayList<>();
             if (0 == courseRepository.count()) {
@@ -278,6 +279,14 @@ public class DataLoader {
                 order.setCustomer(customers.get(0));
                 orderSet.add(orderRepository.save(order));
             }
+
+//            if (testerRepository.count() == 0) {
+//                testerRepository.save(new Tester());
+//                testerRepository.save(new Tester());
+//                testerRepository.save(new Tester());
+//                testerRepository.save(new Tester());
+//                testerRepository.save(new Tester());
+//            }
         };
     }
 }
