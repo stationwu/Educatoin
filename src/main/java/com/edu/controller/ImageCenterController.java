@@ -83,31 +83,10 @@ public class ImageCenterController {
     }
 
     @GetMapping(IMAGE_COLLECTION_PATH)
-    public String imageCollection(HttpServletRequest request, HttpSession session, Model model) {
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        if (openIdInSession == null) { // OAuth to get OpenID
-            return oauthHelper.buildOAuth2RedirectURL(request, IMAGE_COLLECTION_PATH, IMAGE_COLLECTION_CALLBACK_PATH);
-        } else {
-            return doShowImageCollection((String) openIdInSession, model);
-        }
-    }
-
-    @GetMapping(IMAGE_COLLECTION_CALLBACK_PATH)
-    public String imageCollectionCallback(@RequestParam(value = "code") String authCode, Model model, HttpSession session) {
-        String openId = null;
-
-        try {
-            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-            return "error_500";
-        }
-
-        return doShowImageCollection(openId, model);
-    }
-
-    private String doShowImageCollection(String openId, Model model) {
+    private String doShowImageCollection(HttpServletRequest request, Model model) {
+    	HttpSession session = request.getSession();
+		Object openCodeObject = session.getAttribute("openCode");
+		String openId = openCodeObject.toString();
         if (openId == null) {
             return "error_500";
         }

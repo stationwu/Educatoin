@@ -48,7 +48,7 @@ public class DerivedProductCenterController {
     public final static String RELATED_IMAGE_PATH = "/user/relatedimage";
     public final static String RELATED_IMAGE_CALLBACK_PATH = "/user/relatedimage/cb";
 
-    @GetMapping(RELATED_IMAGE_PATH)
+    
     public String relatedImage(HttpServletRequest request, HttpSession session, Model model) {
         Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
 
@@ -72,7 +72,8 @@ public class DerivedProductCenterController {
 
         return doShowRelatedImage(openId, model);
     }
-
+    
+    @GetMapping(RELATED_IMAGE_PATH)
     private String doShowRelatedImage(String openId, Model model) {
         if (openId == null) {
             return "error_500";

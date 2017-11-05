@@ -18,8 +18,6 @@ public class Student {
 
 	private int age;
 
-	private String address;
-
 	private int classPeriod;
 	
     private String birthday;  
@@ -61,11 +59,10 @@ public class Student {
 	public Student() {
 	}
 	
-	public Student(String studentName, int age, String address, int classPeriod,
+	public Student(String studentName, int age, int classPeriod,
 			boolean isChild) {
 		this.studentName = studentName;
 		this.age = age;
-		this.address = address;
 		this.classPeriod = classPeriod;
 		this.isChild = isChild;
 	}
@@ -84,14 +81,6 @@ public class Student {
 
 	public void setAge(int age) {
 		this.age = age;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	public boolean isChild() {

@@ -16,6 +16,8 @@ public class Order {
 	@JoinColumn(name = "CUSTOMER_ID")
 	@JsonIgnore
 	private Customer customer;
+    
+    private String name;
 
 	@ElementCollection
     @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
@@ -36,6 +38,8 @@ public class Order {
 	private Map<ImageCollection, Integer> imageCollectionMap;
 
 	private String date;
+	
+	private String status;
 
 	private double totalAmount;
 
@@ -94,4 +98,20 @@ public class Order {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

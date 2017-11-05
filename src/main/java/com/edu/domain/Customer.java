@@ -15,6 +15,8 @@ public class Customer {
     private String name;
 
     private String mobilePhone;
+    
+    private String address;
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
     private Set<Student> students;
@@ -101,4 +103,16 @@ public class Customer {
                 + "/nCustomer.phone:" + this.getMobilePhone();
         return str;
     }
+    
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public void addStudent(Student student){
+		students.add(student);
+	}
 }

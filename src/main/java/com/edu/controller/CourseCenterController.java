@@ -52,55 +52,38 @@ public class CourseCenterController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * TODO: now only the one of the student could book the courese
+     */
     @GetMapping(USER_COURSE_PATH)
-    public String userCourse(HttpServletRequest request, HttpSession session, Model model) {
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        if (openIdInSession == null) { // OAuth to get OpenID
-            return oauthHelper.buildOAuth2RedirectURL(request, USER_COURSE_PATH, USER_COURSE_CALLBACK_PATH);
-        } else {
-            return doShowUserCourse((String) openIdInSession, model);
-        }
-    }
-
-    @GetMapping(USER_COURSE_CALLBACK_PATH)
-    public String userCourseCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
-        String openId = null;
-
-        try {
-            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-            return "error_500";
-        }
-
-        return doShowUserCourse(openId, model);
-    }
-
-	public String doShowUserCourse(String openId, Model model) {
+	public String doShowUserCourse(HttpSession session, Model model) {
+    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
+    	
         if (openId == null) {
             return "error_500";
         }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-		if (customer == null) {
-		    Customer newCustomer = new Customer();
-		    newCustomer.setOpenCode(openId);
-		    model.addAttribute("customer", newCustomer);
-		    return "user_signup";
-        }
-
-        Set<Student> students = customer.getStudents();
-        List<Student> listOfStudents = new ArrayList<>(students);
-		model.addAttribute("students", listOfStudents);
-
+//		if (customer == null) {
+//		    Customer newCustomer = new Customer();
+//		    newCustomer.setOpenCode(openId);
+//		    model.addAttribute("customer", newCustomer);
+//		    return "user_signup";
+//        }
+//
+//        Set<Student> students = customer.getStudents();
+//        List<Student> listOfStudents = new ArrayList<>(students);
+//		model.addAttribute("students", listOfStudents);
+		
+		Student student = customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)).get(0);
+		model.addAttribute("student", student);
         /**
          * TODO: Below loop is wrong. We must show also the students list. So view also needs change.
          * Model was WeChat user = Student, Student has-many courses
          * It's now WeChat user = Customer, Customer has-many students, Student has-many courses
          * So it's necessary to display a list of students, then under each student list his courses
          */
-        for (Student student : customer.getStudents()) {
+//        for (Student student : customer.getStudents()) {
             Set<Course> signedCourses = student.getCoursesSet();
             Set<Course> notSignedCourses = student.getCourseNotSignSet();
             Set<Course> reservedCourses = student.getReservedCoursesSet();
@@ -113,37 +96,14 @@ public class CourseCenterController {
             model.addAttribute("reservedCourses",
                     reservedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
                             .collect(Collectors.toCollection(ArrayList::new)));
-        }
+//        }
 
         return "user_courses";
 	}
 
-	@GetMapping(SIGN_COURSE_PATH)
-    public String signCourse(HttpServletRequest request, HttpSession session, Model model) {
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        if (openIdInSession == null) { // OAuth to get OpenID
-            return oauthHelper.buildOAuth2RedirectURL(request, SIGN_COURSE_PATH, SIGN_COURSE_CALLBACK_PATH);
-        } else {
-            return doSignCourse((String) openIdInSession, model);
-        }
-    }
-
-    @GetMapping(SIGN_COURSE_CALLBACK_PATH)
-    public String signCourseCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
-        String openId = null;
-
-        try {
-            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-            return "error_500";
-        }
-
-        return doSignCourse(openId, model);
-    }
-
-	private String doSignCourse(String openId, Model model) {
+    @GetMapping(SIGN_COURSE_PATH)
+	private String doSignCourse(HttpSession session, Model model) {
+    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
         if (openId == null) {
             return "error_500";
         }
@@ -159,46 +119,22 @@ public class CourseCenterController {
 			return "user_sign_course";
 		}
 	}
-
-	@GetMapping(BOOK_COURSE_PATH)
-    public String bookCourse(HttpServletRequest request, HttpSession session, Model model) {
-        Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
-
-        if (openIdInSession == null) { // OAuth to get OpenID
-            return oauthHelper.buildOAuth2RedirectURL(request, BOOK_COURSE_PATH, BOOK_COURSE_CALLBACK_PATH);
-        } else {
-            return doBookCourse((String) openIdInSession, model);
-        }
-    }
-
-    @GetMapping(BOOK_COURSE_CALLBACK_PATH)
-    public String bookCourseCallback(@RequestParam(value="code") String authCode, Model model, HttpSession session) {
-        String openId = null;
-
-        try {
-            openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode, session);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
-            return "error_500";
-        }
-
-        return doBookCourse(openId, model);
-    }
-
-	private String doBookCourse(String openId, Model model) {
+    
+    /**
+     * TODO: now only the one of the student could book the courese
+     */
+    //课程预约
+    @GetMapping(BOOK_COURSE_PATH)
+	private String doBookCourse(HttpSession session, Model model) {
+    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
         if (openId == null) {
             return "error_500";
         }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-		if (customer == null) {
-            Customer newCustomer = new Customer();
-            newCustomer.setOpenCode(openId);
-            model.addAttribute("customer", newCustomer);
-            return "user_signup";
-		} else {
-			model.addAttribute("code", openId);
-			return "user_reserve_course";
-		}
+        model.addAttribute("student", customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)).get(0));
+        model.addAttribute("code", openId);
+			
+		return "user_reserve_course";
 	}
 }

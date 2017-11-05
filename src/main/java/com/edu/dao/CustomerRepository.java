@@ -11,6 +11,6 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
 
     Customer findOneByOpenCode(String openCode);
 
-    @Query("select count(s)>0 from Customer c where c.openCode = ?1")
+    @Query("select count(c)>0 from Customer c where c.openCode = ?1")
     boolean isCustomerAlreadyRegistered(String openCode);
 }
