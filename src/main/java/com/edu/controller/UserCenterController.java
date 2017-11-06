@@ -50,6 +50,8 @@ public class UserCenterController {
 	public final static String USER_CENTER_CALLBACK_PATH = "/user/center/cb";
 
 	public final static String USER_SIGNUP_PATH = "/user/signup";
+	
+	public final static String USER_SIGNIN_PATH = "/user/signin";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
@@ -87,6 +89,11 @@ public class UserCenterController {
         }
 
         return view;
+    }
+	
+	@GetMapping(USER_SIGNIN_PATH)
+	private String signIn(HttpSession session, Model model) {
+		return "redirect:" + USER_CENTER_PATH;
     }
 	
 	@PostMapping(USER_SIGNUP_PATH)

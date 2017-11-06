@@ -10,11 +10,6 @@
 				},
 				{
 					"type": "view",
-					"name": "课程签到",
-					"url": "http://www.dashuxia.xin/user/signcourse"
-				},
-				{
-					"type": "view",
 					"name": "我的课程",
 					"url": "http://www.dashuxia.xin/user/course"
 				}
@@ -36,7 +31,7 @@
                 {
                     "type": "view",
                     "name": "学生注册",
-                    "url": "http://www.dashuxia.xin/user/center"
+                    "url": "http://www.dashuxia.xin/user/signin"
                 },
 			]
 		},
