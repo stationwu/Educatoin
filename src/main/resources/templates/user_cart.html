@@ -125,7 +125,7 @@
 							}
 							$.ajax({
 								  type: "POST",
-								  url: "/user/order?code="+$('#code').text(),
+								  url: "/user/order",
 								  data: JSON.stringify(buylist),
 								  contentType:"application/json; charset=utf-8",
 								}).done(function( data ) {
