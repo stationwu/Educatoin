@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>
+            用户订单
+        </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <!-- Bootstrap -->
+        <link href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" rel="stylesheet"/>
+        <link href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" rel="stylesheet"/>
+        <link href="/css/app.css" media="screen" rel="stylesheet"/>
+    </head>
+    <body>
+        <header class="demos-header">
+            <h1 class="demos-title">
+                用户订单
+            </h1>
+        </header>
+        <div class="page__bd" th:each="e : ${orderList}">
+            <div class="weui-panel weui-panel_access">
+                <div class="weui-cells">
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <p th:text="${{e.order.id}}">
+                            </p>
+                        </div>
+                        <div class="weui-cell__ft" th:text="${{e.order.totalAmount}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-panel__hd" th:text="${{e.order.id}}">
+                </div>
+                <div class="weui-panel__bd" th:each="item : ${e.productContainers}">
+                    <a class="weui-media-box weui-media-box_appmsg" href="javascript:void(0);">
+                        <div class="weui-media-box__hd">
+                            <img alt="" class="weui-media-box__thumb" th:src="${{item.imageUrl}}">
+                            </img>
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title" th:text="${{item.productName}}">
+                            </h4>
+                            <p class="weui-media-box__desc" th:text="${{item.productDescription}}">
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="code" style="visibility: hidden" th:text="${{code}}">
+        </div>
+        <script src="/js/jquery-3.2.1.min.js">
+        </script>
+        <script src="/js/bootstrap.min.js">
+        </script>
+        <script src="https://unpkg.com/vue">
+        </script>
+    </body>
+</html>

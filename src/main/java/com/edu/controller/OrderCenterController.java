@@ -110,16 +110,20 @@ public class OrderCenterController {
 		}
 	}
 
-	@GetMapping(ORDER_LIST_PATH)
-    @ResponseBody
-    public List<OrderContainer> orderList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+    @GetMapping(ORDER_LIST_PATH)
+    public String orderList(HttpServletRequest request,
+        HttpServletResponse response,
+        HttpSession session,
+        Model model) {
         Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
 
         if (openIdInSession == null) { // OAuth to get OpenID
             String requestUrl = request.getRequestURL().toString();
-            String hostAddress = URLUtil.getServiceURLBeforePath(requestUrl, ORDER_LIST_PATH);
+            String hostAddress = URLUtil.getServiceURLBeforePath(requestUrl,
+                    ORDER_LIST_PATH);
             String redirectUrl = hostAddress + ORDER_LIST_CALLBACK_PATH;
-            String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_BASE, "2");
+            String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(
+                    redirectUrl, WxConsts.OAUTH2_SCOPE_BASE, "2");
 
             logger.debug(">>> Redirecting to " + authorizationUrl);
 
@@ -129,16 +133,10 @@ public class OrderCenterController {
                 e.printStackTrace();
             }
         } else {
-            return getOrderList((String) openIdInSession);
+            List<OrderContainer> orders = getOrderList((String) openIdInSession); 
+            model.addAttribute("orderList", orders);
         }
-
-		/**
-		 * TODO: Separate the view controller and api controller
-		 * Let the view controller returns "view_name"
-		 * and let the api controller returns the data which JS will request
-		 * The auto sign-in or sign-up should then be in the view controller (or in interceptor)
-		 */
-        return null; // Ugly and probably not working
+        return "user_order"; // Ugly and probably not working //TODO: Fix this
     }
 
     @GetMapping(ORDER_LIST_CALLBACK_PATH)

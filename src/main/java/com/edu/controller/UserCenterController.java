@@ -1,49 +1,29 @@
 package com.edu.controller;
 
 import com.edu.dao.CustomerRepository;
-import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
-import com.edu.utils.WxUserOAuthHelper;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashSet;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 public class UserCenterController {
-
-	@Autowired
-	private WxMpService wxMpService;
-
-    @Autowired
-    private WxUserOAuthHelper oauthHelper;
 	
 	@Autowired
 	private CustomerRepository repository;
-	
-	@Autowired
-	private StudentRepository studentRepository;
-	
-	private final String DUMMY_STATE = "123";
 
 	public final static String USER_CENTER_PATH = "/user/center";
 	
@@ -96,20 +76,22 @@ public class UserCenterController {
 		return "redirect:" + USER_CENTER_PATH;
     }
 	
-	@PostMapping(USER_SIGNUP_PATH)
-	public String signup(@ModelAttribute @Valid Customer customer, BindingResult bindingResult, HttpSession session) {
-		if (bindingResult.hasErrors()) {
-			return "user_signup";
-		}
+    @PostMapping(USER_SIGNUP_PATH)
+    public String signup(@ModelAttribute @Valid Customer customer,
+        BindingResult bindingResult,
+        HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            return "user_signup";
+        }
 
         Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
         if (openIdInSession == null) {
             return "error_500"; // It's a must to have the openId in session!
         }
 
-        String openId = (String)openIdInSession;
+        String openId = (String) openIdInSession;
         customer.setOpenCode(openId);
-        
+
         /**
          * TODO: add dummy student to customer to go through process
          */
@@ -119,12 +101,12 @@ public class UserCenterController {
         students.add(student);
         student.setCustomer(customerNew);
         customerNew.setStudents(students);
-		logger.debug(">>> Signing up: " + customer.toString());
+        logger.debug(">>> Signing up: " + customer.toString());
 
-		customerNew = repository.save(customerNew);
-		
-		logger.debug(">>> Signed up. Id: " + customer.getId());
-		
-		return "user_info";
-	}
+        customerNew = repository.save(customerNew);
+
+        logger.debug(">>> Signed up. Id: " + customer.getId());
+
+        return "user_info";
+    }
 }

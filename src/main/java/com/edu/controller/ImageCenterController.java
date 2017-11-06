@@ -3,11 +3,7 @@ package com.edu.controller;
 import com.edu.dao.CustomerRepository;
 import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.ImageRepository;
-import com.edu.dao.StudentRepository;
 import com.edu.domain.*;
-import com.edu.utils.WxUserOAuthHelper;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +20,6 @@ import java.util.stream.Collectors;
 @Controller
 public class ImageCenterController {
     @Autowired
-    private WxMpService wxMpService;
-
-    @Autowired
-    private StudentRepository repository;
-    @Autowired
     private CustomerRepository custRepo;
 
     @Autowired
@@ -36,9 +27,6 @@ public class ImageCenterController {
 
     @Autowired
     private ImageCollectionRepository imageCollectionRepository;
-
-    @Autowired
-    private WxUserOAuthHelper oauthHelper;
 
     public final static String SESSION_OPENID_KEY = "openCode";
 
@@ -66,14 +54,18 @@ public class ImageCenterController {
             model.addAttribute("students", students);
 
             /**
-             * TODO: Below loop is wrong. We must show also the students list. So view also needs change.
+             * TODO: Below loop is wrong. We must show also the students list.
+             * So view also needs change.
              */
             for (Student student : customer.getStudents()) {
                 Set<Image> images = student.getImagesSet();
                 ArrayList<ImageContainer> imagesContainer = images.stream()
                         .sorted((x, y) -> y.getDate().compareTo(x.getDate()))
-                        .map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(), "/Images/" + x.getId(), "/Images/" + x.getId() + "/thumbnail"))
-                        .collect(Collectors.toCollection(ArrayList::new));
+                        .map(x -> new ImageContainer(x.getId(), x
+                                .getImageName(), x.getDate(), x.getCourse(),
+                                "/Images/" + x.getId(), "/Images/" + x.getId()
+                                        + "/thumbnail")).collect(Collectors
+                                                .toCollection(ArrayList::new));
 
                 model.addAttribute("images", imagesContainer);
             }
@@ -83,10 +75,11 @@ public class ImageCenterController {
     }
 
     @GetMapping(IMAGE_COLLECTION_PATH)
-    private String doShowImageCollection(HttpServletRequest request, Model model) {
-    	HttpSession session = request.getSession();
-		Object openCodeObject = session.getAttribute("openCode");
-		String openId = openCodeObject.toString();
+    private String doShowImageCollection(HttpServletRequest request,
+        Model model) {
+        HttpSession session = request.getSession();
+        Object openCodeObject = session.getAttribute("openCode");
+        String openId = openCodeObject.toString();
         if (openId == null) {
             return "error_500";
         }
@@ -102,8 +95,11 @@ public class ImageCenterController {
                 Set<Image> images = student.getImagesSet();
                 ArrayList<ImageContainer> imagesContainer = images.stream()
                         .sorted((x, y) -> y.getDate().compareTo(x.getDate()))
-                        .map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(), "/Images/" + x.getId(), "/Images/" + x.getId() + "/thumbnail"))
-                        .collect(Collectors.toCollection(ArrayList::new));
+                        .map(x -> new ImageContainer(x.getId(), x
+                                .getImageName(), x.getDate(), x.getCourse(),
+                                "/Images/" + x.getId(), "/Images/" + x.getId()
+                                        + "/thumbnail")).collect(Collectors
+                                                .toCollection(ArrayList::new));
 
                 model.addAttribute("images", imagesContainer);
                 model.addAttribute("code", openId);
@@ -114,7 +110,9 @@ public class ImageCenterController {
 
     @PostMapping("/user/generateImagecollection")
     @ResponseBody
-    public String createImageCollection(HttpServletRequest request, @RequestParam(value = "images") String images, Model model) {
+    public String createImageCollection(HttpServletRequest request,
+        @RequestParam(value = "images") String images,
+        Model model) {
         HttpSession session = request.getSession();
         Object openCodeObject = session.getAttribute("openCode");
 
@@ -135,7 +133,8 @@ public class ImageCenterController {
         imageCollection.setPrice(200d);
         imageCollection.setCollectionName("作品集");
         imageCollection.setCollectionDescription(imageList.size() + "幅作品");
-        ImageCollection entity = imageCollectionRepository.save(imageCollection);
+        ImageCollection entity = imageCollectionRepository.save(
+                imageCollection);
         customer.getCart().addImageCollection(entity);
         custRepo.save(customer);
         return "请到购物车查看生成的作品集";
