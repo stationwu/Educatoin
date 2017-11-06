@@ -22,14 +22,12 @@
                 <div class="weui-cells">
                     <div class="weui-cell">
                         <div class="weui-cell__bd">
-                            <p th:text="${{e.order.id}}">
-                            </p>
+                        	<span>订单编号: </span><span th:text="${{e.order.id}}"></span>
                         </div>
-                        <div class="weui-cell__ft" th:text="${{e.order.totalAmount}}">
+                        <div class="weui-cell__ft">
+                        	<span>订单总价:</span><samp th:text="${{e.order.totalAmount}}"></samp>
                         </div>
                     </div>
-                </div>
-                <div class="weui-panel__hd" th:text="${{e.order.id}}">
                 </div>
                 <div class="weui-panel__bd" th:each="item : ${e.productContainers}">
                     <a class="weui-media-box weui-media-box_appmsg" href="javascript:void(0);">
@@ -38,10 +36,13 @@
                             </img>
                         </div>
                         <div class="weui-media-box__bd">
-                            <h4 class="weui-media-box__title" th:text="${{item.productName}}">
-                            </h4>
-                            <p class="weui-media-box__desc" th:text="${{item.productDescription}}">
-                            </p>
+                            <h4 class="weui-media-box__title" th:text="${{item.productName}}"> </h4>
+                            <p class="weui-media-box__desc" th:text="${{item.productDescription}}"></p>
+                            <p class="weui-media-box__desc">
+                            	<span th:text="${{item.productPrice} }"></span>
+                            	<span>x</span>
+                            	<span th:text="${{item.quantity} }"></span>
+                           	</p>
                         </div>
                     </a>
                 </div>
