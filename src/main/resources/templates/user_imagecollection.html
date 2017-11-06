@@ -61,7 +61,7 @@
 	}
 	
 	function generateImageCollection(){
-		$.post("/user/generateImagecollection?code="+$('#code').text(),"images="+items.join(',')).done(
+		$.post("/user/generateImagecollection","images="+items.join(',')).done(
 			function(data){
 				alert(data);
 		})
