@@ -9,16 +9,6 @@
 	href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
 <link rel="stylesheet"
 	href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
-<style type="text/css">
-.thumb-image{
-  width: 200px;
-  padding: 5px;
-  margin-left: 10px;
-  display: block;
-  border: 1px solid #ccc;
-  float: left;
-}
-</style>
 </head>
 <body>
 	<div class="weui-form-preview">
@@ -27,6 +17,10 @@
 				<label class="weui-form-preview__label">学成姓名</label> <span
 					class="weui-form-preview__value"
 					th:text="${{studentContainer.studentName}}">姓名</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">学号</label> <span
+					class="weui-form-preview__value" th:text="${{studentContainer.id}}" id="studentid">学号</span>
 			</div>
 			<div class="weui-form-preview__item">
 				<label class="weui-form-preview__label">生日</label> <span
@@ -52,54 +46,134 @@
 	</div>
 	<div class="weui-cells weui-cells_form">
 		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">课程时间</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" type="text" id="datetime-picker"
+					readonly="" />
+			</div>
+		</div>
+	</div>
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell">
 			<div class="weui-cell__bd">
 				<div class="weui-uploader">
 					<div class="weui-uploader__bd">
-						<!-- <ul class="weui-uploader__files" id="uploaderFiles">
-							<li class="weui-uploader__file"
-								style="background-image: url(./images/pic_160.png)"></li>
-							
-							<li class="weui-uploader__file weui-uploader__file_status"
-								style="background-image: url(./images/pic_160.png)">
-								<div class="weui-uploader__file-content">50%</div>
-							</li>http://www.htmleaf.com/ziliaoku/qianduanjiaocheng/201706224590.html
-						</ul> -->
-						<div id="image-holder"> </div>
-						<div class="weui-uploader__input-box">
-							<input id="fileUpload" class="weui-uploader__input"
-								type="file" accept="image/*" multiple="" />
-						</div>
+						<ul class="weui-uploader__files" id="uploaderFiles">
+						</ul>
+						<div id="image-holder"></div>
+						<form class="weui-uploader__input-box">
+							<input id="fileUpload" class="weui-uploader__input" type="file"
+								accept="image/*" multiple="" />
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="weui-footer_fixed-bottom">
+		<a href="javascript:;" class="weui-btn weui-btn_primary" id="sign">签到并上传作品</a>
 	</div>
 	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
 	<script src="https://unpkg.com/vue"></script>
 	<script>
 		/*<![CDATA[*/
-		$("#fileUpload").on('change', function () {
-		 
-		    if (typeof (FileReader) != "undefined") {
-		 
-		        var image_holder = $("#image-holder");
-		        image_holder.empty();
-		 
-		        var reader = new FileReader();
-		        reader.onload = function (e) {
-		            $("<img />", {
-		                "src": e.target.result,
-		                "class": "thumb-image"
-		            }).appendTo(image_holder);
-		 
-		        }
-		        image_holder.show();
-		        reader.readAsDataURL($(this)[0].files[0]);
-		    } else {
-		        alert("你的浏览器不支持FileReader.");
-		    }
-		});
+		function getNowFormatDate() {
+			var date = new Date();
+			var seperator1 = "-";
+			var seperator2 = ":";
+			var month = date.getMonth() + 1;
+			var strDate = date.getDate();
+			if (month >= 1 && month <= 9) {
+				month = "0" + month;
+			}
+			if (strDate >= 0 && strDate <= 9) {
+				strDate = "0" + strDate;
+			}
+			var currentdate = date.getFullYear() + seperator1 + month
+					+ seperator1 + strDate + " " + date.getHours() + "时"
+			return currentdate;
+		}
+
+		$(document).ready(function() {
+			var date = new Date();
+
+			$("#datetime-picker").datetimePicker({
+				value : getNowFormatDate(),
+				times : function() {
+					return [ {
+						values : (function() {
+							var hours = [];
+							for (var i = 0; i < 24; i++)
+								hours.push(i > 9 ? i : '0' + i);
+							return hours;
+						})()
+					}, {
+						divider : true, // 这是一个分隔符
+						content : '时'
+					} ];
+				},
+				onChange : function(picker, values, displayValues) {
+				},
+			});
+		})
+
+		$("#sign").on('click', function() {
+			var datetime = $("#datetime-picker")[0].value;
+			var date = datetime.split(" ")[0];
+			var hour = datetime.split(" ")[1].substring(0, 2);
+			var formData = new FormData();
+			var files = $("#fileUpload")[0].files;
+			formData.append("imageName", $("#fileUpload")[0].files[0].name);
+			formData.append("file", files[0]);
+			formData.append("date", date);
+			formData.append("hour", hour);
+			var oReq = new XMLHttpRequest();
+			oReq.open("POST","/StudentManager/"+$("#studentid")[0].textContent);
+			oReq.send(formData);
+		})
+
+		$("#fileUpload").on(
+				'change',
+				function() {
+
+					//获取上传文件的数量
+					var countFiles = $(this)[0].files.length;
+
+					var imgPath = $(this)[0].value;
+					var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1)
+							.toLowerCase();
+					var image_holder = $("#uploaderFiles");
+					image_holder.empty();
+
+					if (extn == "gif" || extn == "png" || extn == "jpg"
+							|| extn == "jpeg") {
+						if (typeof (FileReader) != "undefined") {
+
+							// 循环所有要上传的图片
+							for (var i = 0; i < countFiles; i++) {
+
+								var reader = new FileReader();
+								reader.onload = function(e) {
+									$("<img />", {
+										"src" : e.target.result,
+										"class" : "weui-uploader__file"
+									}).appendTo(image_holder);
+								}
+
+								image_holder.show();
+								reader.readAsDataURL($(this)[0].files[i]);
+							}
+
+						} else {
+							alert("你的浏览器不支持FileReader！");
+						}
+					} else {
+						alert("请选择图像文件。");
+					}
+				});
 		/*]]>*/
 	</script>
 </body>

@@ -81,7 +81,10 @@ public class StudentManagerController {
 
 	@PostMapping(path = PATH + "/{id}")
 	public HttpEntity<Resource<Student>> addImage(@PathVariable("id") String studentId,
-			@RequestParam(value = "imageName") String imageName, @RequestParam("file") MultipartFile files[])
+			@RequestParam(value = "imageName") String imageName,
+			@RequestParam(value = "date") String date,
+			@RequestParam(value = "hour") String hour,
+			@RequestParam("file") MultipartFile files[])
 			throws HttpException {
 		Student student = studentRepository.findOne(studentId);
 		for (MultipartFile file : files) {
