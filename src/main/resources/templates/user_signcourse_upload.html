@@ -9,6 +9,16 @@
 	href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
 <link rel="stylesheet"
 	href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+<style type="text/css">
+.thumb-image{
+  width: 200px;
+  padding: 5px;
+  margin-left: 10px;
+  display: block;
+  border: 1px solid #ccc;
+  float: left;
+}
+</style>
 </head>
 <body>
 	<div class="weui-form-preview">
@@ -44,22 +54,19 @@
 		<div class="weui-cell">
 			<div class="weui-cell__bd">
 				<div class="weui-uploader">
-					<div class="weui-uploader__hd">
-						<p class="weui-uploader__title">图片上传</p>
-						<div class="weui-uploader__info">0/2</div>
-					</div>
 					<div class="weui-uploader__bd">
-						<ul class="weui-uploader__files" id="uploaderFiles">
+						<!-- <ul class="weui-uploader__files" id="uploaderFiles">
 							<li class="weui-uploader__file"
 								style="background-image: url(./images/pic_160.png)"></li>
 							
 							<li class="weui-uploader__file weui-uploader__file_status"
 								style="background-image: url(./images/pic_160.png)">
 								<div class="weui-uploader__file-content">50%</div>
-							</li>
-						</ul>
+							</li>http://www.htmleaf.com/ziliaoku/qianduanjiaocheng/201706224590.html
+						</ul> -->
+						<div id="image-holder"> </div>
 						<div class="weui-uploader__input-box">
-							<input id="uploaderInput" class="weui-uploader__input"
+							<input id="fileUpload" class="weui-uploader__input"
 								type="file" accept="image/*" multiple="" />
 						</div>
 					</div>
@@ -72,7 +79,27 @@
 	<script src="https://unpkg.com/vue"></script>
 	<script>
 		/*<![CDATA[*/
-
+		$("#fileUpload").on('change', function () {
+		 
+		    if (typeof (FileReader) != "undefined") {
+		 
+		        var image_holder = $("#image-holder");
+		        image_holder.empty();
+		 
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $("<img />", {
+		                "src": e.target.result,
+		                "class": "thumb-image"
+		            }).appendTo(image_holder);
+		 
+		        }
+		        image_holder.show();
+		        reader.readAsDataURL($(this)[0].files[0]);
+		    } else {
+		        alert("你的浏览器不支持FileReader.");
+		    }
+		});
 		/*]]>*/
 	</script>
 </body>
