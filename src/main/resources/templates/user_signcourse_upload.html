@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>签到并上传</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- Bootstrap -->
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+<style type="text/css">
+.thumb-image{
+  width: 200px;
+  padding: 5px;
+  margin-left: 10px;
+  display: block;
+  border: 1px solid #ccc;
+  float: left;
+}
+</style>
+</head>
+<body>
+	<div class="weui-form-preview">
+		<div class="weui-form-preview__bd">
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">学成姓名</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.studentName}}">姓名</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">生日</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.birthday}}">生日</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">家长姓名</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.parentName}}">家长姓名</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">移动电话</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.mobilePhone}}">移动电话</span>
+			</div>
+			<div class="weui-form-preview__item">
+				<label class="weui-form-preview__label">家庭住址</label> <span
+					class="weui-form-preview__value"
+					th:text="${{studentContainer.address}}">家庭住址</span>
+			</div>
+		</div>
+	</div>
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell">
+			<div class="weui-cell__bd">
+				<div class="weui-uploader">
+					<div class="weui-uploader__bd">
+						<!-- <ul class="weui-uploader__files" id="uploaderFiles">
+							<li class="weui-uploader__file"
+								style="background-image: url(./images/pic_160.png)"></li>
+							
+							<li class="weui-uploader__file weui-uploader__file_status"
+								style="background-image: url(./images/pic_160.png)">
+								<div class="weui-uploader__file-content">50%</div>
+							</li>http://www.htmleaf.com/ziliaoku/qianduanjiaocheng/201706224590.html
+						</ul> -->
+						<div id="image-holder"> </div>
+						<div class="weui-uploader__input-box">
+							<input id="fileUpload" class="weui-uploader__input"
+								type="file" accept="image/*" multiple="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+	<script src="https://unpkg.com/vue"></script>
+	<script>
+		/*<![CDATA[*/
+		$("#fileUpload").on('change', function () {
+		 
+		    if (typeof (FileReader) != "undefined") {
+		 
+		        var image_holder = $("#image-holder");
+		        image_holder.empty();
+		 
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $("<img />", {
+		                "src": e.target.result,
+		                "class": "thumb-image"
+		            }).appendTo(image_holder);
+		 
+		        }
+		        image_holder.show();
+		        reader.readAsDataURL($(this)[0].files[0]);
+		    } else {
+		        alert("你的浏览器不支持FileReader.");
+		    }
+		});
+		/*]]>*/
+	</script>
+</body>
+</html>

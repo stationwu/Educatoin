@@ -11,7 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.edu.domain.Student;
 
-public interface StudentRepository extends PagingAndSortingRepository<Student, Long> {
-	@Query("select s from Student s where s.studentName like :keyword or s.birthday like :keyword or s.id like :keyword)")
-	 List search(@Param("keyword")String keyword);
+public interface StudentRepository extends PagingAndSortingRepository<Student, String> {
+	@Query("select s from Student s where s.studentName like %?1% or s.birthday = ?1 or s.id like %?1%)")
+	 List search(String keyword);
 }

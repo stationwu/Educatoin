@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>已签到课程</title>
+    <title>用户搜索</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -10,20 +10,63 @@
 </head>
 <body>
 	<div class="weui-search-bar" id="searchBar">
-	  <form class="weui-search-bar__form">
+	  <div class="weui-search-bar__form">
 	    <div class="weui-search-bar__box">
 	      <i class="weui-icon-search"></i>
-	      <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="" onkeydown="if(event.keyCode==13){return false;}"/>
+	      <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required=""/>
 	      <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
 	    </div>
 	    <label class="weui-search-bar__label" id="searchText">
 	      <i class="weui-icon-search"></i>
 	      <span>学生相关信息</span>
 	    </label>
-	  </form>
+	  </div>
 	  <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+	</div>
+	<div id="studentList">
+		<div class="weui-cells" v-for="(student, index) in studentArray">
+		  <a class="weui-cell weui-cell_access" href="javascript:;" v-on:click="navToDetail(index,$event)" v-bind:hreflang="student.id">
+		    <div class="weui-cell__bd">
+		      <p>{{ student.studentName }}</p>
+		    </div>
+	   	    <div class="weui-cell__bd">
+		      <p>{{ student.birthday }}</p>
+		    </div>
+	     	<div class="weui-cell__bd">
+		      <p>{{ student.id }}</p>
+		    </div>
+		    <div class="weui-cell__ft">
+		    </div>
+		  </a>
+		</div>
 	</div>
 	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>	
+	<script src="https://unpkg.com/vue"></script>
+	<script>
+	/*<![CDATA[*/
+		var students = new Vue({
+            el: '#studentList',
+            methods: {
+            	navToDetail:function(index, event){
+					var student = students.studentArray[index];
+					window.location.href="/user/signcourse?id="+student.id;
+				}
+            },
+            data: {
+                studentArray: []
+            }
+        });
+	
+		$('#searchInput').bind('keypress', function (event) {
+			if (event.keyCode == "13") {
+			    var keyword = $('#searchInput')[0].value.replace(".","-").replace(".","-");   ;
+				$.post("/user/search?keyword="+keyword,function(data){
+					students.studentArray=data;
+				},"json");
+			}
+		});
+	/*]]>*/  
+	</script>
 </body>
 </html>

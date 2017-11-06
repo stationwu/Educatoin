@@ -58,7 +58,7 @@ public class CourseController {
 	}
 
 	@RequestMapping(path = RELATIVE_STUDENT_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Resources<Resource<Course>>> indexCourse(@PathVariable("studentId") @Min(0) Long studentId) {
+	public ResponseEntity<Resources<Resource<Course>>> indexCourse(@PathVariable("studentId") String studentId) {
 		Student student = studentRepository.findOne(studentId);
 		Iterable<Course> entities = student.getCoursesSet();
 
