@@ -1,60 +1,45 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>
-            用户订单
-        </title>
+        <title>用户订单</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <!-- Bootstrap -->
         <link href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" rel="stylesheet"/>
         <link href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" rel="stylesheet"/>
         <link href="/css/app.css" media="screen" rel="stylesheet"/>
     </head>
     <body>
         <header class="demos-header">
-            <h1 class="demos-title">
-                用户订单
-            </h1>
+            <h1 class="demos-title">用户订单</h1>
         </header>
-        <div class="page__bd" th:each="e : ${orderList}">
-            <div class="weui-panel weui-panel_access">
-                <div class="weui-cells">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                        	<span>订单编号: </span><span th:text="${{e.order.id}}"></span>
-                        </div>
-                        <div class="weui-cell__ft">
-                        	<span>订单总价:</span><samp th:text="${{e.order.totalAmount}}"></samp>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-panel__bd" th:each="item : ${e.productContainers}">
-                    <a class="weui-media-box weui-media-box_appmsg" href="javascript:void(0);">
-                        <div class="weui-media-box__hd">
-                            <img alt="" class="weui-media-box__thumb" th:src="${{item.imageUrl}}">
-                            </img>
-                        </div>
-                        <div class="weui-media-box__bd">
-                            <h4 class="weui-media-box__title" th:text="${{item.productName}}"> </h4>
-                            <p class="weui-media-box__desc" th:text="${{item.productDescription}}"></p>
-                            <p class="weui-media-box__desc">
-                            	<span th:text="${{item.productPrice} }"></span>
-                            	<span>x</span>
-                            	<span th:text="${{item.quantity} }"></span>
-                           	</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div id="code" style="visibility: hidden" th:text="${{code}}">
-        </div>
-        <script src="/js/jquery-3.2.1.min.js">
-        </script>
-        <script src="/js/bootstrap.min.js">
-        </script>
-        <script src="https://unpkg.com/vue">
-        </script>
+        <div class="weui-form-preview" th:each="e : ${orderList}">
+		  	<div class="weui-form-preview__hd">
+		    	<label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${{e.order.id}}"></span></label>
+		    	<em class="weui-form-preview__value"><span>付款金额:</span><span th:text="${{e.order.totalAmount}}"></span></em>
+		  	</div>
+		  	<div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
+		    	<div class="weui-form-preview__item">
+		    		<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+				      	<div class="weui-media-box__hd">
+		                  <img alt="" class="weui-media-box__thumb" th:src="${{item.imageUrl}}"></img>
+		              	</div>
+					  	<div class="weui-media-box__bd">
+							<h4 class="weui-media-box__title" th:text="${{item.productName}}"></h4>
+							<span class="weui-form-preview__value" th:text="${{item.productDescription}}"></span>
+							<p class="weui-media-box__desc">
+								<span th:text="${{item.productPrice} }"></span> 
+								<span>x</span> 
+								<span th:text="${{item.quantity} }"></span>
+							</p>
+						</div>
+					</a>
+				</div>
+		  	</div>
+		</div>
+        
+        <div id="code" style="visibility: hidden" th:text="${{code}}"></div>
+        <script src="/js/jquery-3.2.1.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
     </body>
 </html>
