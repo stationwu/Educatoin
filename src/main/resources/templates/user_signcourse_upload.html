@@ -52,7 +52,14 @@
 					readonly="" />
 			</div>
 		</div>
+		<div class="weui-cell">
+		  <div class="weui-cell__hd"><label class="weui-label">作品名称</label></div>
+		  <div class="weui-cell__bd">
+		    <input class="weui-input" type="text" id="imgName" placeholder="请输入作品名"/>
+		  </div>
+		</div>
 	</div>
+
 	<div class="weui-cells weui-cells_form">
 		<div class="weui-cell">
 			<div class="weui-cell__bd">
@@ -124,7 +131,7 @@
 			var hour = datetime.split(" ")[1].substring(0, 2);
 			var formData = new FormData();
 			var files = $("#fileUpload")[0].files;
-			formData.append("imageName", $("#fileUpload")[0].files[0].name);
+			formData.append("imageName", $("#imgName")[0].value);
 			formData.append("file", files[0]);
 			formData.append("date", date);
 			formData.append("hour", hour);
