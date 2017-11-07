@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.utils.URLUtil;
-import com.edu.utils.WxUserOAuthHelper;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
@@ -31,9 +30,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 public class OrderCenterController {
 	@Autowired
 	private WxMpService wxMpService;
-
-	@Autowired
-	private StudentRepository repository;
+	
 	@Autowired
 	private CustomerRepository custRepo;
 

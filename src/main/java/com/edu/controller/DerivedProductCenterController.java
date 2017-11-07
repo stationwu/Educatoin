@@ -9,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.utils.Constant;
-import com.edu.utils.WxUserOAuthHelper;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import me.chanjar.weixin.mp.api.WxMpService;
-
 @Controller
 public class DerivedProductCenterController {
-    @Autowired
-    private WxMpService wxMpService;
-
-    @Autowired
-    private StudentRepository repository;
-
     @Autowired
     private CustomerRepository custRepo;
 
@@ -40,9 +30,6 @@ public class DerivedProductCenterController {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private WxUserOAuthHelper oauthHelper;
 
     public final static String SESSION_OPENID_KEY = "openCode";
 

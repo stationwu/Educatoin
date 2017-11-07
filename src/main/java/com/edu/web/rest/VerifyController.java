@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.edu.web.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

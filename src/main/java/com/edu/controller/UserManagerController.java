@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
-import com.edu.domain.Customer;
 import com.edu.domain.Student;
 import com.edu.domain.StudentContainer;
 import com.edu.utils.Constant;
@@ -34,7 +32,7 @@ public class UserManagerController {
 	
 	@GetMapping("user/search")
 	public String getSearchPage(HttpSession session) {
-		String openId = (String) session.getAttribute(Constant.SESSION_OPENID_KEY);
+		//String openId = (String) session.getAttribute(Constant.SESSION_OPENID_KEY);
 		return "user_search";
 	}
 	

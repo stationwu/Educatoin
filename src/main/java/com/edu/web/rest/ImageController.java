@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.edu.web.rest;
 
 import java.io.IOException;
 
