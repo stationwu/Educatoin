@@ -1,51 +1,37 @@
 package com.edu.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.edu.dao.CustomerRepository;
 import com.edu.domain.Customer;
-import com.edu.utils.WxUserOAuthHelper;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
 import com.edu.domain.Student;
-
-import me.chanjar.weixin.mp.api.WxMpService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CourseCenterController {
 	@Autowired
-	private WxMpService wxMpService;
-
-	@Autowired
-    private WxUserOAuthHelper oauthHelper;
-
-	@Autowired
-	private StudentRepository repository;
-
-	@Autowired
     private CustomerRepository custRepo;
 
 	public final static String USER_COURSE_PATH = "/user/course";
+	
+	public final static String ABOUT_COURSE_PATH = "/user/aboutcourse";
 
     public final static String BOOK_COURSE_PATH = "/user/reservecourse";
     
     public final static String SESSION_OPENID_KEY = "openCode";
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @GetMapping(ABOUT_COURSE_PATH)
+    public String aboutCourse() {
+    	return "about_course";
+    }
 
     /**
      * TODO: now only the one of the student could book the courese
@@ -59,17 +45,7 @@ public class CourseCenterController {
         }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-//		if (customer == null) {
-//		    Customer newCustomer = new Customer();
-//		    newCustomer.setOpenCode(openId);
-//		    model.addAttribute("customer", newCustomer);
-//		    return "user_signup";
-//        }
-//
-//        Set<Student> students = customer.getStudents();
-//        List<Student> listOfStudents = new ArrayList<>(students);
-//		model.addAttribute("students", listOfStudents);
-		
+
 		Student student = customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)).get(0);
 		model.addAttribute("student", student);
         /**

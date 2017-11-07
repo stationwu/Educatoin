@@ -11,29 +11,17 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.CustomerRepository;
 import com.edu.domain.*;
-import com.edu.utils.WxUserOAuthHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edu.dao.StudentRepository;
-
-import me.chanjar.weixin.mp.api.WxMpService;
-
 @Controller
 public class CartCenterController {
 	@Autowired
-	private WxMpService wxMpService;
-
-	@Autowired
-	private StudentRepository repository;
-	@Autowired
 	private CustomerRepository custRepo;
 
-	@Autowired
-	private WxUserOAuthHelper oauthHelper;
 
     public final static String CART_PATH = "/user/cart";
     public final static String CART_CALLBACK_PATH = "/user/cart/cb";

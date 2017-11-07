@@ -13,31 +13,33 @@
             <h1 class="demos-title">用户订单</h1>
         </header>
         <div class="weui-form-preview" th:each="e : ${orderList}">
-		  	<div class="weui-form-preview__hd">
-		    	<label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${{e.order.id}}"></span></label>
-		    	<em class="weui-form-preview__value"><span>付款金额:</span><span th:text="${{e.order.totalAmount}}"></span></em>
-		  	</div>
-		  	<div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
-		    	<div class="weui-form-preview__item">
-		    		<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-				      	<div class="weui-media-box__hd">
-		                  <img alt="" class="weui-media-box__thumb" th:src="${{item.imageUrl}}"></img>
-		              	</div>
-					  	<div class="weui-media-box__bd">
-							<h4 class="weui-media-box__title" th:text="${{item.productName}}"></h4>
-							<span class="weui-form-preview__value" th:text="${{item.productDescription}}"></span>
-							<p class="weui-media-box__desc">
-								<span th:text="${{item.productPrice} }"></span> 
-								<span>x</span> 
-								<span th:text="${{item.quantity} }"></span>
-							</p>
-						</div>
-					</a>
-				</div>
-		  	</div>
-		</div>
+            <div class="weui-form-preview__hd">
+                <label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${{e.order.id}}"></span></label>
+                <em class="weui-form-preview__value"><span>付款金额:</span><span th:text="${{e.order.totalAmount}}"></span></em>
+            </div>
+            <div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
+                <div class="weui-form-preview__item">
+                    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                        <div class="weui-media-box__hd">
+                          <img alt="" class="weui-media-box__thumb" th:src="${{item.imageUrl}}"></img>
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title" th:text="${{item.productName}}"></h4>
+                            <span class="weui-form-preview__value" th:text="${{item.productDescription}}"></span>
+                            <p class="weui-media-box__desc">
+                                <span th:text="${{item.productPrice} }"></span> 
+                                <span>x</span> 
+                                <span th:text="${{item.quantity} }"></span>
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
         
         <div id="code" style="visibility: hidden" th:text="${{code}}"></div>
+        <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/vue"></script>
