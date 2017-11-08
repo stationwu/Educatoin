@@ -73,7 +73,7 @@ public class StudentIdentifierGenerator
             if(rs.next())
             {
                 Long seqValue = rs.getLong(1);
-                generatedId = sequencePrefix + String.format("%08d%s", 0 , seqValue);
+                generatedId = sequencePrefix + String.format("%05d", seqValue); // padding leading zero
 
                 logger.debug("Generated Id: " + generatedId);
 
