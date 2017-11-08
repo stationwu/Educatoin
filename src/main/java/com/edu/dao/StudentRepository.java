@@ -13,6 +13,6 @@ import com.edu.domain.Student;
 import com.edu.domain.StudentContainer;
 
 public interface StudentRepository extends PagingAndSortingRepository<Student, String> {
-	@Query("select s from Student s join s.customer c where s.studentName like %?1% or s.birthday = ?1 or s.id like %?1% or c.mobilePhone like %?1%")
+	@Query("SELECT s from Student s join s.customer c where s.birthday = ?1 or s.studentName LIKE CONCAT('%',?1,'%') or s.id LIKE CONCAT('%',?1,'%') or c.mobilePhone = ?1")
 	 List<Student> search(String keyword);
 }
