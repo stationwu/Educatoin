@@ -33,40 +33,35 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
         HttpServletResponse response,
         Object handler) throws Exception {
-
-        // For local test
-        String testerOpenId = "abcdef";
-        request.getSession().setAttribute(Constant.SESSION_OPENID_KEY, testerOpenId);
-
-//        Object openIdInSession = request.getSession().getAttribute(
-//                Constant.SESSION_OPENID_KEY);
-//        String authCode = request.getParameter("code");
-//        String requestUrl = request.getRequestURL().toString();
-//        if (null == openIdInSession && null == authCode) {
-//            String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(
-//                    requestUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
-//            response.sendRedirect(authorizationUrl);
-//            return false;
-//        } else if (null != authCode) {
-//            String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode,
-//                    request.getSession());
-//            if (!repository.isCustomerAlreadyRegistered(openId)) {
-//                request.getRequestDispatcher(Constant.USER_CENTER_PATH).forward(
-//                        request, response);
-//                return false;
-//            } else {
-//                response.sendRedirect(request.getRequestURI());
-//                return false;
-//            }
-//        } else {
-//            String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode,
-//                    request.getSession());
-//            if (!repository.isCustomerAlreadyRegistered(openId)) {
-//                request.getRequestDispatcher(Constant.USER_CENTER_PATH).forward(
-//                        request, response);
-//                return false;
-//            }
-//        }
+        Object openIdInSession = request.getSession().getAttribute(
+                Constant.SESSION_OPENID_KEY);
+        String authCode = request.getParameter("code");
+        String requestUrl = request.getRequestURL().toString();
+        if (null == openIdInSession && null == authCode) {
+            String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(
+                    requestUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
+            response.sendRedirect(authorizationUrl);
+            return false;
+        } else if (null != authCode) {
+            String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode,
+                    request.getSession());
+            if (!repository.isCustomerAlreadyRegistered(openId)) {
+                request.getRequestDispatcher(Constant.USER_CENTER_PATH).forward(
+                        request, response);
+                return false;
+            } else {
+                response.sendRedirect(request.getRequestURI());
+                return false;
+            }
+        } else {
+            String openId = oauthHelper.getOpenIdWhenOAuth2CalledBack(authCode,
+                    request.getSession());
+            if (!repository.isCustomerAlreadyRegistered(openId)) {
+                request.getRequestDispatcher(Constant.USER_CENTER_PATH).forward(
+                        request, response);
+                return false;
+            }
+        }
         return true;
     }
 
