@@ -10,8 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.edu.domain.Student;
+import com.edu.domain.StudentContainer;
 
 public interface StudentRepository extends PagingAndSortingRepository<Student, String> {
-	@Query("select s from Student s where s.studentName like %?1% or s.birthday = ?1 or s.id like %?1%)")
-	 List search(String keyword);
+	@Query("select s from Student s join s.customer c where s.studentName like %?1% or s.birthday = ?1 or s.id like %?1% or c.mobilePhone like %?1%")
+	 List<Student> search(String keyword);
 }
