@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "student")
@@ -16,7 +17,7 @@ public class Student {
 			name = "student-id-sequence",
 			strategy = "com.edu.domain.StudentIdentifierGenerator",
 			parameters = {
-					@org.hibernate.annotations.Parameter(name = "sequence_prefix", value = "M"),
+					@Parameter(name = "sequence_prefix", value = "M"),
 			}
 	)
 	@GeneratedValue(generator = "student-id-sequence", strategy = GenerationType.TABLE)
