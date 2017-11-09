@@ -124,8 +124,16 @@
 			var datetime = $("#datetime-picker")[0].value;
 			var date = datetime.split(" ")[0];
 			var hour = datetime.split(" ")[1].substring(0, 2);
-			var formData = new FormData();
 			var files = $("#fileUpload")[0].files;
+			if($("#imgName")[0].value === ''){
+				alert("请输入作品名称");
+				return;
+			}
+			if(files[0] === undefined){
+				alert("请选择作品");
+				return;
+			}
+			var formData = new FormData();
 			formData.append("imageName", $("#imgName")[0].value);
 			formData.append("file", files[0]);
 			formData.append("date", date);
