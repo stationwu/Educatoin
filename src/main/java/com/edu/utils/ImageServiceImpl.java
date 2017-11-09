@@ -7,6 +7,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.imageio.ImageIO;
 
@@ -45,8 +47,9 @@ public class ImageServiceImpl implements ImageService{
             logger.error("Failed to generate thumbnail", e);
             throw new RuntimeException("Failed to generate thumbnail");
         }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDate localDate = LocalDate.now();
-        image.setDate(localDate.toString());
+        image.setDate(LocalDateTime.now().format(formatter));
         return imageRepository.save(image);
     }
 

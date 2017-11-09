@@ -44,24 +44,21 @@ public class DerivedProductCenterController {
         }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-        if (customer == null) {
-            Customer newCustomer = new Customer();
-            newCustomer.setOpenCode(openId);
-            model.addAttribute("customer", newCustomer);
-            return "user_signup";
-        } else {
-            for (Student student : customer.getStudents()) {
-                Set<Image> images = student.getImagesSet();
-                ArrayList<ImageContainer> imagesContainer = images.stream()
-                        .sorted((x, y) -> y.getDate().compareTo(x.getDate()))
-                        .map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(),
-                                "/Images/" + x.getId(), "/Images/" + x.getId() + "/thumbnail"))
-                        .collect(Collectors.toCollection(ArrayList::new));
-                model.addAttribute("code", openId);
-                model.addAttribute("images", imagesContainer);
-            }
-            return "user_imagelist";
+        ArrayList<ImageContainer> imageContainer = new ArrayList<>();
+        for (Student student : customer.getStudents()) {
+            Set<Image> images = student.getImagesSet();
+            ArrayList<ImageContainer> imagesContainer = images.stream()
+                    .sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+                    .map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(),
+                            "/Images/" + x.getId(), "/Images/" + x.getId() + "/thumbnail"))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            
+            imageContainer.addAll(imagesContainer);
         }
+        model.addAttribute("code", openId);
+        model.addAttribute("images", imageContainer.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+				.collect(Collectors.toCollection(ArrayList::new)));
+        return "user_imagelist";
     }
 
     @GetMapping("/user/derivedproduct")

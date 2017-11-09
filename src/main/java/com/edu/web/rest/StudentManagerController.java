@@ -4,6 +4,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.edu.controller.RouteConstant;
+import com.edu.dao.CourseRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
 import com.edu.domain.Image;
@@ -45,16 +48,16 @@ public class StudentManagerController {
 	public static final String PATH = "/StudentManager";
 	private final StudentRepository studentRepository;
 	private final ImageServiceImpl imageServiceImpl;
+	private final CourseRepository courseRepository;
 	// private final Environment environment;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	public StudentManagerController(StudentRepository studentRepository,
-			ImageServiceImpl imageServiceImpl/*
-												 * , Environment environment
-												 */) {
+			ImageServiceImpl imageServiceImpl, CourseRepository courseRepository) {
 		this.studentRepository = studentRepository;
 		this.imageServiceImpl = imageServiceImpl;
+		this.courseRepository = courseRepository;
 		// this.environment = environment;
 	}
 
@@ -81,17 +84,20 @@ public class StudentManagerController {
 	}
 
 	@PostMapping(path = PATH + "/{id}")
-	public HttpEntity<Resource<Student>> addImage(@PathVariable("id") String studentId,
+	public HttpEntity<Resource<Student>> signAndUploadImage(@PathVariable("id") String studentId,
 			@RequestParam(value = "imageName") String imageName,
 			@RequestParam(value = "date") String date,
 			@RequestParam(value = "hour") String hour,
 			@RequestParam("file") MultipartFile files[])
 			throws HttpException {
 		Student student = studentRepository.findOne(studentId);
+		List<Course> courses = (List<Course>) courseRepository.search(date, hour, new PageRequest(0, 1));
+		Course course = courses.get(0);
 		for (MultipartFile file : files) {
 			if (!file.isEmpty()) {
 				Image img = new Image();
 				img.setImageName(imageName);
+				img.setCourse(course);
 				try {
 					img.setData(file.getBytes());
 				} catch (IOException e) {

@@ -26,11 +26,6 @@
 					th:text="${{studentContainer.birthday}}">生日</span>
 			</div>
 			<div class="weui-form-preview__item">
-				<label class="weui-form-preview__label">家长姓名</label> <span
-					class="weui-form-preview__value"
-					th:text="${{studentContainer.parentName}}">家长姓名</span>
-			</div>
-			<div class="weui-form-preview__item">
 				<label class="weui-form-preview__label">移动电话</label> <span
 					class="weui-form-preview__value"
 					th:text="${{studentContainer.mobilePhone}}">移动电话</span>
@@ -135,9 +130,21 @@
 			formData.append("file", files[0]);
 			formData.append("date", date);
 			formData.append("hour", hour);
-			var oReq = new XMLHttpRequest();
-			oReq.open("POST","/StudentManager/"+$("#studentid")[0].textContent);
-			oReq.send(formData);
+			//var oReq = new XMLHttpRequest();
+			//oReq.open("POST","/StudentManager/"+$("#studentid")[0].textContent);
+			//oReq.send(formData);
+			
+			$.ajax({
+			  url: "/StudentManager/"+$("#studentid")[0].textContent,
+			  data: formData,
+			  processData: false,
+			  contentType: false,
+			  type: 'POST'
+			}).done(function(){
+				alert("签到上传成功");
+			}).fail(function(){
+				alert("签到上传失败");
+			});
 		})
 
 		$("#fileUpload").on(
