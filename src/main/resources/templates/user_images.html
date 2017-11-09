@@ -6,14 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
 	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+	<link href="/css/app.css" rel="stylesheet" media="screen"/>
+	<link href="/css/app.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
-	<h3>我的作品</h3>
+	<header class="dsx-header">
+        <h1 class="dsx-title">我的作品</h1>
+    </header>
 	<div th:each="image : ${images}">
-	  <div class="col-xs-6">
-	    <a th:href="${{image.imageUrl}}" class="thumbnail">
-	      <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.imageName}}"/>
-	    </a>
+	  <div class="weui-module-grids">
+	  	<a th:href="${{image.imageUrl}}" class="weui-module-grid">
+            <div class="weui-grid__icon">
+                <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.imageName}}"/>
+            </div>
+        </a>
 	  </div>
 	</div>
     <script src="http://code.jquery.com/jquery.js"></script>

@@ -3,29 +3,29 @@ body, html {
     -webkit-tap-highlight-color: transparent;
 }
 
-.demos-title {
+.dsx-title {
     text-align: center;
-    font-size: 34px;
+    font-size: 24px;
     color: #3cc51f;
     font-weight: 400;
     margin: 0 15%;
 }
 
-.demos-sub-title {
+.dsx-sub-title {
     text-align: center;
     color: #888;
     font-size: 14px;
 }
 
-.demos-header {
-    padding: 35px 0;
+.dsx-header {
+    padding: 20px 0;
 }
 
-.demos-content-padded {
+.dsx-content-padded {
     padding: 15px;
 }
 
-.demos-second-title {
+.dsx-second-title {
     text-align: center;
     font-size: 24px;
     color: #3cc51f;
@@ -44,12 +44,24 @@ footer a {
     text-decoration: none;
 }
 
-.demo-row {
+.dsx-row {
     margin: 0.8em !important;
 }
 
 
-.demo-weui-cell {
+.dsx-weui-cell {
     margin-left: 0.8em !important;
     margin-right: 0.8em !important;
+}
+.weui-module-grids{
+	position: relative;
+	overflow: hidden;
+}
+
+.weui-module-grid {
+    position: relative;
+    float: left;
+    padding: 20px 10px
+    width: 50%;
+    box-sizing: border-box;
 }
