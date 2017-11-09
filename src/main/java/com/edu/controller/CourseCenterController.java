@@ -79,12 +79,9 @@ public class CourseCenterController {
     @GetMapping(BOOK_COURSE_PATH)
 	private String doBookCourse(HttpSession session, Model model) {
     	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
-        if (openId == null) {
-            return "error_500";
-        }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-        model.addAttribute("student", customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)).get(0));
+        model.addAttribute("students", customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)));
         model.addAttribute("code", openId);
 			
 		return "user_reserve_course";
