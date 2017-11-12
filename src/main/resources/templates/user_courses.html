@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="weui-cells">
-		<div class="weui-cell demo-weui-cell" th:each="signedCourse : ${signedCourses}">
+		<div class="weui-cell dsx-weui-cell" th:each="signedCourse : ${signedCourses}">
 			<div class="weui-cell__hd"></div>
 			<div class="weui-cell__bd"> 已签到课程 </div>
 			<div class="weui-cell__ft" th:text="${#dates.format(signedCourse.CourseName,'MM-dd HH:mm HH:mm')}"></div>

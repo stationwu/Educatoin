@@ -1,21 +1,15 @@
 package com.edu.domain;
 
-import java.time.LocalDate;
-import java.util.Set;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.GenericGenerator;
-
 public class StudentContainer {
 	private String id;
 
 	private String studentName;
 
-	private int age;
-
 	private int classPeriod;
+	
+	private int leftPeriods;
+	
+	private int donePeriods;
 	
     private String birthday;  
     
@@ -32,8 +26,9 @@ public class StudentContainer {
 		super();
 		this.id = student.getId();
 		this.studentName = student.getStudentName();
-		this.age = student.getAge();
 		this.classPeriod = student.getClassPeriod();
+		this.donePeriods = student.getDonePeriods();
+		this.leftPeriods = student.getLeftPeriods();
 		this.birthday = student.getBirthday();
 		this.parentName = student.getCustomer().getName();
 		this.mobilePhone = student.getCustomer().getMobilePhone();
@@ -48,27 +43,12 @@ public class StudentContainer {
 		this.studentName = studentName;
 	}
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
 	public int getClassPeriod() {
 		return classPeriod;
 	}
 
 	public void setClassPeriod(int classPeriod) {
 		this.classPeriod = classPeriod;
-	}
-
-	@Override
-	public String toString() {
-		String str = "Student.id" + this.getId() + "/nStudent.name" + this.getStudentName()
-                + "/nStudent.classperiod" + this.getClassPeriod();
-		return str;
 	}
 
     public void setId(String id) {
@@ -79,7 +59,23 @@ public class StudentContainer {
         return id;
     }
 
-	public String getBirthday() {
+	public int getLeftPeriods() {
+        return leftPeriods;
+    }
+
+    public void setLeftPeriods(int leftPeriods) {
+        this.leftPeriods = leftPeriods;
+    }
+
+    public int getDonePeriods() {
+        return donePeriods;
+    }
+
+    public void setDonePeriods(int donePeriods) {
+        this.donePeriods = donePeriods;
+    }
+
+    public String getBirthday() {
 		return birthday;
 	}
 
@@ -110,4 +106,15 @@ public class StudentContainer {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+    @Override
+    public String toString() {
+        return "StudentContainer [id=" + id + ", studentName=" + studentName
+                + ", classPeriod=" + classPeriod + ", leftPeriods="
+                + leftPeriods + ", donePeriods=" + donePeriods + ", birthday="
+                + birthday + ", parentName=" + parentName + ", mobilePhone="
+                + mobilePhone + ", address=" + address + "]";
+    }
+	
+	
 }
