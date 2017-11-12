@@ -25,7 +25,15 @@ var app = new Vue({
             console.log("get veri code clicked");
         },
         onSubmit: function() {
-            console.log("submit clicked");
+            var openCode = $('#wxOpenCode').text();
+            $.post('/api/v1/Customer', JSON.stringify({
+                "openCode"     : openCode+"abc",
+                "name"         : openCode,
+                "mobilePhone"  : app.mobilePhone,
+                "address"      : ""
+            })).done(function(response) {
+                console.log(response);
+            });
         },
     }
 });
