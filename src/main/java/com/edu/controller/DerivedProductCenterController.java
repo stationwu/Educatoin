@@ -8,6 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.*;
 import com.edu.domain.*;
+import com.edu.domain.dto.DerivedProduct;
+import com.edu.domain.dto.ImageContainer;
+import com.edu.domain.dto.ProductContainer;
 import com.edu.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,9 +35,13 @@ public class DerivedProductCenterController {
     private ProductRepository productRepository;
 
     public final static String SESSION_OPENID_KEY = "openCode";
-
     public final static String RELATED_IMAGE_PATH = "/user/relatedimage";
     public final static String RELATED_IMAGE_CALLBACK_PATH = "/user/relatedimage/cb";
+    
+    public final static String PATH_WORKS = "/derivation/works";
+    public final static String PATH_GIFTS = "/derivation/gift";
+    public final static String PATH_FRAME = "/derivation/frame";
+    public final static String PATH_LITER = "/derivation/literature";
 
     @GetMapping(RELATED_IMAGE_PATH)
     private String doShowRelatedImage(HttpServletRequest request, Model model) {

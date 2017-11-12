@@ -1,6 +1,9 @@
-package com.edu.domain;
+package com.edu.domain.dto;
 
 import javax.persistence.*;
+
+import com.edu.domain.Image;
+import com.edu.domain.Product;
 
 @Entity
 @Table(name="derprod")

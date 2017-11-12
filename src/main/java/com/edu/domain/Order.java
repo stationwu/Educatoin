@@ -3,6 +3,7 @@ package com.edu.domain;
 import java.util.Map;
 import javax.persistence.*;
 
+import com.edu.domain.dto.DerivedProduct;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -12,13 +13,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
-	@JoinColumn(name = "CUSTOMER_ID")
-	@JsonIgnore
-	private Customer customer;
-    
     private String name;
 
+    private String date;
+    
+    private String status;
+
+    private double totalAmount;
+    
+    @ManyToOne
+    @JoinColumn(name = "CUSTOMER_ID")
+    @JsonIgnore
+    private Customer customer;  
+    
 	@ElementCollection
     @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="PRODUCT_ID", referencedColumnName="ID")
@@ -37,11 +44,6 @@ public class Order {
 	@Column(name="COPIES_IN_ORDER")
 	private Map<ImageCollection, Integer> imageCollectionMap;
 
-	private String date;
-	
-	private String status;
-
-	private double totalAmount;
 
 	public String getDate() {
 		return date;

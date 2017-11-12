@@ -1,8 +1,9 @@
-package com.edu.domain;
+package com.edu.domain.dto;
 
 import java.util.Set;
 import javax.persistence.*;
 
+import com.edu.domain.Course;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 

@@ -4,6 +4,8 @@ import com.edu.dao.CustomerRepository;
 import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.ImageRepository;
 import com.edu.domain.*;
+import com.edu.domain.dto.ImageContainer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
