@@ -1,26 +1,60 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>大树夏欢迎您</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css"/>
-    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css"/>
-    <link href="/css/app.css" rel="stylesheet" media="screen"/>
+<title>大树夏欢迎您</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
+<link rel="stylesheet"
+	href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+<link href="/css/app.css" rel="stylesheet" media="screen" />
 </head>
 <body>
-<header class="dsx-header">
-    <h3 class="dsx-title"><span th:text="'您好,' +  ${customer.name}"></span></h3>
-</header>
-<div class="weui-form-preview">
-    <div class="weui-form-preview__hd">
-        <label class="weui-form-preview__label">手机号</label>
-        <em class="weui-form-preview__value"><span th:text="${customer.mobilePhone}"></span></em>
-    </div>
-
-</div>
-<!-- body 最后 -->
-<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
+	<header class="dsx-header">
+		<h3 class="dsx-title">
+			<span th:text="'您好,' +  ${customer.name}"></span>
+		</h3>
+	</header>
+	<div class="weui-form-preview">
+		<div class="weui-form-preview__hd">
+			<label class="weui-form-preview__label">手机号</label> <em
+				class="weui-form-preview__value"><span
+				th:text="${customer.mobilePhone}"></span></em>
+		</div>
+		<div id="children" th:each="student : ${customer.students}">
+			<div id="${{student.id}}" class="weui-panel__bd">
+				<div class="weui-cells">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<input class="weui-input" placeholder="孩子姓名" type="text" readonly="true" th:text="${{student.studentName}}"/>
+						</div>
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd">
+						<label class="weui-label" for=""> 生日 </label>
+					</div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="date" value="" readonly="true" th:text="${{student.birthday}}"/>
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd">
+						<label class="weui-label" for=""> 剩余课时 </label>
+					</div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" pattern="[0-9]*" type="number" value="24" readonly="true" th:text="${{student.leftPeriods}}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="button_sp_area dsx-add">
+			<a id="btnAdd" href="javascript:void(0);" class="weui-btn weui-btn_mini weui-btn_default">＋添加学员信息</a>
+		</div>
+	</div>
+	<!-- body 最后 -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
 </body>
 </html>
