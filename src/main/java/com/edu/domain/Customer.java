@@ -17,6 +17,8 @@ public class Customer {
     private String mobilePhone;
     
     private String address;
+    
+    private boolean isActivated;
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
     private Set<Student> students;
@@ -43,6 +45,8 @@ public class Customer {
         this.openCode = openCode;
         this.name = name;
         this.mobilePhone = mobilePhone;
+        this.isActivated = false;
+        this.address = "上海市";
         this.cart = new ProductCart();
     }
 
@@ -115,4 +119,12 @@ public class Customer {
 	public void addStudent(Student student){
 		students.add(student);
 	}
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean isActivated) {
+        this.isActivated = isActivated;
+    }
 }
