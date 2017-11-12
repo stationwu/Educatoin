@@ -65,6 +65,7 @@ public class UserCenterController {
             customer.setOpenCode(openId);
 
             model.addAttribute("customer", customer);
+            model.addAttribute("openCode", openId);
             view = "user_signup";
         }
 
