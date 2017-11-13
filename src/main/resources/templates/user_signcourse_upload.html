@@ -123,7 +123,7 @@
 		$("#sign").on('click', function() {
 			var datetime = $("#datetime-picker")[0].value;
 			var date = datetime.split(" ")[0];
-			var hour = datetime.split(" ")[1].substring(0, 2);
+			var hour = datetime.split(" ")[1].substring(0, 2)+":00:00";
 			var files = $("#fileUpload")[0].files;
 			if($("#imgName")[0].value === ''){
 				alert("请输入作品名称");
