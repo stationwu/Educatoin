@@ -1,5 +1,7 @@
 package com.edu.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -21,12 +23,15 @@ public class Customer {
     private boolean isActivated;
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
+    @JsonIgnore
     private Set<Student> students;
 
     @OneToOne(cascade = { CascadeType.ALL })
+    @JsonIgnore
     private ProductCart cart;
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
+    @JsonIgnore
     private Set<Order> orders;
 
     public Set<Student> getStudents() {
@@ -41,12 +46,12 @@ public class Customer {
         cart = new ProductCart();
     }
 
-    public Customer(String openCode, String name, String mobilePhone) {
+    public Customer(String openCode, String name, String mobilePhone, String address) {
         this.openCode = openCode;
         this.name = name;
         this.mobilePhone = mobilePhone;
         this.isActivated = false;
-        this.address = "上海市";
+        this.address = address;
         this.cart = new ProductCart();
     }
 
