@@ -13,11 +13,11 @@ import org.hibernate.annotations.Parameter;
 public class Student {
     @Id
     @GenericGenerator(name = "student-id-sequence",
-        strategy = "com.edu.domain.StudentIdentifierGenerator",
-        parameters = { @Parameter(name = "sequence_prefix",
-            value = "M"), })
+            strategy = "com.edu.domain.StudentIdentifierGenerator",
+            parameters = {@Parameter(name = "sequence_prefix",
+                    value = "M"),})
     @GeneratedValue(generator = "student-id-sequence",
-        strategy = GenerationType.TABLE)
+            strategy = GenerationType.TABLE)
     protected String id;
 
     private String studentName;
@@ -28,6 +28,7 @@ public class Student {
 
     private int donePeriods;
 
+    @Column(updatable = false)
     private String birthday;
 
     @ManyToOne
@@ -39,34 +40,34 @@ public class Student {
     @JsonIgnore
     private Set<Image> imagesSet;
 
-    @ManyToMany(cascade = { CascadeType.MERGE },
-        fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE},
+            fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "STUDENT_COURSE",
-        joinColumns = @JoinColumn(name = "STUDENT_ID",
-            referencedColumnName = "ID"),
-        inverseJoinColumns = @JoinColumn(name = "COURSE_ID",
-            referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "STUDENT_ID",
+                    referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "COURSE_ID",
+                    referencedColumnName = "ID"))
     private Set<Course> coursesSet;
 
-    @ManyToMany(cascade = { CascadeType.MERGE },
-        fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE},
+            fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "RESERVED_STUDENT_RESERVED_COURSE",
-        joinColumns = @JoinColumn(name = "RESERVED_STUDENT_ID",
-            referencedColumnName = "ID"),
-        inverseJoinColumns = @JoinColumn(name = "RESERVED_COURSE_ID",
-            referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "RESERVED_STUDENT_ID",
+                    referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "RESERVED_COURSE_ID",
+                    referencedColumnName = "ID"))
     private Set<Course> reservedCoursesSet;
 
-    @ManyToMany(cascade = { CascadeType.MERGE },
-        fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE},
+            fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "STUDENT_NO_SIGN_COURSE",
-        joinColumns = @JoinColumn(name = "STUDENT_ID",
-            referencedColumnName = "ID"),
-        inverseJoinColumns = @JoinColumn(name = "NO_SIGN_COURSE_ID",
-            referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "STUDENT_ID",
+                    referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "NO_SIGN_COURSE_ID",
+                    referencedColumnName = "ID"))
     private Set<Course> courseNotSignSet;
 
     private boolean isChild;
@@ -75,7 +76,7 @@ public class Student {
     }
 
     public Student(String studentName, String birthday, int classPeriod,
-            int donePeriods, int leftPeriods, boolean isChild) {
+                   int donePeriods, int leftPeriods, boolean isChild) {
         this.studentName = studentName;
         this.birthday = birthday;
         this.classPeriod = classPeriod;

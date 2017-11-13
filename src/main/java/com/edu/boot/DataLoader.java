@@ -219,7 +219,7 @@ public class DataLoader {
 
             List<Customer> customers = new ArrayList<>();
             if (0 == customerRepository.count()) {
-                Customer customer = new Customer("123456", "Arthur", "13512345678");
+                Customer customer = new Customer("123456", "Arthur", "13512345678", "中国上海");
                 customer = customerRepository.save(customer);
 
                 Student student = new Student("Arthur", "1987-03-02",24, 24, 0, false);

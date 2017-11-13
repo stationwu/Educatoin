@@ -6,6 +6,7 @@ var app = new Vue({
         ],
         mobilePhone : "",
         verificationCode : "",
+        address: "",
         removable : false,
     },
     methods: {
@@ -26,12 +27,17 @@ var app = new Vue({
         },
         onSubmit: function() {
             var openCode = $('#wxOpenCode').text();
-            $.post('/api/v1/Customer', JSON.stringify({
-                "openCode"     : openCode+"abc",
-                "name"         : openCode,
-                "mobilePhone"  : app.mobilePhone,
-                "address"      : ""
-            })).done(function(response) {
+            $.ajax({
+                url: '/api/v1/Customer',
+                contentType: 'application/json',
+                type: 'POST',
+                data: JSON.stringify({
+                          "openCode"     : openCode+"abc",
+                          "name"         : openCode,
+                          "mobilePhone"  : app.mobilePhone,
+                          "address"      : app.address,
+                      }),
+            }).done(function() {
                 console.log(response);
             });
         },

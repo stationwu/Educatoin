@@ -26,24 +26,24 @@ public class CustomerController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(path = PATH + "/{id}")
-    public ResponseEntity<Resource<Customer>> show(@PathVariable("id") Long id) {
+    public ResponseEntity<Customer> show(@PathVariable("id") Long id) {
         Customer entity = repository.findOne(id);
-        return new ResponseEntity<>(buildResource(entity), HttpStatus.OK);
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
     @PostMapping(path = PATH)
-    public Resource<Customer> create(@RequestBody @Valid Customer customer) throws HttpException {
-        return buildResource(repository.save(customer));
+    public Customer create(@RequestBody @Valid Customer customer) throws HttpException {
+        return repository.save(customer);
     }
 
     @PostMapping(path = PATH + "/{id}")
-    public Resource<Customer> edit(@PathVariable(value = "id") Long id,
-                                   @RequestBody @Valid Customer customer) {
+    public Customer edit(@PathVariable(value = "id") Long id,
+                         @RequestBody @Valid Customer customer) {
         Customer entity = repository.findOne(id);
         entity.setName(customer.getName());
         entity.setAddress(customer.getAddress());
         entity.setMobilePhone(customer.getMobilePhone());
-        return buildResource(repository.save(entity));
+        return repository.save(entity);
     }
 
     private Resource<Customer> buildResource(Customer customer) {
