@@ -71,12 +71,15 @@
                 el: '#courseList',
                 methods: {
                     sign: function (index, event) {
-                        $.post("/Student/" + $('#code').text() + "/Reserve/" + courses.courseArray[index].id).done(
+                        $.post("/user/reserve?studentid=" + $('.button_sp_area .weui-btn_primary')[0].rel, "courseid=" + courses.courseArray[index].id).done(
                                 function (data) {
-                                	$.alert("预约成功", "消息！");
+                                	$.get("/user/searchcourse?date=" + formatDate(new Date())).done(function (data) {
+                                		courses.courseArray = data;
+                                		$.alert("预约成功", "消息！");
+                                	});
                                 }).fail(
                                 function (data) {
-                                	$.alert("预约成功", "消息！");
+                                	$.alert("预约失败", "消息！");
                                 })
                     }
                 },

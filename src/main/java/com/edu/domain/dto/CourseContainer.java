@@ -22,6 +22,7 @@ public class CourseContainer {
 	}
 	
 	public CourseContainer(Course course) {
+		this.id = course.getId();
 		this.courseName = course.getCourseName();
 		this.date = course.getDate();
 		this.timeFrom = course.getTimeFrom();
