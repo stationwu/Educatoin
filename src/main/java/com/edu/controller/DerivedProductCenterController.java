@@ -42,6 +42,24 @@ public class DerivedProductCenterController {
     public final static String PATH_GIFTS = "/derivation/gift";
     public final static String PATH_FRAME = "/derivation/frame";
     public final static String PATH_LITER = "/derivation/literature";
+    
+    @GetMapping(PATH_WORKS)
+    public String navWorksPage() {
+        return "derivation_works";
+    }
+    @GetMapping(PATH_GIFTS)
+    public String navGiftsPage() {
+        return "derivation_gift";
+    }
+    @GetMapping(PATH_FRAME)
+    public String navFramePage() {
+        return "derivation_frame";
+    }
+    @GetMapping(PATH_LITER)
+    public String navLiterPage() {
+        return "derivation_liter";
+    }
+    
 
     @GetMapping(RELATED_IMAGE_PATH)
     private String doShowRelatedImage(HttpServletRequest request, Model model) {

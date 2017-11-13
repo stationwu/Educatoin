@@ -12,10 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-
 import java.util.HashSet;
-
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -38,6 +36,28 @@ public class UserCenterController {
 	public final static String SESSION_OPENID_KEY = "openCode";
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@GetMapping("user/list")
+	public String listCustomer(HttpSession session, Model model) {
+	    String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
+        
+        if (openId == null) {
+            return "error_500";
+        }
+        
+        String view = null;
+        
+        Customer customer = repository.findOneByOpenCode(openId);
+        if("15868858028".equals(customer.getMobilePhone())) {
+            model.addAttribute("user", customer);
+            model.addAttribute("customers", repository.findCustomersByIsNotActivated());
+            view = "user_list";
+        } else {
+            model.addAttribute("user", customer);
+            view = "user_info";
+        }
+        return view;
+	}
 	
 	@GetMapping(USER_CENTER_PATH)
 	private String gotoUserHomeOrSignUp(HttpSession session, Model model) {
