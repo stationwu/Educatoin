@@ -1,41 +1,39 @@
-$(document).ready(function(){
-  $("#btnAdd").click(function(){
-    console.log("#btnAdd clicked");
-
-    var count = $('#children div.weui-panel__bd').length;
-    count++;
-
-    var nodeId = "child-" + count;
-    $('#children div.weui-panel__bd:last').after(
-        '<div id="'+nodeId+'" class="weui-panel__bd" >' +
-           '<div class="weui-cells">' +
-            '<div class="weui-cell">' +
-                '<div class="weui-cell__bd">' +
-                    '<input class="weui-input" placeholder="孩子姓名" type="text" />' +
-                '</div>'+
-            '</div>'+
-        '</div>'+
-        '<div class="weui-cell">'+
-            '<div class="weui-cell__hd">'+
-                '<label class="weui-label" for="">'+
-                    '生日'+
-                '</label>'+
-            '</div>'+
-            '<div class="weui-cell__bd">'+
-                '<input class="weui-input" type="date" value=""/>'+
-            '</div>'+
-        '</div>'+
-        '<div class="weui-cell">'+
-            '<div class="weui-cell__hd">'+
-                '<label class="weui-label" for="">'+
-                    '剩余课时'+
-                '</label>'+
-            '</div>'+
-            '<div class="weui-cell__bd">'+
-                '<input class="weui-input" pattern="[0-9]*" type="number" value="24"/>'+
-            '</div>'+
-        '</div>'+
-    '</div>'
-    );
-  });
+var app = new Vue({
+    el: '#signup',
+    data: {
+        children : [
+            { name: "", birthday: "", numberOfClasses: 0 }
+        ],
+        mobilePhone : "",
+        verificationCode : "",
+        removable : false,
+    },
+    methods: {
+        removeChild : function(index, child) {
+            app.children.splice(index, 1);
+            if (app.children.length == 1) {
+                app.removable = false;
+            }
+        },
+        addChild: function() {
+            app.children.push({ name: "", birthday: "", numberOfClasses: 0 });
+            if (app.children.length > 1) {
+                app.removable = true;
+            }
+        },
+        onClickGetVerificationCode : function() {
+            console.log("get veri code clicked");
+        },
+        onSubmit: function() {
+            var openCode = $('#wxOpenCode').text();
+            $.post('/api/v1/Customer', JSON.stringify({
+                "openCode"     : openCode+"abc",
+                "name"         : openCode,
+                "mobilePhone"  : app.mobilePhone,
+                "address"      : ""
+            })).done(function(response) {
+                console.log(response);
+            });
+        },
+    }
 });
