@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.domain.Course;
-import com.edu.domain.CourseContainer;
 import com.edu.domain.Student;
+import com.edu.domain.dto.CourseContainer;
 import com.edu.utils.DateToStringConverter;
 
 @Controller

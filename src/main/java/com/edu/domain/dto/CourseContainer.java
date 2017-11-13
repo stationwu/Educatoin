@@ -1,11 +1,6 @@
 package com.edu.domain.dto;
 
-import java.util.Set;
-import javax.persistence.*;
-
 import com.edu.domain.Course;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 public class CourseContainer {
     private long id;
@@ -17,6 +12,8 @@ public class CourseContainer {
 	private String timeFrom;
 
 	private String timeTo;
+	
+	private int maxSeat;
 	
 	private int reservedStudentCount;
 
@@ -30,6 +27,7 @@ public class CourseContainer {
 		this.timeFrom = course.getTimeFrom();
 		this.timeTo = course.getTimeTo();
 		this.reservedStudentCount = course.getReservedStudentsSet().size();
+		this.maxSeat = course.getMaxSeat();
 	}
 
 	public long getId() {
@@ -78,6 +76,14 @@ public class CourseContainer {
 
 	public void setReservedStudentCount(int reservedStudentCount) {
 		this.reservedStudentCount = reservedStudentCount;
+	}
+
+	public int getMaxSeat() {
+		return maxSeat;
+	}
+
+	public void setMaxSeat(int maxSeat) {
+		this.maxSeat = maxSeat;
 	}
 	
 }
