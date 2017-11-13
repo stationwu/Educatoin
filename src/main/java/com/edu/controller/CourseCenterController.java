@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,101 +29,92 @@ import com.edu.utils.DateToStringConverter;
 @Controller
 public class CourseCenterController {
 	@Autowired
-    private CustomerRepository custRepo;
-	
+	private CustomerRepository custRepo;
+
 	@Autowired
 	private CourseRepository courseRepository;
-	
+
 	@Autowired
 	private StudentRepository studentRepository;
-	
+
 	public final static String USER_COURSE_PATH = "/user/course";
-	
+
+	public final static String RELEATED_COURSE_PATH = "/user/relatedcourse";
+
 	public final static String ABOUT_COURSE_PATH = "/user/aboutcourse";
 
-    public final static String BOOK_COURSE_PATH = "/user/reservecourse";
-    
-    public final static String SEARCH_COURSE_PATH = "/user/searchcourse";
-    
-    public final static String RESERVE_COURSE_PATH = "/user/reserve";
-    
-    public final static String SESSION_OPENID_KEY = "openCode";
+	public final static String BOOK_COURSE_PATH = "/user/reservecourse";
 
-    @GetMapping(ABOUT_COURSE_PATH)
-    public String aboutCourse() {
-    	return "about_course";
-    }
+	public final static String SEARCH_COURSE_PATH = "/user/searchcourse";
 
-    /**
-     * TODO: now only the one of the student could book the courese
-     */
-    @GetMapping(USER_COURSE_PATH)
-	public String doShowUserCourse(HttpSession session, Model model) {
-    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
-    	
-        if (openId == null) {
-            return "error_500";
-        }
+	public final static String RESERVE_COURSE_PATH = "/user/reserve";
 
-        Customer customer = custRepo.findOneByOpenCode(openId);
+	public final static String SESSION_OPENID_KEY = "openCode";
 
-		Student student = customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)).get(0);
-		model.addAttribute("student", student);
-        /**
-         * TODO: Below loop is wrong. We must show also the students list. So view also needs change.
-         * Model was WeChat user = Student, Student has-many courses
-         * It's now WeChat user = Customer, Customer has-many students, Student has-many courses
-         * So it's necessary to display a list of students, then under each student list his courses
-         */
-//        for (Student student : customer.getStudents()) {
-            Set<Course> signedCourses = student.getCoursesSet();
-            Set<Course> notSignedCourses = student.getCourseNotSignSet();
-            Set<Course> reservedCourses = student.getReservedCoursesSet();
-            model.addAttribute("signedCourses",
-                    signedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-                            .collect(Collectors.toCollection(ArrayList::new)));
-            model.addAttribute("notSignedCourses",
-                    notSignedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-                            .collect(Collectors.toCollection(ArrayList::new)));
-            model.addAttribute("reservedCourses",
-                    reservedCourses.stream().sorted((x, y) -> y.getCourseName().compareTo(x.getCourseName()))
-                            .collect(Collectors.toCollection(ArrayList::new)));
-//        }
-
-        return "user_courses";
+	@GetMapping(ABOUT_COURSE_PATH)
+	public String aboutCourse() {
+		return "about_course";
 	}
 
-    /**
-     * TODO: now only the one of the student could book the courese
-     */
-    //课程预约
-    @GetMapping(BOOK_COURSE_PATH)
-	private String doBookCourse(HttpSession session, Model model) {
-    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
+	/**
+	 * TODO: now only the one of the student could book the courese
+	 */
+	@GetMapping(USER_COURSE_PATH)
+	public String doShowUserCourse(HttpSession session, Model model) {
+		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
 
-        Customer customer = custRepo.findOneByOpenCode(openId);
-        model.addAttribute("students", customer.getStudents().stream().sorted((x,y) -> x.getId().compareTo(y.getId())).collect(Collectors.toCollection(ArrayList::new)));
-        model.addAttribute("code", openId);
-			
+		Customer customer = custRepo.findOneByOpenCode(openId);
+		model.addAttribute("students", customer.getStudents().stream().sorted((x, y) -> x.getId().compareTo(y.getId()))
+				.collect(Collectors.toCollection(ArrayList::new)));
+
+		return "user_courses";
+	}
+
+	@GetMapping(RELEATED_COURSE_PATH)
+	@ResponseBody
+	private ArrayList<CourseContainer> getRelatedCourse(@RequestParam(value = "studentid") String studentId, HttpSession session) {
+		Student student = studentRepository.findOne(studentId);
+		Set<Course> signedCourses = student.getCoursesSet();
+		Set<Course> reservedCourses = student.getReservedCoursesSet();
+		Stream<CourseContainer> signedStream = signedCourses.stream().map(x -> new CourseContainer(x));
+		Stream<CourseContainer> reservedStream = reservedCourses.stream().map(x -> new CourseContainer(x));
+		return Stream.of(signedStream, reservedStream).flatMap(i -> i)
+				.sorted((x, y) -> (y.getDate() + y.getTimeFrom()).compareTo(x.getDate() + x.getTimeFrom()))
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	// 课程预约
+	@GetMapping(BOOK_COURSE_PATH)
+	private String doBookCourse(HttpSession session, Model model) {
+		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
+
+		Customer customer = custRepo.findOneByOpenCode(openId);
+		model.addAttribute("students", customer.getStudents().stream().sorted((x, y) -> x.getId().compareTo(y.getId()))
+				.collect(Collectors.toCollection(ArrayList::new)));
+		model.addAttribute("code", openId);
+
 		return "user_reserve_course";
 	}
-    
-    @GetMapping(SEARCH_COURSE_PATH)
-    @ResponseBody
-	private ArrayList<CourseContainer> searchCourseByDate(@RequestParam(value = "date") Date date, HttpSession session, Model model) {
-    	String dateStr = DateToStringConverter.convertDatetoString(date);
+
+	@GetMapping(SEARCH_COURSE_PATH)
+	@ResponseBody
+	private ArrayList<CourseContainer> searchCourseByDate(@RequestParam(value = "date") Date date, HttpSession session,
+			Model model) {
+		String dateStr = DateToStringConverter.convertDatetoString(date);
 		Collection<Course> entities = courseRepository.findByDateOrderByTimeFromAsc(dateStr);
-		ArrayList<CourseContainer> courseContainers = entities.stream().map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
-		return 	courseContainers;
+		ArrayList<CourseContainer> courseContainers = entities.stream().map(x -> new CourseContainer(x))
+				.collect(Collectors.toCollection(ArrayList::new));
+		return courseContainers;
 	}
-    
-    @PostMapping(RESERVE_COURSE_PATH)
-    @ResponseBody
-	private String reserveCourse(@RequestParam(value = "studentid") String studentId, @RequestParam(value = "courseid") String courseId) {
-    	Student student = studentRepository.findOne(studentId);
-    	Course course = courseRepository.findOne(Long.parseLong(courseId));
-    	student.addReservedCourse(course);
-    	studentRepository.save(student);
-    	return "预约成功";
-    }
+
+	@PostMapping(RESERVE_COURSE_PATH)
+	@ResponseBody
+	private String reserveCourse(@RequestParam(value = "studentid") String studentId,
+			@RequestParam(value = "courseid") String courseId) {
+		Student student = studentRepository.findOne(studentId);
+		Course course = courseRepository.findOne(Long.parseLong(courseId));
+		student.addReservedCourse(course);
+		studentRepository.save(student);
+		return "预约成功";
+	}
 }

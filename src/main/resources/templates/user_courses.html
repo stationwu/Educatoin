@@ -11,16 +11,69 @@
 	<link href="/css/app.css" rel="stylesheet" media="screen"/>    
 </head>
 <body>
-	<div class="weui-cells">
-		<div class="weui-cell dsx-weui-cell" th:each="signedCourse : ${signedCourses}">
-			<div class="weui-cell__hd"></div>
-			<div class="weui-cell__bd"> 已签到课程 </div>
-			<div class="weui-cell__ft" th:text="${#dates.format(signedCourse.CourseName,'MM-dd HH:mm HH:mm')}"></div>
-		</div>
+    <div class="weui-flex">
+        <div class="weui-flex__item">
+            <img alt="" height="200" src="/images/logo.jpg" style="display: block; margin: 0 auto;" width="200"/>
+        </div>
+    </div>
+    <div class="button_sp_area">
+		<a href="javascript:;" th:each="student : ${students}" 
+		class="weui-btn weui-btn_mini weui-btn_default" 
+		th:text="${{student.studentName}}" th:rel="${{student.id}}">按钮</a>
+	</div>
+	<div class="weui-cells" id="courseList">
+	    <div class="weui-cell dsx-weui-cell" v-for="(course, index) in courseArray">
+	        <div class="weui-cell__bd">
+	            {{course.date}}
+	        </div>
+	        <div class="weui-cell__bd">
+	            {{course.timeFrom}} - {{course.timeTo}}
+	        </div>
+	        <div class="weui-cell__ft">
+	            
+	        </div>
+	    </div>
 	</div>
 	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/jquery-weui/1.0.1/js/jquery-weui.min.js"></script>
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script type="text/javascript">
+/*<![CDATA[*/
+    function formatDate(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        return year + '-' + month + '-' + day;
+    }
+    var courseArray = [];
+    var courses = {}
+    $(document).ready(function () {
+    	$('.button_sp_area .weui-btn_mini')[0].classList.add('weui-btn_primary');
+    	$('.button_sp_area .weui-btn_mini').click(function() {
+    		$('.button_sp_area .weui-btn_mini').removeClass('weui-btn_primary');
+    		window.event.toElement.classList.add('weui-btn_primary');
+    		$.get("/user/relatedcourse?studentid=" + $('.button_sp_area .weui-btn_primary')[0].rel).done(function (data) {
+    			courses.courseArray = data;
+        	});
+    	});
+    	
+    	$.get("/user/relatedcourse?studentid=" + $('.button_sp_area .weui-btn_primary')[0].rel).done(function (data) {
+    		courseArray = data;
+            courses = new Vue({
+                el: '#courseList',
+                methods: {
+                    
+                },
+                data: {
+                    courseArray: courseArray
+                }
+            })
+    	});
+    });
+/*]]>*/  
+</script>
 </body>
 </html>
