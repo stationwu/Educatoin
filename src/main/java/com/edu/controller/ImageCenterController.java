@@ -104,7 +104,7 @@ public class ImageCenterController {
 				model.addAttribute("images", imagesContainer);
 				model.addAttribute("code", openId);
 			}
-			return "user_imagecollection";
+			return "derivation";
 		}
 	}
 

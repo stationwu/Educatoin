@@ -12,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 import java.util.HashSet;
 
 import java.util.Set;
@@ -76,6 +78,7 @@ public class UserCenterController {
 	private String signIn(HttpSession session, Model model) {
 		return "redirect:" + USER_CENTER_PATH;
     }
+
 	
     @PostMapping(USER_SIGNUP_PATH)
     public String signup(@ModelAttribute @Valid Customer customer,

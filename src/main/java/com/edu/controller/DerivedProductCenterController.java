@@ -95,7 +95,7 @@ public class DerivedProductCenterController {
                             "/Images/" + x.getProductImages().stream().findFirst().get().getId(), 1, x.getId(), 2))
                     .collect(Collectors.toCollection(ArrayList::new));
             model.addAttribute("products", products);
-            return "user_derivedproduct";
+            return "derivation";
         }
     }
 
