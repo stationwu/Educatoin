@@ -12,12 +12,12 @@
     <link href="/css/app.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
-<header class="demos-header">
-    <h1 class="demos-title">课程预约</h1>
+<header class="dsx-header">
+    <h1 class="dsx-title">课程预约</h1>
 </header>
 <div style="overflow:hidden;">
     <div class="form-group">
-        <div class="row demo-row">
+        <div class="row dsx-row">
             <div class="col-md-12">
                 <div id="datetimepicker"></div>
             </div>
@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="weui-cells" id="courseList">
-    <div class="weui-cell demo-weui-cell" v-for="(course, index) in courseArray">
+    <div class="weui-cell dsx-weui-cell" v-for="(course, index) in courseArray">
         <div class="weui-cell__hd"></div>
         <div class="weui-cell__bd">
             {{ course.courseName }}

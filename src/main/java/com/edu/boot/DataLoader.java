@@ -28,17 +28,18 @@ public class DataLoader {
 
     @Bean
     @Transactional
-    public CommandLineRunner initialiseDataProviders(CourseRepository courseRepository,
-                                                     ProductCategoryRepository productCategoryRepository,
-                                                     ProductRepository productRepository,
-                                                     CustomerRepository customerRepository,
-                                                     StudentRepository studentRepository,
-                                                     DerivedProductRepository derivedProductRepository,
-                                                     OrderRepository orderRepository,
-                                                     ProductCartRepository productCartRepository,
-                                                     ImageCollectionRepository imageCollectionRepository,
-                                                     ImageRepository imageRepository,
-                                                     ImageServiceImpl imageServiceImpl) {
+    public CommandLineRunner initialiseDataProviders(
+        CourseRepository courseRepository,
+        ProductCategoryRepository productCategoryRepository,
+        ProductRepository productRepository,
+        CustomerRepository customerRepository,
+        StudentRepository studentRepository,
+        DerivedProductRepository derivedProductRepository,
+        OrderRepository orderRepository,
+        ProductCartRepository productCartRepository,
+        ImageCollectionRepository imageCollectionRepository,
+        ImageRepository imageRepository,
+        ImageServiceImpl imageServiceImpl) {
         return (args) -> {
             ArrayList<Course> courses = new ArrayList<>();
             if (0 == courseRepository.count()) {
@@ -220,14 +221,14 @@ public class DataLoader {
                 Customer customer = new Customer("123456", "Arthur", "13512345678");
                 customer = customerRepository.save(customer);
 
-                Student student = new Student("Arthur", "1987-03-02",30, 24, false);
+                Student student = new Student("Arthur", "1987-03-02",24, 24, 0, false);
                 Set<Image> imagesList = new HashSet<>();
                 imagesList.add(images.get(1));
                 student.setImagesSet(imagesList);
                 student.setCustomer(customer);
                 student = studentRepository.save(student);
 
-                Student secondChild = new Student("Saber", "1990-05-02",30, 24, false);
+                Student secondChild = new Student("Saber", "1990-05-02",24, 24, 0, false);
                 Set<Image> imagesList2 = new HashSet<>();
                 imagesList2.add(images.get(0));
                 secondChild.setImagesSet(imagesList2);

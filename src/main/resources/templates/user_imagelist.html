@@ -8,17 +8,22 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
 	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />
+	<link href="/css/app.css" rel="stylesheet" media="screen"/>
     <style type="text/css">
 	　　　　ul,li{list-style:none;}
 	</style>
 </head>
 <body>
-	<h3>我的作品</h3>
-	<ul th:each="image : ${images}">
-	  <li class="col-xs-6" >
-	      <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
-	  </li>
-	</ul>
+	<header class="dsx-header">
+        <h1 class="dsx-title">我的作品</h1>
+    </header>
+    <div th:each="image : ${images}">
+	  <div class="weui-module-grids">
+            <div class="weui-module-grid">
+                <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.imageName}}"/>
+            </div>
+	  </div>
+	</div>
 	<div id="code" style="visibility:hidden" th:text="${{code}}" />
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/js/bootstrap.min.js"></script>
