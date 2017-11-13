@@ -1,7 +1,10 @@
 package com.edu.web.rest;
 
 import com.edu.dao.CustomerRepository;
+import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
+import com.edu.domain.Student;
+import com.edu.view.CustomerSignUpForm;
 import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,9 @@ public class CustomerController {
     @Autowired
     private CustomerRepository repository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     public static final String PATH = "/api/v1/Customer";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -34,6 +40,22 @@ public class CustomerController {
     @PostMapping(path = PATH)
     public Customer create(@RequestBody @Valid Customer customer) throws HttpException {
         return repository.save(customer);
+    }
+
+    @PostMapping(path = PATH + "/SignUp")
+    public Customer create(@RequestBody @Valid CustomerSignUpForm form) {
+        Customer customer = new Customer(form.getOpenCode(), form.getName(), form.getMobilePhone(), form.getAddress());
+        customer = repository.save(customer);
+
+        for (CustomerSignUpForm.ChildForm childForm : form.getChildren()) {
+            Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
+                    0, childForm.getClassPeriod(), true);
+            student.setCustomer(customer);
+            student = studentRepository.save(student);
+            customer.addStudent(student);
+        }
+
+        return customer;
     }
 
     @PostMapping(path = PATH + "/{id}")

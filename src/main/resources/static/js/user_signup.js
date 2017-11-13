@@ -27,16 +27,26 @@ var app = new Vue({
         },
         onSubmit: function() {
             var openCode = $('#wxOpenCode').text();
+            var customer = {
+                "openCode"     : openCode,
+                "name"         : openCode,
+                "mobilePhone"  : app.mobilePhone,
+                "address"      : app.address,
+                "children"     : []
+            };
+            for(var i = 0; i < app.children.length; ++i) {
+                customer.children.push({
+                    "childName"   : app.children[i].name,
+                    "birthday"    : app.children[i].birthday,
+                    "classPeriod" : app.children[i].numberOfClasses
+                });
+            }
+
             $.ajax({
-                url: '/api/v1/Customer',
+                url: '/api/v1/Customer/SignUp',
                 contentType: 'application/json',
                 type: 'POST',
-                data: JSON.stringify({
-                          "openCode"     : openCode+"abc",
-                          "name"         : openCode,
-                          "mobilePhone"  : app.mobilePhone,
-                          "address"      : app.address,
-                      }),
+                data: JSON.stringify(customer),
             }).done(function() {
                 console.log(response);
             });
