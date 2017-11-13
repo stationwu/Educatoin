@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.*;
 import com.edu.domain.*;
+import com.edu.domain.dto.DerivedProduct;
+import com.edu.domain.dto.OrderContainer;
+import com.edu.domain.dto.ProductContainer;
 import com.edu.utils.URLUtil;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;

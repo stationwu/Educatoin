@@ -8,6 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.*;
 import com.edu.domain.*;
+import com.edu.domain.dto.DerivedProduct;
+import com.edu.domain.dto.ImageContainer;
+import com.edu.domain.dto.ProductContainer;
 import com.edu.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,9 +35,31 @@ public class DerivedProductCenterController {
     private ProductRepository productRepository;
 
     public final static String SESSION_OPENID_KEY = "openCode";
-
     public final static String RELATED_IMAGE_PATH = "/user/relatedimage";
     public final static String RELATED_IMAGE_CALLBACK_PATH = "/user/relatedimage/cb";
+    
+    public final static String PATH_WORKS = "/derivation/works";
+    public final static String PATH_GIFTS = "/derivation/gift";
+    public final static String PATH_FRAME = "/derivation/frame";
+    public final static String PATH_LITER = "/derivation/literature";
+    
+    @GetMapping(PATH_WORKS)
+    public String navWorksPage() {
+        return "derivation_works";
+    }
+    @GetMapping(PATH_GIFTS)
+    public String navGiftsPage() {
+        return "derivation_gift";
+    }
+    @GetMapping(PATH_FRAME)
+    public String navFramePage() {
+        return "derivation_frame";
+    }
+    @GetMapping(PATH_LITER)
+    public String navLiterPage() {
+        return "derivation_liter";
+    }
+    
 
     @GetMapping(RELATED_IMAGE_PATH)
     private String doShowRelatedImage(HttpServletRequest request, Model model) {
@@ -88,7 +113,7 @@ public class DerivedProductCenterController {
                             "/Images/" + x.getProductImages().stream().findFirst().get().getId(), 1, x.getId(), 2))
                     .collect(Collectors.toCollection(ArrayList::new));
             model.addAttribute("products", products);
-            return "user_derivedproduct";
+            return "derivation";
         }
     }
 

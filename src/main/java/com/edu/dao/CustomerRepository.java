@@ -1,6 +1,9 @@
 package com.edu.dao;
 
 import com.edu.domain.Customer;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +13,8 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
     Page<Customer> findAllOrderByName(Pageable pageable);
 
     Customer findOneByOpenCode(String openCode);
+    
+    List<Customer> findCustomersByIsNotActivated();
 
     @Query("select count(c)>0 from Customer c where c.openCode = ?1")
     boolean isCustomerAlreadyRegistered(String openCode);

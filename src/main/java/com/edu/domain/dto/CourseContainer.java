@@ -1,10 +1,6 @@
-package com.edu.domain;
+package com.edu.domain.dto;
 
-import java.util.Set;
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.edu.domain.Course;
 
 public class CourseContainer {
     private long id;

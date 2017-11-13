@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -68,6 +70,14 @@ public class CustomerController {
         return repository.save(entity);
     }
 
+    @PutMapping(path = PATH + "/{id}")
+    public String activateCustomer(@PathVariable(value = "id") Long id) throws HttpException  {
+        Customer customerObject = repository.findOne(id);
+        customerObject.setActivated(true);
+        repository.save(customerObject);
+        return "客户激活成功!";
+    }
+    
     private Resource<Customer> buildResource(Customer customer) {
         Resource<Customer> resource = new Resource<>(customer);
         // Links
