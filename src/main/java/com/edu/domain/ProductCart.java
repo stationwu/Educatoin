@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.edu.domain.dto.DerivedProduct;
+
 @Entity
 @Table(name="productcart")
 public class ProductCart {

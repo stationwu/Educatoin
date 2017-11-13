@@ -1,8 +1,13 @@
-package com.edu.domain;
+package com.edu.domain.dto;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.edu.domain.ImageCollection;
+import com.edu.domain.Order;
+import com.edu.domain.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

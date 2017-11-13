@@ -3,6 +3,7 @@ package com.edu.boot;
 import com.edu.controller.WxErrorController;
 import com.edu.dao.*;
 import com.edu.domain.*;
+import com.edu.domain.dto.DerivedProduct;
 import com.edu.utils.ImageServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,6 @@
-package com.edu.domain;
+package com.edu.domain.dto;
+
+import com.edu.domain.Student;
 
 public class StudentContainer {
 	private String id;
