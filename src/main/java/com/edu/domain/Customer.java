@@ -3,6 +3,7 @@ package com.edu.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class Customer {
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "customer")
     @JsonIgnore
-    private Set<Student> students;
+    private Set<Student> students = new HashSet<>();
 
     @OneToOne(cascade = { CascadeType.ALL })
     @JsonIgnore
