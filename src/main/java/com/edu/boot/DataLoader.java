@@ -102,42 +102,42 @@ public class DataLoader {
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom1)) + " "
                                     + timeFormat.format(Date.from(instantTo1)),
                             date.toString(), timeFormat.format(Date.from(instantFrom1)),
-                            timeFormat.format(Date.from(instantTo1)))));
+                            timeFormat.format(Date.from(instantTo1)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom2)) + " "
                                     + timeFormat.format(Date.from(instantTo2)),
                             date.toString(), timeFormat.format(Date.from(instantFrom2)),
-                            timeFormat.format(Date.from(instantTo2)))));
+                            timeFormat.format(Date.from(instantTo2)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom3)) + " "
                                     + timeFormat.format(Date.from(instantTo3)),
                             date.toString(), timeFormat.format(Date.from(instantFrom3)),
-                            timeFormat.format(Date.from(instantTo3)))));
+                            timeFormat.format(Date.from(instantTo3)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom4)) + " "
                                     + timeFormat.format(Date.from(instantTo4)),
                             date.toString(), timeFormat.format(Date.from(instantFrom4)),
-                            timeFormat.format(Date.from(instantTo4)))));
+                            timeFormat.format(Date.from(instantTo4)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom5)) + " "
                                     + timeFormat.format(Date.from(instantTo5)),
                             date.toString(), timeFormat.format(Date.from(instantFrom5)),
-                            timeFormat.format(Date.from(instantTo5)))));
+                            timeFormat.format(Date.from(instantTo5)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom6)) + " "
                                     + timeFormat.format(Date.from(instantTo6)),
                             date.toString(), timeFormat.format(Date.from(instantFrom6)),
-                            timeFormat.format(Date.from(instantTo6)))));
+                            timeFormat.format(Date.from(instantTo6)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom7)) + " "
                                     + timeFormat.format(Date.from(instantTo7)),
                             date.toString(), timeFormat.format(Date.from(instantFrom7)),
-                            timeFormat.format(Date.from(instantTo7)))));
+                            timeFormat.format(Date.from(instantTo7)), 10)));
                     courses.add(courseRepository.save(new Course(
                             date.toString() + " " + timeFormat.format(Date.from(instantFrom8)) + " "
                                     + timeFormat.format(Date.from(instantTo8)),
                             date.toString(), timeFormat.format(Date.from(instantFrom8)),
-                            timeFormat.format(Date.from(instantTo8)))));
+                            timeFormat.format(Date.from(instantTo8)), 10)));
                 }
             }
             ArrayList<Image> images = new ArrayList<>();

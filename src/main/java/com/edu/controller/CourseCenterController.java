@@ -1,24 +1,35 @@
 package com.edu.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
+import com.edu.dao.CourseRepository;
 import com.edu.dao.CustomerRepository;
 import com.edu.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.edu.domain.Course;
+import com.edu.domain.CourseContainer;
 import com.edu.domain.Student;
+import com.edu.utils.DateToStringConverter;
 
 @Controller
 public class CourseCenterController {
 	@Autowired
     private CustomerRepository custRepo;
+	
+	@Autowired
+	private CourseRepository courseRepository;
 
 	public final static String USER_COURSE_PATH = "/user/course";
 	
@@ -81,9 +92,19 @@ public class CourseCenterController {
     	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-        model.addAttribute("students", customer.getStudents().stream().collect(Collectors.toCollection(ArrayList::new)));
+        model.addAttribute("students", customer.getStudents().stream().sorted((x,y) -> x.getId().compareTo(y.getId())).collect(Collectors.toCollection(ArrayList::new)));
         model.addAttribute("code", openId);
 			
 		return "user_reserve_course";
+	}
+    
+    @GetMapping("/user/searchcourse")
+    @ResponseBody
+	private ArrayList<CourseContainer> searchCourseByDate(@RequestParam(value = "date") Date date, HttpSession session, Model model) {
+    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
+    	String dateStr = DateToStringConverter.convertDatetoString(date);
+		Collection<Course> entities = courseRepository.findByDateOrderByTimeFromAsc(dateStr);
+		ArrayList<CourseContainer> courseContainers = entities.stream().map(x -> new CourseContainer(x)).collect(Collectors.toCollection(ArrayList::new));
+		return 	courseContainers;
 	}
 }

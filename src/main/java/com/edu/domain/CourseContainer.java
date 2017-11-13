@@ -17,6 +17,8 @@ public class CourseContainer {
 
 	private String timeTo;
 	
+	private int maxSeat;
+	
 	private int reservedStudentCount;
 
 	public CourseContainer() {
@@ -29,6 +31,7 @@ public class CourseContainer {
 		this.timeFrom = course.getTimeFrom();
 		this.timeTo = course.getTimeTo();
 		this.reservedStudentCount = course.getReservedStudentsSet().size();
+		this.maxSeat = course.getMaxSeat();
 	}
 
 	public long getId() {
@@ -77,6 +80,14 @@ public class CourseContainer {
 
 	public void setReservedStudentCount(int reservedStudentCount) {
 		this.reservedStudentCount = reservedStudentCount;
+	}
+
+	public int getMaxSeat() {
+		return maxSeat;
+	}
+
+	public void setMaxSeat(int maxSeat) {
+		this.maxSeat = maxSeat;
 	}
 	
 }

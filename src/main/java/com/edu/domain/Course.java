@@ -19,6 +19,8 @@ public class Course {
 	private String timeFrom;
 
 	private String timeTo;
+	
+	private int maxSeat;
 
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
@@ -104,11 +106,12 @@ public class Course {
 
 	}
 	
-	public Course(String courseName, String date, String timeFrom, String timeTo) {
+	public Course(String courseName, String date, String timeFrom, String timeTo, int maxSeat) {
 		this.courseName = courseName;
 		this.date = date;
 		this.timeFrom = timeFrom;
 		this.timeTo = timeTo;
+		this.maxSeat = maxSeat;
 	}
 
     public void setId(long id) {
@@ -118,4 +121,13 @@ public class Course {
     public long getId() {
         return id;
     }
+
+	public int getMaxSeat() {
+		return maxSeat;
+	}
+
+	public void setMaxSeat(int maxSeat) {
+		this.maxSeat = maxSeat;
+	}
+    
 }

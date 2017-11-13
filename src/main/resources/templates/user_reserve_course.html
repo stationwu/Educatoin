@@ -24,11 +24,16 @@
         </div>
     </div>
 </div>
+<div class="button_sp_area">
+	<a href="javascript:;" th:each="student : ${students}" 
+	class="weui-btn weui-btn_mini weui-btn_default" 
+	th:text="${{student.studentName}}" th:rel="${{student.id}}">按钮</a>
+</div>
 <div class="weui-cells" id="courseList">
     <div class="weui-cell dsx-weui-cell" v-for="(course, index) in courseArray">
         <div class="weui-cell__hd"></div>
         <div class="weui-cell__bd">
-            {{ course.courseName }}
+            {{course.date}} ({{course.reservedStudentCount}}/{{course.maxSeat}}) {{course.timeFrom}} - {{course.timeTo}}
         </div>
         <div class="weui-cell__ft">
             <button type="button" class="weui-btn weui-btn_mini weui-btn_primary" v-on:click="sign(index,$event)">预约
@@ -44,6 +49,7 @@
 <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://unpkg.com/vue"></script>
 <script type="text/javascript">
+/*<![CDATA[*/
     function formatDate(date) {
         var day = date.getDate();
         var month = date.getMonth() + 1;
@@ -54,8 +60,13 @@
     var courseArray = [];
     var courses = {}
     $(document).ready(function () {
-        $.get("/Course/date/" + formatDate(new Date())).done(function (data) {
-            courseArray = data._embedded.courseList;
+    	$('.button_sp_area .weui-btn_mini')[0].classList.add('weui-btn_primary');
+    	$('.button_sp_area .weui-btn_mini').click(function() {
+    		$('.button_sp_area .weui-btn_mini').removeClass('weui-btn_primary');
+    		window.event.toElement.classList.add('weui-btn_primary');
+    	});
+        $.get("/user/searchcourse?date=" + formatDate(new Date())).done(function (data) {
+            courseArray = data;
             courses = new Vue({
                 el: '#courseList',
                 methods: {
@@ -90,6 +101,7 @@
             });
         })
     });
+/*]]>*/  
 </script>
 <div id="code" style="visibility:hidden" th:text="${{code}}"/>
 </body>
