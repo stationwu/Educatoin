@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.CustomerRepository;
 import com.edu.domain.*;
+import com.edu.domain.dto.DerivedProduct;
+import com.edu.domain.dto.ProductContainer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

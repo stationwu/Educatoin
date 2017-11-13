@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Student;
-import com.edu.domain.StudentContainer;
+import com.edu.domain.dto.StudentContainer;
 import com.edu.utils.Constant;
 
 @Controller

@@ -1,4 +1,4 @@
-package com.edu.domain;
+package com.edu.domain.dto;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

@@ -63,5 +63,20 @@ footer a {
     float: left;
     padding: 20px 10px;
     width: 50%;
+    height: 50%;
     box-sizing: border-box;
+}
+
+.weui-grid-dsx-icon {
+	width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border: #124B28;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.dsx-custom-vcode-btn {
+	color:#124B28 !important;
 }
