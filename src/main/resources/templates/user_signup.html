@@ -40,6 +40,12 @@
                         <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码" v-model="verificationCode" />
                     </div>
                 </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">地址</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" placeholder="请输入地址" v-model="address" />
+                    </div>
+                </div>
                 <div class="weui-panel__bd" v-for="(child, index) in children">
                     <div class="weui-cells">
                         <div class="weui-cell">
