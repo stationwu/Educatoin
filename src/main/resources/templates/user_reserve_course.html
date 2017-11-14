@@ -98,8 +98,8 @@
         });
 
         $('#datetimepicker').on("dp.change", function (e) {
-            $.get("/Course/date/" + e.date.format("YYYY-MM-DD")).done(function (data) {
-                courseArray = data._embedded.courseList;
+            $.get("/user/searchcourse?date=" + e.date.format("YYYY-MM-DD")).done(function (data) {
+                courseArray = data;
                 courses.courseArray = courseArray;
             });
         })
