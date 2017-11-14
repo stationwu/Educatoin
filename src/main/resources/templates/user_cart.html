@@ -8,8 +8,8 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link href="/css/base.css" rel="stylesheet" media="screen"/>
     <link href="/css/module.css" rel="stylesheet" media="screen"/>
-	<link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css" />
-	<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css" />    
+	<link rel="stylesheet" href="/css/weui.min.css" />
+	<link rel="stylesheet" href="/css/jquery-weui.min.css" />    
 </head>
 <body>
 	<h3>购物车</h3>
@@ -45,11 +45,13 @@
 		</div>
 	</div>
 	<div id="code" style="visibility:hidden" th:text="${{code}}" />
-    <script src="/js/jquery-3.2.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/moment-with-locales.js"></script>
-    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="https://unpkg.com/vue"></script>
+	
+    <script src="/js/jquery-3.2.1.min.js" type="text/javascript" ></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript" ></script>
+    <script src="/js/moment-with-locales.js" type="text/javascript" ></script>
+    <script src="/js/bootstrap-datetimepicker.min.js" type="text/javascript" ></script>
+    <script src="/js/vue.min.js"></script>
+    
     <script type="text/javascript">
 	    $(document).ready(function () {
 			$.get( "/user/cartcontent?code="+$('#code').text()).done(function(data){
