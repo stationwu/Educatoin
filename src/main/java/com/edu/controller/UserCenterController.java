@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -46,6 +45,7 @@ public class UserCenterController {
         }
 
         return "user_info";
+
 	}
 	
 	@GetMapping(USER_CENTER_PATH)

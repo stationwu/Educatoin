@@ -29,7 +29,7 @@ var app = new Vue({
             var openCode = $('#wxOpenCode').text();
             var customer = {
                 "openCode"     : openCode,
-                "name"         : openCode,
+                "name"         : app.children[0].name + "家长",
                 "mobilePhone"  : app.mobilePhone,
                 "address"      : app.address,
                 "children"     : []
@@ -47,8 +47,8 @@ var app = new Vue({
                 contentType: 'application/json',
                 type: 'POST',
                 data: JSON.stringify(customer),
-            }).done(function() {
-                console.log(response);
+            }).done(function(response) {
+                window.location.href = "/user/center";
             });
         },
     }
