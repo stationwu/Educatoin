@@ -12,9 +12,9 @@ public class CustomerContainer {
 
     private String address;
 
-    private List<ChildForm> children = new ArrayList<>();
+    private List<Child> children = new ArrayList<>();
 
-    public static class ChildForm {
+    public static class Child {
         private String childName;
 
         private int classPeriod;
@@ -78,19 +78,19 @@ public class CustomerContainer {
         this.address = address;
     }
 
-    public List<ChildForm> getChildren() {
+    public List<Child> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildForm> children) {
+    public void setChildren(List<Child> children) {
         this.children = children;
     }
 
-    public void setChild(int index, ChildForm child) {
+    public void setChild(int index, Child child) {
         this.children.set(index, child);
     }
 
-    public void addChild(ChildForm child) {
+    public void addChild(Child child) {
         this.children.add(child);
     }
 }

@@ -13,8 +13,9 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
     Page<Customer> findAllOrderByName(Pageable pageable);
 
     Customer findOneByOpenCode(String openCode);
-    
-    List<Customer> findCustomersByIsActivated();
+
+    //TODO: Fix problem below
+    //List<Customer> findCustomersByIsActivated();
 
     @Query("select count(c)>0 from Customer c where c.openCode = ?1")
     boolean isCustomerAlreadyRegistered(String openCode);

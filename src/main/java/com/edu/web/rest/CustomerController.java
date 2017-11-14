@@ -43,16 +43,23 @@ public class CustomerController {
     }
 
     @PostMapping(path = PATH + "/SignUp")
-    public Customer create(@RequestBody @Valid CustomerContainer form) {
-        Customer customer = new Customer(form.getOpenCode(), form.getName(), form.getMobilePhone(), form.getAddress());
-        customer = repository.save(customer);
+    public Customer create(@RequestBody @Valid CustomerContainer customerForm) {
+        Customer customer;
 
-        for (CustomerContainer.ChildForm childForm : form.getChildren()) {
-            Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
-                    0, childForm.getClassPeriod(), true);
-            student.setCustomer(customer);
-            student = studentRepository.save(student);
-            customer.addStudent(student);
+        if (repository.isCustomerAlreadyRegistered(customerForm.getOpenCode())) {
+            customer = repository.findOneByOpenCode(customerForm.getOpenCode());
+        } else {
+            customer = new Customer(customerForm.getOpenCode(), customerForm.getName(),
+                    customerForm.getMobilePhone(), customerForm.getAddress());
+            customer = repository.save(customer);
+
+            for (CustomerContainer.Child childForm : customerForm.getChildren()) {
+                Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
+                        0, childForm.getClassPeriod(), true);
+                student.setCustomer(customer);
+                student = studentRepository.save(student);
+                customer.addStudent(student);
+            }
         }
 
         return customer;
@@ -69,13 +76,13 @@ public class CustomerController {
     }
 
     @PutMapping(path = PATH + "/{id}")
-    public String activateCustomer(@PathVariable(value = "id") Long id) throws HttpException  {
+    public String activateCustomer(@PathVariable(value = "id") Long id) throws HttpException {
         Customer customerObject = repository.findOne(id);
         customerObject.setActivated(true);
         repository.save(customerObject);
         return "客户激活成功!";
     }
-    
+
     private Resource<Customer> buildResource(Customer customer) {
         Resource<Customer> resource = new Resource<>(customer);
         // Links
