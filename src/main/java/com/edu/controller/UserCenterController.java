@@ -44,19 +44,8 @@ public class UserCenterController {
         if (openId == null) {
             return "error_500";
         }
-        
-        String view = null;
-        
-        Customer customer = repository.findOneByOpenCode(openId);
-        if("15868858028".equals(customer.getMobilePhone())) {
-            model.addAttribute("user", customer);
-            model.addAttribute("customers", repository.findCustomersByIsActivated());
-            view = "user_list";
-        } else {
-            model.addAttribute("user", customer);
-            view = "user_info";
-        }
-        return view;
+
+        return "user_info";
 	}
 	
 	@GetMapping(USER_CENTER_PATH)
