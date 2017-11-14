@@ -4,6 +4,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.edu.domain.ImageCollection;
+import com.edu.domain.Product;
+
 public class ProductContainer {
 
     @Id
@@ -100,6 +103,43 @@ public class ProductContainer {
 		this.id = id;
 		this.type = type;
 	}
+	
+	public ProductContainer(Product product, int type) {
+		super();
+		this.productName = product.getProductName();
+		this.category = product.getProductCategory().getCategoryName();
+		this.productPrice = product.getProductPrice();
+		this.productDescription = product.getProductDescription();
+		this.imageUrl = "/Images/" + product.getProductImages().stream().findFirst().get().getId() + "/thumbnail";
+		this.quantity = 1;
+		this.id = product.getId();
+		this.type = type;
+	}
+	
+	public ProductContainer(DerivedProduct product, int type) {
+		super();
+		this.productName = product.getProduct().getProductName();
+		this.category = product.getProduct().getProductCategory().getCategoryName();
+		this.productPrice = product.getProduct().getProductPrice();
+		this.productDescription = product.getProduct().getProductDescription();
+		this.imageUrl = "/Images/" + product.getProduct().getProductImages().stream().findFirst().get().getId() + "/thumbnail";
+		this.quantity = 1;
+		this.id = product.getId();
+		this.type = type;
+	}
+	
+	public ProductContainer(ImageCollection product, int type) {
+		super();
+		this.productName = product.getCollectionName();
+		this.category = "作品集";
+		this.productPrice = product.getPrice();
+		this.productDescription = product.getCollectionDescription();
+		this.imageUrl = "/Images/" + product.getImageCollection().stream().findFirst().get().getId() + "/thumbnail";
+		this.quantity = 1;
+		this.id = product.getId();
+		this.type = type;
+	}
+
 
     public void setId(long id) {
         this.id = id;

@@ -4,7 +4,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,8 +90,11 @@ public class StudentManagerController {
 			@RequestParam("file") MultipartFile files[])
 			throws HttpException {
 		Student student = studentRepository.findOne(studentId);
+		@SuppressWarnings("unchecked")
 		List<Course> courses = (List<Course>) courseRepository.search(date, hour, new PageRequest(0, 1));
 		Course course = courses.get(0);
+		student.addCourse(course);
+		student.removeReservedCourse(course);
 		for (MultipartFile file : files) {
 			if (!file.isEmpty()) {
 				Image img = new Image();

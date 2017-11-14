@@ -148,6 +148,11 @@ public class Student {
     public void addReservedCourse(Course reservedCourse) {
         this.reservedCoursesSet.add(reservedCourse);
     }
+    
+    public void removeReservedCourse(Course reservedCourse) {
+        this.reservedCoursesSet.remove(reservedCourse);
+    }
+
 
     public Set<Course> getCourseNotSignSet() {
         return courseNotSignSet;
