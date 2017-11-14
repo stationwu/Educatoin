@@ -50,7 +50,7 @@ public class UserCenterController {
         Customer customer = repository.findOneByOpenCode(openId);
         if("15868858028".equals(customer.getMobilePhone())) {
             model.addAttribute("user", customer);
-            model.addAttribute("customers", repository.findCustomersByIsNotActivated());
+            model.addAttribute("customers", repository.findCustomersByIsActivated());
             view = "user_list";
         } else {
             model.addAttribute("user", customer);
