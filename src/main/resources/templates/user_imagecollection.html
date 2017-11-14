@@ -67,12 +67,12 @@
     }
 
     function generateImageCollection() {
-    	var sUrl = "/user/generateImagecollection";
+    	var sUrl = "/user/generateImagecollection?images=" + items.join(',');
     	var fnSuccess = function (data) {
-            $.alert(data);
+            $.alert(data,"消息");
         };
         
-        $.post(sUrl,"images=" + items.join(',')).done(fnSuccess);
+        $.post(sUrl).done(fnSuccess);
     }
 </script>
 </body>

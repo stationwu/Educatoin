@@ -66,13 +66,10 @@
         $('.send').attr('data-counter', $('li.selected').length);
     }
 
-    function generateImageCollection() {
-        var sUrl = "/user/generateImagecollection";
-        var fnSuccess = function (data) {
+    function generateImageCollection() {        
+        $.post("/user/generateImagecollection?images=" + items.join(',')).done(function (data) {
             $.alert(data,"消息");
-        };
-        
-        $.post(sUrl,"images=" + items.join(',')).done(fnSuccess);
+        });
     }
 </script>
 </body>
