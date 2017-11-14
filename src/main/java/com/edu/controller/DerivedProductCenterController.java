@@ -44,9 +44,36 @@ public class DerivedProductCenterController {
     public final static String PATH_LITER = "/derivation/literature";
     
     @GetMapping(PATH_WORKS)
-    public String navWorksPage() {
+    public String navWorksPage(HttpServletRequest request, Model model) {
+    	String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
+        if (openId == null) {
+            return "error_500";
+        }
+
+        Customer customer = custRepo.findOneByOpenCode(openId);
+        ArrayList<ImageContainer> imageContainer = new ArrayList<>();
+        for (Student student : customer.getStudents()) {
+            Set<Image> images = student.getImagesSet();
+            ArrayList<ImageContainer> imagesContainer = 
+            		images.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+                    	.map(x -> new ImageContainer(
+                    			x.getId(), 
+                    			x.getImageName(), 
+                    			x.getDate(), 
+                    			x.getCourse(),
+                    			"/Images/" + x.getId(), 
+                    			"/Images/" + x.getId() + "/thumbnail")
+                    	)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            
+            imageContainer.addAll(imagesContainer);
+        }
+        model.addAttribute("code", openId);
+        model.addAttribute("images", imageContainer.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+				.collect(Collectors.toCollection(ArrayList::new)));
         return "derivation_works";
     }
+    
     @GetMapping(PATH_GIFTS)
     public String navGiftsPage() {
         return "derivation_gift";

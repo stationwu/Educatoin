@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -44,19 +43,9 @@ public class UserCenterController {
         if (openId == null) {
             return "error_500";
         }
-        
-        String view = null;
-        
-        Customer customer = repository.findOneByOpenCode(openId);
-        if("15868858028".equals(customer.getMobilePhone())) {
-            model.addAttribute("user", customer);
-            //model.addAttribute("customers", repository.findCustomersByIsActivated());
-            view = "user_list";
-        } else {
-            model.addAttribute("user", customer);
-            view = "user_info";
-        }
-        return view;
+
+        return "user_info";
+
 	}
 	
 	@GetMapping(USER_CENTER_PATH)
