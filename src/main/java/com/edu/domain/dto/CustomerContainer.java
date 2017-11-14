@@ -1,9 +1,9 @@
-package com.edu.view;
+package com.edu.domain.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerSignUpForm {
+public class CustomerContainer {
     private String openCode;
 
     private String name;

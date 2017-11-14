@@ -4,7 +4,7 @@ import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
-import com.edu.view.CustomerSignUpForm;
+import com.edu.domain.dto.CustomerContainer;
 import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -45,11 +43,11 @@ public class CustomerController {
     }
 
     @PostMapping(path = PATH + "/SignUp")
-    public Customer create(@RequestBody @Valid CustomerSignUpForm form) {
+    public Customer create(@RequestBody @Valid CustomerContainer form) {
         Customer customer = new Customer(form.getOpenCode(), form.getName(), form.getMobilePhone(), form.getAddress());
         customer = repository.save(customer);
 
-        for (CustomerSignUpForm.ChildForm childForm : form.getChildren()) {
+        for (CustomerContainer.ChildForm childForm : form.getChildren()) {
             Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
                     0, childForm.getClassPeriod(), true);
             student.setCustomer(customer);
