@@ -20,7 +20,7 @@
     <div th:each="image : ${images}">
 	  <div class="weui-module-grids">
             <div class="weui-module-grid">
-                <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.imageName}}"/>
+                <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
             </div>
 	  </div>
 	</div>
