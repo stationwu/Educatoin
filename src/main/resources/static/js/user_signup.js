@@ -47,8 +47,8 @@ var app = new Vue({
                 contentType: 'application/json',
                 type: 'POST',
                 data: JSON.stringify(customer),
-            }).done(function() {
-                console.log(response);
+            }).done(function(response) {
+                window.location.href = "/user/center";
             });
         },
     }

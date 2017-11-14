@@ -4,7 +4,7 @@ import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
-import com.edu.view.CustomerSignUpForm;
+import com.edu.domain.dto.CustomerContainer;
 import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -45,16 +43,23 @@ public class CustomerController {
     }
 
     @PostMapping(path = PATH + "/SignUp")
-    public Customer create(@RequestBody @Valid CustomerSignUpForm form) {
-        Customer customer = new Customer(form.getOpenCode(), form.getName(), form.getMobilePhone(), form.getAddress());
-        customer = repository.save(customer);
+    public Customer create(@RequestBody @Valid CustomerContainer customerForm) {
+        Customer customer;
 
-        for (CustomerSignUpForm.ChildForm childForm : form.getChildren()) {
-            Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
-                    0, childForm.getClassPeriod(), true);
-            student.setCustomer(customer);
-            student = studentRepository.save(student);
-            customer.addStudent(student);
+        if (repository.isCustomerAlreadyRegistered(customerForm.getOpenCode())) {
+            customer = repository.findOneByOpenCode(customerForm.getOpenCode());
+        } else {
+            customer = new Customer(customerForm.getOpenCode(), customerForm.getName(),
+                    customerForm.getMobilePhone(), customerForm.getAddress());
+            customer = repository.save(customer);
+
+            for (CustomerContainer.Child childForm : customerForm.getChildren()) {
+                Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
+                        0, childForm.getClassPeriod(), true);
+                student.setCustomer(customer);
+                student = studentRepository.save(student);
+                customer.addStudent(student);
+            }
         }
 
         return customer;
@@ -71,13 +76,13 @@ public class CustomerController {
     }
 
     @PutMapping(path = PATH + "/{id}")
-    public String activateCustomer(@PathVariable(value = "id") Long id) throws HttpException  {
+    public String activateCustomer(@PathVariable(value = "id") Long id) throws HttpException {
         Customer customerObject = repository.findOne(id);
         customerObject.setActivated(true);
         repository.save(customerObject);
         return "客户激活成功!";
     }
-    
+
     private Resource<Customer> buildResource(Customer customer) {
         Resource<Customer> resource = new Resource<>(customer);
         // Links
