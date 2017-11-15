@@ -22,12 +22,16 @@ public class Product {
 	private double productPrice = 0.0d;
 
 	private String productDescription;
+	
+	private String longProductDescription;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Set<Image> productImages;
 
 	private boolean derivedProductFlag;
+	
+	private boolean imageCollectionFlag;
 	
 	private int priority;
 	
@@ -36,12 +40,13 @@ public class Product {
 	}
 
 	public Product(String productName, ProductCategory productCategory, double productPrice, String productDescription,
-			boolean derivedProductFlag) {
+			boolean derivedProductFlag, boolean imageCollectionFlag) {
 		this.productName = productName;
 		this.productCategory = productCategory;
 		this.productPrice = productPrice;
 		this.productDescription = productDescription;
 		this.derivedProductFlag = derivedProductFlag;
+		this.imageCollectionFlag = imageCollectionFlag;
 	}
 
 	public boolean getDerivedProductFlag() {
@@ -107,4 +112,21 @@ public class Product {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+
+	public String getLongProductDescription() {
+		return longProductDescription;
+	}
+
+	public void setLongProductDescription(String longProductDescription) {
+		this.longProductDescription = longProductDescription;
+	}
+
+	public boolean isImageCollectionFlag() {
+		return imageCollectionFlag;
+	}
+
+	public void setImageCollectionFlag(boolean imageCollectionFlag) {
+		this.imageCollectionFlag = imageCollectionFlag;
+	}
+	
 }

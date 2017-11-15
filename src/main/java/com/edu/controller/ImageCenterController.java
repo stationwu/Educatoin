@@ -3,6 +3,7 @@ package com.edu.controller;
 import com.edu.dao.CustomerRepository;
 import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.ImageRepository;
+import com.edu.dao.ProductRepository;
 import com.edu.domain.*;
 import com.edu.domain.dto.ImageContainer;
 
@@ -27,6 +28,9 @@ public class ImageCenterController {
 	@Autowired
 	private ImageRepository imageRepository;
 
+	@Autowired
+	private ProductRepository productRepository;
+	
 	@Autowired
 	private ImageCollectionRepository imageCollectionRepository;
 
@@ -129,7 +133,8 @@ public class ImageCenterController {
 		}
 
 		imageCollection.setImageCollection(imageList);
-		imageCollection.setPrice(200d);
+		List<Product> products = productRepository.getImageCollectionProductList();
+		imageCollection.setProduct(products.get(0));
 		imageCollection.setCollectionName("作品集");
 		imageCollection.setCollectionDescription(imageList.size() + "幅作品");
 		ImageCollection entity = imageCollectionRepository.save(imageCollection);

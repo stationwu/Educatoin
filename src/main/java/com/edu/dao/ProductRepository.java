@@ -12,4 +12,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 	
 	@Query("select s from Product s where s.derivedProductFlag = TRUE")
 	List<Product> getDerivedProductList();
+	
+	@Query("select s from Product s where s.imageCollectionFlag = TRUE")
+	List<Product> getImageCollectionProductList();
 }
