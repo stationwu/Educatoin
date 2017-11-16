@@ -65,6 +65,26 @@ footer a {
     width: 50%;
     height: 50%;
     box-sizing: border-box;
+    border-width:1px;
+}
+
+.weui-module-grid-prod {
+    position: relative;
+    float: left;
+    padding: 2px 2px;
+    width: 50%;
+    height: 50%;
+    box-sizing: border-box;
+    border-width:1px;
+}
+
+.weui-grid-dsx-icon-prod {
+    height: 120px;
+    margin: 0 auto;
+    border: #124B28;
+    border-style: solid;
+    border-radius: 4px;
+    border-width:2px;
 }
 
 .weui-grid-dsx-icon {
@@ -79,4 +99,9 @@ footer a {
 
 .dsx-custom-vcode-btn {
 	color:#124B28 !important;
+}
+
+.tip-bar-color {
+	background: #124B28 !important;
+	margin-bottom: 4px;
 }
