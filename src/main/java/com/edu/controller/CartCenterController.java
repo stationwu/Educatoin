@@ -42,11 +42,11 @@ public class CartCenterController {
 		Set<ImageCollection> imageCollection = customer.getCart().getImageCollection();
 
 		Stream<ProductContainer> productsStream = products.stream()
-				.map(x -> new ProductContainer(x, 1));
+				.map(x -> new ProductContainer(x, 1,1));
 		Stream<ProductContainer> derivedProductsStream = derivedProducts.stream()
-				.map(x -> new ProductContainer(x, 2));
+				.map(x -> new ProductContainer(x,1, 2));
 		Stream<ProductContainer> imageCollectionStream = imageCollection.stream()
-				.map(x -> new ProductContainer(x, 3));
+				.map(x -> new ProductContainer(x,1, 3));
 		model.addAttribute("products", Stream.of(productsStream, derivedProductsStream, imageCollectionStream)
 				.flatMap(i -> i).collect(Collectors.toCollection(ArrayList::new)));
 		model.addAttribute("code", openId);
@@ -70,11 +70,11 @@ public class CartCenterController {
 		Set<ImageCollection> imageCollection = customer.getCart().getImageCollection();
 
 		Stream<ProductContainer> productsStream = products.stream()
-				.map(x -> new ProductContainer(x, 1));
+				.map(x -> new ProductContainer(x,1, 1));
 		Stream<ProductContainer> derivedProductsStream = derivedProducts.stream()
-				.map(x -> new ProductContainer(x, 2));
+				.map(x -> new ProductContainer(x,1, 2));
 		Stream<ProductContainer> imageCollectionStream = imageCollection.stream()
-				.map(x -> new ProductContainer(x, 3));
+				.map(x -> new ProductContainer(x,1, 3));
 
 		return Stream.of(productsStream, derivedProductsStream, imageCollectionStream).flatMap(i -> i)
 				.collect(Collectors.toCollection(ArrayList::new));

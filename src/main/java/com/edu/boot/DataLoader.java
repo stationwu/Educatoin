@@ -183,20 +183,26 @@ public class DataLoader {
             if (0 == productCategoryRepository.count()) {
                 productCategories.add(productCategoryRepository.save(new ProductCategory("画布", "黑白画布")));
                 productCategories.add(productCategoryRepository.save(new ProductCategory("衍生品", "创新衍生品")));
+                productCategories.add(productCategoryRepository.save(new ProductCategory("作品集", "作品集")));
             }
 
             ArrayList<Product> products = new ArrayList<>();
             if (0 == productRepository.count()) {
-                Product product = new Product("星星画布", productCategories.get(0), 520d, "画布", false);
+                Product product = new Product("星星画布", productCategories.get(0), 520d, "画布", false, false);
                 Set<Image> imageSet = new HashSet<>();
                 imageSet.add(images.get(0));
                 product.setProductImages(imageSet);
                 products.add(productRepository.save(product));
-                Product derivedProduct = new Product("T恤衍生品", productCategories.get(0), 200d, "衍生品", true);
+                Product derivedProduct = new Product("T恤衍生品", productCategories.get(0), 200d, "衍生品", true, false);
                 imageSet.clear();
                 imageSet.add(images.get(1));
                 derivedProduct.setProductImages(imageSet);
                 products.add(productRepository.save(derivedProduct));
+                Product imageCollectionProduct = new Product("作品集", productCategories.get(0), 300d, "作品集",false,true);
+                imageSet.clear();
+                imageSet.add(images.get(0));
+                derivedProduct.setProductImages(imageSet);
+                products.add(productRepository.save(imageCollectionProduct));
             }
             ArrayList<DerivedProduct> derivedProducts = new ArrayList<>();
             if (0 == derivedProductRepository.count()) {
@@ -211,7 +217,7 @@ public class DataLoader {
                 Set<Image> imageList = new HashSet<>();
                 imageList.add(images.get(1));
                 imageCollection.setImageCollection(imageList);
-                imageCollection.setPrice(200d);
+                imageCollection.setProduct(products.get(2));
                 imageCollection.setCollectionName("作品集");
                 imageCollection.setCollectionDescription(imageList.size() + "幅作品");
                 imageCollections.add(imageCollectionRepository.save(imageCollection));

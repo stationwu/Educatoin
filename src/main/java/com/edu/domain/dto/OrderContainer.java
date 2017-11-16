@@ -43,22 +43,11 @@ public class OrderContainer {
 		super();
 		this.order = order;
 		Stream<ProductContainer> productsStream = productsMap.entrySet().stream()
-				.map(x -> new ProductContainer(x.getKey().getProductName(),
-						x.getKey().getProductCategory().getCategoryName(), x.getKey().getProductPrice(),
-						x.getKey().getProductDescription(),
-						"/Images/" + x.getKey().getProductImages().stream().findFirst().get().getId() + "/thumbnail",
-						x.getValue(), x.getKey().getId(), 1));
+				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 1));
 		Stream<ProductContainer> derivedProductsStream = derivedProductsMap.entrySet().stream()
-				.map(x -> new ProductContainer(x.getKey().getProduct().getProductName(),
-						x.getKey().getProduct().getProductCategory().getCategoryName(),
-						x.getKey().getProduct().getProductPrice(), x.getKey().getProduct().getProductDescription(),
-						"/Images/" + x.getKey().getImage().getId() + "/thumbnail", x.getValue(), x.getKey().getId(),
-						2));
+				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 2));
 		Stream<ProductContainer> imageCollectionStream = imageCollectionMap.entrySet().stream()
-				.map(x -> new ProductContainer(x.getKey().getCollectionName(), "作品集", x.getKey().getPrice(),
-						x.getKey().getCollectionDescription(),
-						"/Images/" + x.getKey().getImageCollection().stream().findFirst().get().getId() + "/thumbnail",
-						x.getValue(), x.getKey().getId(), 3));
+				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 3));
 		this.productContainers = Stream.of(productsStream, derivedProductsStream, imageCollectionStream).flatMap(i -> i)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}

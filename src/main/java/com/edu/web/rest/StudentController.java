@@ -27,24 +27,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.controller.RouteConstant;
 import com.edu.dao.CourseRepository;
+import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
+import com.edu.domain.Customer;
 import com.edu.domain.Image;
 import com.edu.domain.Student;
 
 @RestController
 public class StudentController {
     public static final String PATH = "/api/v1/Student";
+    public static final String RELATIONSHIP_PATH = "/api/v1/Student/Customer";
     public static final String RELATIVE_COURSE_PATH = CourseController.PATH + "/{courseId}" + PATH;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
+    private final CustomerRepository customerRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public StudentController(StudentRepository studentRepository,
-                             CourseRepository courseRepository) {
+                             CourseRepository courseRepository,
+                             CustomerRepository customerRepository) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
+        this.customerRepository = customerRepository;
     }
 
     @RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,9 +67,12 @@ public class StudentController {
         return new ResponseEntity<>(buildResources(entities), HttpStatus.OK);
     }
 
-    @PostMapping(path = PATH)
-    public Resource<Student> createStudent(@RequestBody @Valid Student student) throws HttpException {
+    @PostMapping(path = RELATIONSHIP_PATH+ "/{id}")
+    public Resource<Student> createStudentbyCustomer(@PathVariable(value = "id") String id, @RequestBody @Valid Student student) throws HttpException {
         Student entity = studentRepository.save(student);
+        Customer customer= customerRepository.findOne(Long.parseLong(id));
+        student.setCustomer(customer);
+        studentRepository.save(student);
         return buildResource(entity);
     }
 

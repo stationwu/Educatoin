@@ -104,38 +104,38 @@ public class ProductContainer {
 		this.type = type;
 	}
 	
-	public ProductContainer(Product product, int type) {
+	public ProductContainer(Product product,int quantity, int type) {
 		super();
 		this.productName = product.getProductName();
 		this.category = product.getProductCategory().getCategoryName();
 		this.productPrice = product.getProductPrice();
 		this.productDescription = product.getProductDescription();
 		this.imageUrl = "/Images/" + product.getProductImages().stream().findFirst().get().getId() + "/thumbnail";
-		this.quantity = 1;
+		this.quantity = quantity;
 		this.id = product.getId();
 		this.type = type;
 	}
 	
-	public ProductContainer(DerivedProduct product, int type) {
+	public ProductContainer(DerivedProduct product,int quantity, int type) {
 		super();
 		this.productName = product.getProduct().getProductName();
 		this.category = product.getProduct().getProductCategory().getCategoryName();
 		this.productPrice = product.getProduct().getProductPrice();
 		this.productDescription = product.getProduct().getProductDescription();
 		this.imageUrl = "/Images/" + product.getProduct().getProductImages().stream().findFirst().get().getId() + "/thumbnail";
-		this.quantity = 1;
+		this.quantity = quantity;
 		this.id = product.getId();
 		this.type = type;
 	}
 	
-	public ProductContainer(ImageCollection product, int type) {
+	public ProductContainer(ImageCollection product,int quantity, int type) {
 		super();
-		this.productName = product.getCollectionName();
-		this.category = "作品集";
-		this.productPrice = product.getPrice();
-		this.productDescription = product.getCollectionDescription();
+		this.productName = product.getProduct().getProductName();
+		this.category = product.getProduct().getProductCategory().getCategoryName();
+		this.productPrice = product.getProduct().getProductPrice();
+		this.productDescription = product.getProduct().getProductDescription();
 		this.imageUrl = "/Images/" + product.getImageCollection().stream().findFirst().get().getId() + "/thumbnail";
-		this.quantity = 1;
+		this.quantity = quantity;
 		this.id = product.getId();
 		this.type = type;
 	}

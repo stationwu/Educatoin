@@ -25,8 +25,9 @@ public class ImageCollection {
 		      joinColumns= @JoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID"),
 		      inverseJoinColumns= @JoinColumn(name="IMAGE_ID", referencedColumnName="ID"))
 	private Set<Image> imageSet;
-
-	private double price = 0.0d;
+    
+    @ManyToOne
+	private Product product;
 
 	public Set<Image> getImageCollection() {
 		return imageSet;
@@ -34,14 +35,6 @@ public class ImageCollection {
 
 	public void setImageCollection(Set<Image> imageSet) {
 		this.imageSet = imageSet;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
 	}
 
 	public String getCollectionName() {
@@ -67,8 +60,16 @@ public class ImageCollection {
     public long getId() {
         return id;
     }
+    
+    public Product getProduct() {
+		return product;
+	}
 
-    @Override
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ImageCollection)) return false;
