@@ -24,9 +24,11 @@ public class StudentIdentifierGenerator
         implements IdentifierGenerator, Configurable {
 
     public static final String SEQUENCE_PREFIX = "sequence_prefix";
+    public static final String MAX_DIGITS = "max_digits";
     private static final String STUDENT_SEQUENCE_NAME = "student_seq";
 
     private String sequencePrefix;
+    private int maxDigits;
 
     private GoodNumberGenerator numberGenerator = new GoodNumberGenerator();
 
@@ -43,11 +45,17 @@ public class StudentIdentifierGenerator
                 serviceRegistry.getService(ConfigurationService.class);
         String globalEntityIdentifierPrefix =
                 configurationService.getSetting( "entity.identifier.prefix", String.class, "S");
+        int globalEntityIdentifierMaxLength =
+                configurationService.getSetting("entity.identifier.max-digits", Integer.class, 5);
 
         sequencePrefix = ConfigurationHelper.getString(
                 SEQUENCE_PREFIX,
                 params,
                 globalEntityIdentifierPrefix);
+        maxDigits = ConfigurationHelper.getInt(
+                MAX_DIGITS,
+                params,
+                globalEntityIdentifierMaxLength);
     }
 
     @Override
@@ -73,7 +81,11 @@ public class StudentIdentifierGenerator
             if(rs.next())
             {
                 Long seqValue = rs.getLong(1);
-                generatedId = sequencePrefix + String.format("%05d", seqValue); // padding leading zero
+                if (digitsOf(seqValue) > maxDigits) {
+                    throw new SequenceNumberUsedUpException("No more free student id! Max digits is " + maxDigits);
+                }
+                String format = "%0" + maxDigits + "d"; // e.g. %05d
+                generatedId = sequencePrefix + String.format(format, seqValue); // padding leading zero
 
                 logger.debug("Generated Id: " + generatedId);
 
@@ -95,5 +107,9 @@ public class StudentIdentifierGenerator
 
     private Long generateNextValue(Long currentValue) {
         return numberGenerator.next(currentValue, 1);
+    }
+
+    private int digitsOf(Long value) {
+        return String.valueOf(value).length();
     }
 }
