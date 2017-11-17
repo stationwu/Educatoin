@@ -33,6 +33,10 @@ public class Product {
 	
 	private boolean imageCollectionFlag;
 	
+	private boolean classFlag;
+	
+	private int classPeriod;
+	
 	private int priority;
 	
 	public Product() {
@@ -40,13 +44,15 @@ public class Product {
 	}
 
 	public Product(String productName, ProductCategory productCategory, double productPrice, String productDescription,
-			boolean derivedProductFlag, boolean imageCollectionFlag) {
+			boolean derivedProductFlag, boolean imageCollectionFlag, boolean classFlag, int classPeriod) {
 		this.productName = productName;
 		this.productCategory = productCategory;
 		this.productPrice = productPrice;
 		this.productDescription = productDescription;
 		this.derivedProductFlag = derivedProductFlag;
 		this.imageCollectionFlag = imageCollectionFlag;
+		this.classFlag = classFlag;
+		this.classPeriod = classPeriod;
 	}
 
 	public boolean getDerivedProductFlag() {
@@ -127,6 +133,22 @@ public class Product {
 
 	public void setImageCollectionFlag(boolean imageCollectionFlag) {
 		this.imageCollectionFlag = imageCollectionFlag;
+	}
+
+	public boolean isClassFlag() {
+		return classFlag;
+	}
+
+	public void setClassFlag(boolean classFlag) {
+		this.classFlag = classFlag;
+	}
+
+	public int getClassPeriod() {
+		return classPeriod;
+	}
+
+	public void setClassPeriod(int classPeriod) {
+		this.classPeriod = classPeriod;
 	}
 	
 }

@@ -44,7 +44,8 @@ public class Customer {
     }
 
     public Customer() {
-        cart = new ProductCart();
+        this.cart = new ProductCart();
+        cart.setCustomer(this);
     }
 
     public Customer(String openCode, String name, String mobilePhone, String address) {
@@ -54,6 +55,7 @@ public class Customer {
         this.isActivated = false;
         this.address = address;
         this.cart = new ProductCart();
+        this.cart.setCustomer(this);
     }
 
     public long getId() {

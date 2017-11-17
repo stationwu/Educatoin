@@ -13,8 +13,8 @@ public class ProductCart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne
-	private Student student;
+    @OneToOne(cascade = { CascadeType.ALL })
+	private Customer customer;
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Product> products;
@@ -25,12 +25,12 @@ public class ProductCart {
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<ImageCollection> imageCollection;
 	
-	public void setStudent(Student student) {
-		this.student = student;
+	public Customer getCustomer() {
+		return customer;
 	}
-	
-	public Student getStudent() {
-		return student;
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public Set<Product> getProducts() {

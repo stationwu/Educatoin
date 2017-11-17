@@ -35,7 +35,9 @@
 	        </div>
 	    </div>
 	</div>
-	
+	<div class="weui-footer_fixed-bottom">
+		<a href="javascript:;" class="weui-btn weui-btn_primary" id="buyClass">购买课程</a>
+	</div>
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
@@ -50,6 +52,13 @@
 
         return year + '-' + month + '-' + day;
     }
+    
+    $("#buyClass").on('click', function() {
+    	$.post("/user/buycourse?studentid="+$('.button_sp_area .weui-btn_primary')[0].rel).done(function(data){
+			alert(data);
+		})
+    })
+    
     var courseArray = [];
     var courses = {}
     $(document).ready(function () {

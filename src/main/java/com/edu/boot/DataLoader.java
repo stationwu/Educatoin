@@ -161,6 +161,7 @@ public class DataLoader {
 
                 imageStar.setDate(courses.get(0).getDate());
                 images.add(imageServiceImpl.save(imageStar));
+                
                 File imagefile2 = new File(Paths.get(path, "image", "galaxy.png").toString());
                 FileInputStream fs2 = new FileInputStream(imagefile2);
                 FileChannel channel2 = fs2.getChannel();
@@ -178,31 +179,72 @@ public class DataLoader {
                 imageGalaxy.setDate(courses.get(1).getDate());
                 imageGalaxy.setCourse(courses.get(0));
                 images.add(imageServiceImpl.save(imageGalaxy));
+                
+                File imagefile3 = new File(Paths.get(path, "image", "imageCollection.png").toString());
+                FileInputStream fs3 = new FileInputStream(imagefile3);
+                FileChannel channel3 = fs3.getChannel();
+                ByteBuffer byteBuffer3 = ByteBuffer.allocate((int) channel3.size());
+                while ((channel3.read(byteBuffer3)) > 0) {
+                	// do nothing
+                	// System.out.println("reading");
+                }
+                Image image3 = new Image();
+                image3.setImageName("作品集");
+                image3.setContentType("image/png");
+                image3.setData(byteBuffer3.array());
+                channel3.close();
+                fs3.close();
+                image3.setDate(LocalDate.now().toString());
+                images.add(imageServiceImpl.save(image3));
+                
+                File imagefile4 = new File(Paths.get(path, "image", "course.png").toString());
+                FileInputStream fs4 = new FileInputStream(imagefile4);
+                FileChannel channel4 = fs4.getChannel();
+                ByteBuffer byteBuffer4 = ByteBuffer.allocate((int) channel4.size());
+                while ((channel4.read(byteBuffer4)) > 0) {
+                	// do nothing
+                	// System.out.println("reading");
+                }
+                Image image4 = new Image();
+                image4.setImageName("course");
+                image4.setContentType("image/png");
+                image4.setData(byteBuffer4.array());
+                channel4.close();
+                fs4.close();
+                image4.setDate(LocalDate.now().toString());
+                images.add(imageServiceImpl.save(image4));
             }
             ArrayList<ProductCategory> productCategories = new ArrayList<>();
             if (0 == productCategoryRepository.count()) {
                 productCategories.add(productCategoryRepository.save(new ProductCategory("画布", "黑白画布")));
                 productCategories.add(productCategoryRepository.save(new ProductCategory("衍生品", "创新衍生品")));
                 productCategories.add(productCategoryRepository.save(new ProductCategory("作品集", "作品集")));
+                productCategories.add(productCategoryRepository.save(new ProductCategory("课程", "课程")));
             }
 
             ArrayList<Product> products = new ArrayList<>();
             if (0 == productRepository.count()) {
-                Product product = new Product("星星画布", productCategories.get(0), 520d, "画布", false, false);
+                Product product = new Product("星星画布", productCategories.get(0), 520d, "画布", false, false, false,0);
                 Set<Image> imageSet = new HashSet<>();
                 imageSet.add(images.get(0));
                 product.setProductImages(imageSet);
                 products.add(productRepository.save(product));
-                Product derivedProduct = new Product("T恤衍生品", productCategories.get(0), 200d, "衍生品", true, false);
+                Product derivedProduct = new Product("T恤衍生品", productCategories.get(1), 200d, "衍生品", true, false,false,0);
                 imageSet.clear();
                 imageSet.add(images.get(1));
                 derivedProduct.setProductImages(imageSet);
                 products.add(productRepository.save(derivedProduct));
-                Product imageCollectionProduct = new Product("作品集", productCategories.get(0), 300d, "作品集",false,true);
+                Product imageCollectionProduct = new Product("作品集", productCategories.get(2), 300d, "作品集",false,true,false,0);
                 imageSet.clear();
-                imageSet.add(images.get(0));
-                derivedProduct.setProductImages(imageSet);
+                imageSet.add(images.get(2));
+                imageCollectionProduct.setProductImages(imageSet);
                 products.add(productRepository.save(imageCollectionProduct));
+                
+                Product classProduct = new Product("课程", productCategories.get(3), 2300d, "课程",false,false,true,24);
+                imageSet.clear();
+                imageSet.add(images.get(3));
+                classProduct.setProductImages(imageSet);
+                products.add(productRepository.save(classProduct));
             }
             ArrayList<DerivedProduct> derivedProducts = new ArrayList<>();
             if (0 == derivedProductRepository.count()) {
