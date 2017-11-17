@@ -27,6 +27,7 @@ var app = new Vue({
         },
         onAddStudent: function(){
         	var openCode = $('#wxOpenCode').text();
+        	var customerid = $('#customerid').text();
         	var customer = {
                 "openCode"     : openCode,
                 "children"     : []
@@ -36,12 +37,16 @@ var app = new Vue({
                 customer.children.push({
                     "childName"   : app.children[i].name,
                     "birthday"    : app.children[i].birthday,
-                    "classPeriod" : app.children[i].numberOfClasses
+                    "classPeriod" : app.children[i].numberOfClasses,
+                    "customer": {
+                    	"id": customerid,
+                    	"openCode": openCode,
+                    }
                 });
             }
             
             $.ajax({
-                url: '/api/v1/Student',
+                url: '/api/v1/Student/Customer/' + customerid,
                 contentType: 'application/json',
                 type: 'POST',
                 data: JSON.stringify(customer),
