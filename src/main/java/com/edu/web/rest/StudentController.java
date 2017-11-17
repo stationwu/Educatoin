@@ -68,12 +68,16 @@ public class StudentController {
     }
 
     @PostMapping(path = RELATIONSHIP_PATH+ "/{id}")
-    public Resource<Student> createStudentbyCustomer(@PathVariable(value = "id") String id, @RequestBody @Valid Student student) throws HttpException {
-        Student entity = studentRepository.save(student);
-        Customer customer= customerRepository.findOne(Long.parseLong(id));
-        student.setCustomer(customer);
-        studentRepository.save(student);
-        return buildResource(entity);
+    public Resources<Resource<Student>> createStudentbyCustomer(@PathVariable(value = "id") String id, @RequestBody @Valid List<Student> students) throws HttpException {
+    	Customer customer= customerRepository.findOne(Long.parseLong(id));
+    	List<Student> entities = new ArrayList<>();
+    	for(Student student:students){
+        	Student entity = studentRepository.save(student);
+        	entity.setCustomer(customer);
+        	entities.add(studentRepository.save(entity));
+        }
+        
+        return buildResources(entities);
     }
 
     @PostMapping(path = PATH + "/{id}")

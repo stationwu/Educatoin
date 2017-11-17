@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.CourseRepository;
 import com.edu.dao.CustomerRepository;
+import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class CourseCenterController {
 
 	@Autowired
 	private CourseRepository courseRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
 
 	@Autowired
 	private StudentRepository studentRepository;
@@ -48,6 +52,8 @@ public class CourseCenterController {
 	public final static String SEARCH_COURSE_PATH = "/user/searchcourse";
 
 	public final static String RESERVE_COURSE_PATH = "/user/reserve";
+	
+	public final static String BUY_COURSE_PATH = "/user/buycourse";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 
@@ -116,5 +122,18 @@ public class CourseCenterController {
 		student.addReservedCourse(course);
 		studentRepository.save(student);
 		return "预约成功";
+	}
+	
+	@PostMapping(BUY_COURSE_PATH)
+	@ResponseBody
+	private String buyCourse(@RequestParam(value = "studentid") String studentId, HttpSession session) {
+		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
+		Customer customer = custRepo.findOneByOpenCode(openId);
+		
+		Student student = studentRepository.findOne(studentId);
+		customer.getCart().addProducts(productRepository.getClassProductList().get(0));
+		custRepo.save(customer);
+		
+		return "课程已加入购物车";
 	}
 }
