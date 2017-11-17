@@ -38,7 +38,8 @@ import com.edu.domain.Student;
 public class StudentController {
     public static final String PATH = "/api/v1/Student";
     public static final String RELATIONSHIP_PATH = "/api/v1/Student/Customer";
-    public static final String RELATIVE_COURSE_PATH = CourseController.PATH + "/{courseId}" + PATH;
+    public static final String RELATIVE_COURSE_PATH = CourseController.PATH
+            + "/{courseId}" + PATH;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
     private final CustomerRepository customerRepository;
@@ -46,43 +47,51 @@ public class StudentController {
 
     @Autowired
     public StudentController(StudentRepository studentRepository,
-                             CourseRepository courseRepository,
-                             CustomerRepository customerRepository) {
+            CourseRepository courseRepository,
+            CustomerRepository customerRepository) {
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
         this.customerRepository = customerRepository;
     }
 
-    @RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Resource<Student>> show(@PathVariable("id") String id) {
+    @RequestMapping(path = PATH + "/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Resource<Student>> show(
+        @PathVariable("id") String id) {
         Student entity = studentRepository.findOne(id);
         return new ResponseEntity<>(buildResource(entity), HttpStatus.OK);
     }
 
-    @RequestMapping(path = RELATIVE_COURSE_PATH, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = RELATIVE_COURSE_PATH,
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resources<Resource<Student>>> showStudentbyCourse(
-            @PathVariable("courseId") @Min(0) Long courseId) {
+        @PathVariable("courseId") @Min(0) Long courseId) {
         Course course = courseRepository.findOne(courseId);
         Iterable<Student> entities = course.getStudentsSet();
         return new ResponseEntity<>(buildResources(entities), HttpStatus.OK);
     }
 
-    @PostMapping(path = RELATIONSHIP_PATH+ "/{id}")
-    public Resources<Resource<Student>> createStudentbyCustomer(@PathVariable(value = "id") String id, @RequestBody @Valid List<Student> students) throws HttpException {
-    	Customer customer= customerRepository.findOne(Long.parseLong(id));
-    	List<Student> entities = new ArrayList<>();
-    	for(Student student:students){
-        	Student entity = studentRepository.save(student);
-        	entity.setCustomer(customer);
-        	entities.add(studentRepository.save(entity));
+    @PostMapping(path = RELATIONSHIP_PATH + "/{id}")
+    public Resources<Resource<Student>> createStudentbyCustomer(@PathVariable(
+        value = "id") String id, @RequestBody @Valid List<Student> students)
+        throws HttpException {
+        Customer studentsParent = customerRepository.findOne(Long.parseLong(id));
+        List<Student> newCreatedStudents = new ArrayList<>();
+        for (Student student : students) {
+            student.setCustomer(studentsParent);
+            Student savedStudent = studentRepository.save(student);
+            
+            newCreatedStudents.add(savedStudent);
         }
-        
-        return buildResources(entities);
+
+        return buildResources(newCreatedStudents);
     }
 
     @PostMapping(path = PATH + "/{id}")
-    public Resource<Student> editStudent(@PathVariable(value = "id") String id, @RequestBody @Valid Student student)
-            throws HttpException {
+    public Resource<Student> editStudent(@PathVariable(value = "id") String id,
+        @RequestBody @Valid Student student) throws HttpException {
         Student entity = studentRepository.findOne(id);
         entity.setStudentName(student.getStudentName());
         entity.setClassPeriod(student.getClassPeriod());
@@ -91,7 +100,8 @@ public class StudentController {
         return buildResource(savedStudent);
     }
 
-    private Resources<Resource<Student>> buildResources(Iterable<Student> entities) {
+    private Resources<Resource<Student>> buildResources(
+        Iterable<Student> entities) {
         List<Resource<Student>> resourceList = new ArrayList<>();
 
         // Links
@@ -110,17 +120,18 @@ public class StudentController {
         String url = "";// "http://" + address + ":" + port;
         Resource<Student> resource = new Resource<>(entity);
         // Links
-        resource.add(linkTo(methodOn(StudentController.class).show(entity.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(StudentController.class).show(entity
+                .getId())).withSelfRel());
         if (entity.getCoursesSet() != null) {
             for (Course course : entity.getCoursesSet()) {
-                resource.add(
-                        new Link(url + CourseController.PATH + "/" + course.getId(), RouteConstant.REL_TO_COURSES));
+                resource.add(new Link(url + CourseController.PATH + "/" + course
+                        .getId(), RouteConstant.REL_TO_COURSES));
             }
         }
         if (entity.getImagesSet() != null) {
             for (Image image : entity.getImagesSet()) {
-                resource.add(new Link(url + ImageController.PATH + "/" + image.getId() + "/thumbnail",
-                        RouteConstant.REL_TO_IMAGES));
+                resource.add(new Link(url + ImageController.PATH + "/" + image
+                        .getId() + "/thumbnail", RouteConstant.REL_TO_IMAGES));
             }
         }
         return resource;

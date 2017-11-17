@@ -25,6 +25,30 @@ var app = new Vue({
         onClickGetVerificationCode : function() {
             console.log("get veri code clicked");
         },
+        onAddStudents: function(){
+        	var openCode   = $('#wxOpenCode').text();
+        	var customerid = $('#customerid').text();
+        	var students = [];
+        	
+            for(var i = 0; i < app.children.length; ++i) {
+            	students.push({
+                    "studentName"   : app.children[i].name,
+                    "birthday"    : app.children[i].birthday,
+                    "classPeriod" : app.children[i].numberOfClasses,
+                    "leftPeriods" : app.children[i].numberOfClasses,
+                    "donePeriods" : 0
+                });
+            }
+            
+            $.ajax({
+                url: '/api/v1/Student/Customer/' + customerid,
+                contentType: 'application/json',
+                type: 'POST',
+                data: JSON.stringify(students),
+            }).done(function(response) {
+                window.location.href = "/user/center";
+            });
+        },
         onSubmit: function() {
             var openCode = $('#wxOpenCode').text();
             var customer = {
