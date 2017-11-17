@@ -25,23 +25,18 @@ var app = new Vue({
         onClickGetVerificationCode : function() {
             console.log("get veri code clicked");
         },
-        onAddStudent: function(){
-        	var openCode = $('#wxOpenCode').text();
+        onAddStudents: function(){
+        	var openCode   = $('#wxOpenCode').text();
         	var customerid = $('#customerid').text();
-        	var customer = {
-                "openCode"     : openCode,
-                "children"     : []
-            };
+        	var students = [];
         	
             for(var i = 0; i < app.children.length; ++i) {
-                customer.children.push({
-                    "childName"   : app.children[i].name,
+            	students.push({
+                    "studentName"   : app.children[i].name,
                     "birthday"    : app.children[i].birthday,
                     "classPeriod" : app.children[i].numberOfClasses,
-                    "customer": {
-                    	"id": customerid,
-                    	"openCode": openCode,
-                    }
+                    "leftPeriods" : app.children[i].numberOfClasses,
+                    "donePeriods" : 0
                 });
             }
             
@@ -49,9 +44,9 @@ var app = new Vue({
                 url: '/api/v1/Student/Customer/' + customerid,
                 contentType: 'application/json',
                 type: 'POST',
-                data: JSON.stringify(customer),
+                data: JSON.stringify(students),
             }).done(function(response) {
-                //window.location.href = "/user/center";
+                window.location.href = "/user/center";
             });
         },
         onSubmit: function() {
@@ -77,7 +72,7 @@ var app = new Vue({
                 type: 'POST',
                 data: JSON.stringify(customer),
             }).done(function(response) {
-                //window.location.href = "/user/center";
+                window.location.href = "/user/center";
             });
         },
     }
