@@ -9,10 +9,7 @@
     <link href="/css/style.css" rel="stylesheet" media="screen"/>
     <link href="/css/weui.min.css" rel="stylesheet" />
     <link href="/css/jquery-weui.min.css" rel="stylesheet" />
-    <link href="/css/app.css" media="screen" rel="stylesheet"/> "/>
-    <style type="text/css">
-	　　　　ul,li{list-style:none;}
-	</style>
+    <link href="/css/app.css" media="screen" rel="stylesheet"/>
 </head>
 <body>
 	<header class="dsx-header">
@@ -25,6 +22,35 @@
             </div>
 	  </div>
 	</div>
+	<div class="page__bd">
+		<div class="weui-cells__tips tip-bar-color">本月主推，你还可以做...</div>
+    </div>
+    <div class="container" id="container">
+        <div class="page grid js_show">
+            <div class="weui-module-grids">
+ 				<a href="/derivation/works" class="weui-module-grid-prod">
+                    <div class="weui-grid-dsx-icon-prod">
+                        <img src="/images/works.jpg" alt="1" width="80" height="80"/>
+                    </div>
+                </a>
+                <a href="/derivation/gift" class="weui-module-grid-prod">
+                    <div class="weui-grid-dsx-icon-prod">
+                        <img src="/images/gift.jpg" alt="2" width="80" height="80"/>
+                    </div>
+                </a>
+                <a href="/derivation/literature" class="weui-module-grid-prod">
+                    <div class="weui-grid-dsx-icon-prod">
+                        <img src="/images/literature.jpg" alt="3" width="80" height="80"/>
+                    </div>
+                </a>
+                <a href="/derivation/frame" class="weui-module-grid-prod">
+                    <div class="weui-grid-dsx-icon-prod">
+                        <img src="/images/frame.jpg" alt="4" width="80" height="80"/>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 	<div id="code" style="visibility:hidden" th:text="${{code}}" />
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
