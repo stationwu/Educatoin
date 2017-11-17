@@ -105,3 +105,42 @@ footer a {
 	background: #124B28 !important;
 	margin-bottom: 4px;
 }
+
+.dsx-ztsp-title {
+	font-weight: 400;
+    font-size: 12px;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.dsx-ztsp-price {
+	color: #124B28;
+    font-size: 12px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.dsx-ztsp-info {
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    padding-left: 6px;
+    min-width: 0;
+}
+
+.dsx-ztsp-thumb-image{ 
+	width: 50%;
+    margin-left: 0px;
+    max-height: 100%;
+    vertical-align: middle;
+}
+
