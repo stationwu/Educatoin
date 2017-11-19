@@ -31,78 +31,110 @@ import me.chanjar.weixin.mp.api.WxMpService;
 
 @Controller
 public class OrderCenterController {
-	@Autowired
-	private WxMpService wxMpService;
-	
-	@Autowired
-	private CustomerRepository custRepo;
+    @Autowired
+    private WxMpService wxMpService;
 
-	@Autowired
-	private ProductRepository productRepository;
+    @Autowired
+    private OrderRepository orderRepo;
 
-	@Autowired
-	private DerivedProductRepository derivedProductRepository;
+    @Autowired
+    private CustomerRepository custRepo;
 
-	@Autowired
-	private ImageCollectionRepository imageCollectionRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-	@Autowired
-	private OrderRepository orderRepository;
+    @Autowired
+    private DerivedProductRepository derivedProductRepository;
+
+    @Autowired
+    private ImageCollectionRepository imageCollectionRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     public final static String ORDER_LIST_PATH = "/user/orderList";
+
+    public final static String ORDER_DETAIL_PATH = "/order/detail/{id}";
+
     public final static String ORDER_LIST_CALLBACK_PATH = "/user/orderList/cb";
 
     public final static String SESSION_OPENID_KEY = "openCode";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@PostMapping("/user/order")
-	@ResponseBody
-	public String createOrder(HttpServletRequest request,
-			@RequestBody List<ProductContainer> products, Model model) {
-		HttpSession session = request.getSession();
-		Object openCodeObject = session.getAttribute("openCode");
+    @PostMapping("/user/order")
+    @ResponseBody
+    public String createOrder(HttpServletRequest request,
+        @RequestBody List<ProductContainer> products,
+        Model model) {
+        HttpSession session = request.getSession();
+        Object openCodeObject = session.getAttribute("openCode");
 
-		String openId = openCodeObject.toString();
+        String openId = openCodeObject.toString();
         Customer customer = custRepo.findOneByOpenCode(openId);
-		Order order = new Order();
-		Map<Product, Integer> productMap = new HashMap<>();
-		Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
-		Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
-		double amount = 0d;
-		for (ProductContainer productContainer : products) {
-			switch (productContainer.getType()) {
-			case 1:
-				Product product = productRepository.findOne(productContainer.getId());
-				productMap.put(product, productContainer.getQuantity());
-				amount += productContainer.getProductPrice() * productContainer.getQuantity();
-				customer.getCart().removeProduct(product);
-				break;
-			case 2:
-				DerivedProduct derivedProduct = derivedProductRepository.findOne(productContainer.getId());
-				derivedProductMap.put(derivedProduct, productContainer.getQuantity());
-				amount += productContainer.getProductPrice() * productContainer.getQuantity();
-				customer.getCart().removeDerivedProduct(derivedProduct);
-				break;
-			case 3:
-				ImageCollection imageCollection = imageCollectionRepository.findOne(productContainer.getId());
-				imageCollectionMap.put(imageCollection, productContainer.getQuantity());
-				amount += productContainer.getProductPrice() * productContainer.getQuantity();
-				customer.getCart().removeImageCollection(imageCollection);
-				break;
-			}
-		}
-		custRepo.save(customer);
-		order.setProductsMap(productMap);
-		order.setDerivedProductsMap(derivedProductMap);
-		order.setImageCollectionMap(imageCollectionMap);
-		order.setTotalAmount(amount);
-		LocalDate localDate = LocalDate.now();
-		order.setDate(localDate.toString());
-		order.setCustomer(customer);
-		orderRepository.save(order);
-		return "下单成功";
-	}
+        Order order = new Order();
+        Map<Product, Integer> productMap = new HashMap<>();
+        Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
+        Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
+        double amount = 0d;
+        for (ProductContainer productContainer : products) {
+            switch (productContainer.getType()) {
+                case 1:
+                    Product product = productRepository.findOne(productContainer
+                            .getId());
+                    productMap.put(product, productContainer.getQuantity());
+                    amount += productContainer.getProductPrice()
+                            * productContainer.getQuantity();
+                    customer.getCart().removeProduct(product);
+                    break;
+                case 2:
+                    DerivedProduct derivedProduct = derivedProductRepository
+                            .findOne(productContainer.getId());
+                    derivedProductMap.put(derivedProduct, productContainer
+                            .getQuantity());
+                    amount += productContainer.getProductPrice()
+                            * productContainer.getQuantity();
+                    customer.getCart().removeDerivedProduct(derivedProduct);
+                    break;
+                case 3:
+                    ImageCollection imageCollection = imageCollectionRepository
+                            .findOne(productContainer.getId());
+                    imageCollectionMap.put(imageCollection, productContainer
+                            .getQuantity());
+                    amount += productContainer.getProductPrice()
+                            * productContainer.getQuantity();
+                    customer.getCart().removeImageCollection(imageCollection);
+                    break;
+            }
+        }
+        custRepo.save(customer);
+        order.setProductsMap(productMap);
+        order.setDerivedProductsMap(derivedProductMap);
+        order.setImageCollectionMap(imageCollectionMap);
+        order.setTotalAmount(amount);
+        LocalDate localDate = LocalDate.now();
+        order.setDate(localDate.toString());
+        order.setCustomer(customer);
+        orderRepository.save(order);
+        return "下单成功";
+    }
+
+    @GetMapping(ORDER_DETAIL_PATH)
+    public String orderDetail(@PathVariable(value = "id") Long id,
+        HttpServletRequest request,
+        Model model) {
+        HttpSession session = request.getSession();
+        Object openCodeObject = session.getAttribute("openCode");
+        String openCode = openCodeObject.toString();
+        Order foundOrder = orderRepo.findOne(id);
+        if (null == foundOrder) {
+            return "error_500";
+        } else {
+            model.addAttribute("detail", foundOrder);
+            model.addAttribute("openCode", openCode);
+            return "order_detail";
+        }
+    }
 
     @GetMapping(ORDER_LIST_PATH)
     public String orderList(HttpServletRequest request,
@@ -127,23 +159,26 @@ public class OrderCenterController {
                 e.printStackTrace();
             }
         } else {
-            List<OrderContainer> orders = getOrderList((String) openIdInSession); 
+            List<OrderContainer> orders = getOrderList(
+                    (String) openIdInSession);
             model.addAttribute("orderList", orders);
         }
-        return "user_order"; // Ugly and probably not working //TODO: Fix this
+        return "user_order";
     }
 
     @GetMapping(ORDER_LIST_CALLBACK_PATH)
     @ResponseBody
-    public List<OrderContainer> orderListCallback(@RequestParam(value="code") String authCode, HttpSession session) {
+    public List<OrderContainer> orderListCallback(@RequestParam(
+        value = "code") String authCode, HttpSession session) {
         String openId = null;
 
         try {
             Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
             if (openIdInSession != null) {
-                openId = (String)openIdInSession;
+                openId = (String) openIdInSession;
             } else {
-                WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(authCode);
+                WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService
+                        .oauth2getAccessToken(authCode);
                 openId = wxMpOAuth2AccessToken.getOpenId();
                 session.setAttribute(SESSION_OPENID_KEY, openId);
             }
@@ -154,14 +189,15 @@ public class OrderCenterController {
         return getOrderList(openId);
     }
 
-	private List<OrderContainer> getOrderList(String openId) {
-		if (null == openId) {
-			return new ArrayList<OrderContainer>();
-		}
+    private List<OrderContainer> getOrderList(String openId) {
+        if (null == openId) {
+            return new ArrayList<OrderContainer>();
+        }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
-		return customer.getOrders().stream().map(
-				x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(), x.getImageCollectionMap()))
-				.collect(Collectors.toCollection(ArrayList::new));
-	}
+        return customer.getOrders().stream().map(x -> new OrderContainer(x, x
+                .getProductsMap(), x.getDerivedProductsMap(), x
+                        .getImageCollectionMap())).collect(Collectors
+                                .toCollection(ArrayList::new));
+    }
 }

@@ -4,8 +4,6 @@
         <title>用户订单</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-	    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-	    <link href="/css/style.css" rel="stylesheet" media="screen"/>
 	    <link href="/css/weui.min.css" rel="stylesheet" />
 	    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
 	    <link href="/css/app.css" media="screen" rel="stylesheet"/>
@@ -16,25 +14,29 @@
         </header>
         <div class="weui-form-preview" th:each="e : ${orderList}">
             <div class="weui-form-preview__hd">
-                <label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${{e.order.id}}"></span></label>
-                <em class="weui-form-preview__value"><span>付款金额:</span><span th:text="${{e.order.totalAmount}}"></span></em>
+                <label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${e.order.id}"></span></label>
+                <span class="dsx-order-money">已收货，待 </span><input type="button" value="评价" class="weui-btn weui-btn_mini weui-btn_default" />
             </div>
             <div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
                 <div class="weui-form-preview__item">
-                    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                    <a th:href="'/order/detail/' + ${e.order.id}" class="weui-media-box weui-media-box_appmsg">
                         <div class="weui-media-box__hd">
-                          <img alt="" class="weui-media-box__thumb" th:src="${{item.imageUrl}}"></img>
+                          <img class="dsx-order-thumb" th:src="${item.imageUrl}" width="60" height="60" alt="${e.order.id}"></img>
                         </div>
                         <div class="weui-media-box__bd">
-                            <h4 class="weui-media-box__title" th:text="${{item.productName}}"></h4>
-                            <span class="weui-form-preview__value" th:text="${{item.productDescription}}"></span>
+                            <h4 class="weui-media-box__title" th:text="${item.productName}"></h4>
+                            <span class="weui-form-preview__value" th:text="${item.productDescription}"></span>
                             <p class="weui-media-box__desc">
-                                <span th:text="${{item.productPrice} }"></span> 
-                                <span>x</span> 
-                                <span th:text="${{item.quantity} }"></span>
+                                <span th:text="${item.productPrice} + ' x ' + ${item.quantity}"></span> 
                             </p>
                         </div>
                     </a>
+                    <div class="weui-media-box__bd">
+		                <div class="dsx-order-money">
+		                	<span th:text="'共' + ${item.quantity} + '件商品, 共计￥ '+ ${e.order.totalAmount} " ></span>
+		                	<span th:text="' (含运费￥0.00)'" class="dsx-transport-fee"></span>
+		                </div>
+		            </div>
                 </div>
             </div>
         </div>

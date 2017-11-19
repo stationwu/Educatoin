@@ -118,6 +118,14 @@ footer a {
     word-break: break-all;
 }
 
+.weui-form-preview__hd .dsx-order-money {
+    font-style: normal !important;
+    font-size: 1.0em !important;
+}
+. dsx-transport-fee {
+	font-style: normal !important;
+    font-size: 0.5em !important;
+}
 .dsx-ztsp-price {
 	color: #124B28;
     font-size: 12px;
@@ -137,7 +145,7 @@ footer a {
     min-width: 0;
 }
 
-.dsx-ztsp-thumb-image{ 
+.dsx-ztsp-thumb-image { 
 	width: 50%;
     margin-left: 0px;
     max-height: 100%;
@@ -157,5 +165,13 @@ footer a {
     height: 100%;
     box-sizing: border-box;
     border-width: 1px;
+}
+
+.dsx-order-thumb {
+	max-height: 100%;
+    margin-left: 2px !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    vertical-align: top;
 }
 
