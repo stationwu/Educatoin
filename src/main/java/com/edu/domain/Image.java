@@ -16,10 +16,18 @@ public class Image {
     private long id;
 
     private String imageName;
+
+    @Column
+    private String path;
+
+    @Column
+    private String thumbnailPath;
+
+    @Column
+    private String smallVersionPath;
 	
 	@Basic(fetch=FetchType.LAZY)
     @Column
-    @NotNull
     @JsonIgnore
     @Lob
     private byte[] data;
@@ -116,5 +124,29 @@ public class Image {
 
     public long getId() {
         return id;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
+    }
+
+    public String getSmallVersionPath() {
+        return smallVersionPath;
+    }
+
+    public void setSmallVersionPath(String smallVersionPath) {
+        this.smallVersionPath = smallVersionPath;
     }
 }

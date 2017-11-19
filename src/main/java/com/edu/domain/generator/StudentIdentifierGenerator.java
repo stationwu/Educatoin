@@ -1,5 +1,6 @@
-package com.edu.domain;
+package com.edu.domain.generator;
 
+import com.edu.domain.Identifiable;
 import com.edu.utils.GoodNumberGenerator;
 import org.hibernate.MappingException;
 import org.hibernate.engine.config.spi.ConfigurationService;

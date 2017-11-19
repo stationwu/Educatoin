@@ -13,7 +13,7 @@ import org.hibernate.annotations.Parameter;
 public class Student {
     @Id
     @GenericGenerator(name = "student-id-sequence",
-            strategy = "com.edu.domain.StudentIdentifierGenerator",
+            strategy = "com.edu.domain.generator.StudentIdentifierGenerator",
             parameters = {@Parameter(name = "sequence_prefix", value = "M"),
                           @Parameter(name = "max_digits", value = "5")})
     @GeneratedValue(generator = "student-id-sequence",

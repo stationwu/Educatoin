@@ -1,5 +1,6 @@
 package com.edu.web.rest;
 
+import com.edu.config.ImageProperties;
 import com.edu.controller.RouteConstant;
 import com.edu.dao.CourseRepository;
 import com.edu.dao.StudentRepository;
@@ -7,7 +8,7 @@ import com.edu.domain.Course;
 import com.edu.domain.Image;
 import com.edu.domain.Student;
 import com.edu.storage.FileStorageService;
-import com.edu.utils.ImageServiceImpl;
+import com.edu.utils.ImageService;
 import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,18 +41,24 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class StudentManagerController {
     public static final String PATH = "/StudentManager";
     private final StudentRepository studentRepository;
-    private final ImageServiceImpl imageServiceImpl;
+    private final ImageService imageService;
     private final CourseRepository courseRepository;
+    private final FileStorageService fileStorageService;
+    private final ImageProperties imageProperties;
     // private final Environment environment;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public StudentManagerController(StudentRepository studentRepository,
-                                    ImageServiceImpl imageServiceImpl,
-                                    CourseRepository courseRepository) {
+                                    ImageService imageService,
+                                    CourseRepository courseRepository,
+                                    FileStorageService fileStorageService,
+                                    ImageProperties imageProperties) {
         this.studentRepository = studentRepository;
-        this.imageServiceImpl = imageServiceImpl;
+        this.imageService = imageService;
         this.courseRepository = courseRepository;
+        this.fileStorageService = fileStorageService;
+        this.imageProperties = imageProperties;
         // this.environment = environment;
     }
 
@@ -91,16 +99,7 @@ public class StudentManagerController {
         student.removeReservedCourse(course);
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                Image img = new Image();
-                img.setImageName(imageName);
-                img.setCourse(course);
-                try {
-                    img.setData(file.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                img.setContentType(file.getContentType());
-                imageServiceImpl.save(img);
+                Image img = imageService.saveIn3Size(imageName, student, course, file);
                 student.addImage(img);
             }
         }
