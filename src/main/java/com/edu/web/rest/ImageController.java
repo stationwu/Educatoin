@@ -1,10 +1,14 @@
 package com.edu.web.rest;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.edu.storage.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +23,13 @@ import com.edu.domain.Image;
 public class ImageController {
 	public static final String PATH = "/Images";
 	private final ImageRepository imageRepository;
+	private final FileStorageService storageService;
 
 	@Autowired
-	public ImageController(ImageRepository imageRepository) {
+	public ImageController(ImageRepository imageRepository,
+						   FileStorageService fileStorageService) {
 		this.imageRepository = imageRepository;
+		this.storageService = fileStorageService;
 	}
 
 	@RequestMapping(path = PATH + "/{id}", method = RequestMethod.GET)
@@ -30,7 +37,12 @@ public class ImageController {
 		Image img = imageRepository.findOne(id);
 
 		resp.setContentType(img.getContentType());
-		resp.getOutputStream().write(img.getData());
+
+		Resource resource = storageService.load(img.getPath());
+		File file = resource.getFile();
+		byte[] content = Files.readAllBytes(file.toPath());
+
+		resp.getOutputStream().write(content);
 	}
 
 	@RequestMapping(path = PATH + "/{id}/thumbnail", method = RequestMethod.GET)
@@ -38,7 +50,12 @@ public class ImageController {
 		Image img = imageRepository.findOne(id);
 
 		resp.setContentType(img.getContentType());
-		resp.getOutputStream().write(img.getThumbnail());
+
+		Resource resource = storageService.load(img.getThumbnailPath());
+		File file = resource.getFile();
+		byte[] content = Files.readAllBytes(file.toPath());
+
+		resp.getOutputStream().write(content);
 	}
 
 }

@@ -31,8 +31,8 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request,
-        HttpServletResponse response,
-        Object handler) throws Exception {
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
         Object openIdInSession = request.getSession().getAttribute(
                 Constant.SESSION_OPENID_KEY);
         String authCode = request.getParameter("code");
@@ -67,15 +67,15 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request,
-        HttpServletResponse response,
-        Object handler,
-        ModelAndView modelAndView) throws Exception {
+                           HttpServletResponse response,
+                           Object handler,
+                           ModelAndView modelAndView) throws Exception {
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request,
-        HttpServletResponse response,
-        Object handler,
-        Exception ex) throws Exception {
+                                HttpServletResponse response,
+                                Object handler,
+                                Exception ex) throws Exception {
     }
 }

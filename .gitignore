@@ -27,3 +27,6 @@ nbdist/
 application.properties
 application.yml
 application_prod.properties
+
+### Upload Directory ###
+upload-dir/
