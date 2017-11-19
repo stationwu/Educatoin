@@ -51,14 +51,20 @@ public class ImageServiceImpl implements ImageService {
     }
 
 	@Transactional
-    public Image save(Image image) {
+    public Image save(String imageName, String contentType, byte[] fileContent) {
+        Image image = new Image();
+        image.setImageName(imageName);
+        image.setContentType(contentType);
 
-        try {
-            image.setThumbnail(generateThumbnail(image.getData()));
-        } catch (IOException e) {
-            logger.error("Failed to generate thumbnail", e);
-            throw new RuntimeException("Failed to generate thumbnail");
-        }
+        BufferedImage imageFull = readFromByteArray(fileContent);
+        BufferedImage thumbnail = scale(imageFull,
+                imageProperties.getThumbnailMaxWidth(), imageProperties.getThumbnailMaxHeight());
+
+        String pathToFull = fileStorageService.store(imageFull);
+        String pathToThumbnail = fileStorageService.store(thumbnail);
+        image.setPath(pathToFull);
+        image.setThumbnailPath(pathToThumbnail);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDate localDate = LocalDate.now();
         image.setDate(LocalDateTime.now().format(formatter));
@@ -133,8 +139,16 @@ public class ImageServiceImpl implements ImageService {
         return scaledImage;
     }
 
-    @Override
-    public BufferedImage readFromUploaded(MultipartFile file) {
+    private BufferedImage readFromByteArray(byte[] data) {
+        try {
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
+            return image;
+        } catch (IOException e) {
+            throw new ImageFileReadingException("Failed to read image from bytes", e);
+        }
+    }
+
+    private BufferedImage readFromUploaded(MultipartFile file) {
         try {
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
             return image;
