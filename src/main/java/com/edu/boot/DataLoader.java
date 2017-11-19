@@ -152,16 +152,11 @@ public class DataLoader {
                     // do nothing
                     // System.out.println("reading");
                 }
-                Image imageStar = new Image();
-                imageStar.setImageName("star");
-                imageStar.setContentType("image/png");
-                imageStar.setData(byteBuffer.array());
+                byte[] fileContent = byteBuffer.array();
                 channel.close();
                 fs.close();
+                images.add(imageServiceImpl.save("star", "image/png", fileContent));
 
-                imageStar.setDate(courses.get(0).getDate());
-                images.add(imageServiceImpl.save(imageStar));
-                
                 File imagefile2 = new File(Paths.get(path, "image", "galaxy.png").toString());
                 FileInputStream fs2 = new FileInputStream(imagefile2);
                 FileChannel channel2 = fs2.getChannel();
@@ -170,15 +165,10 @@ public class DataLoader {
                     // do nothing
                     // System.out.println("reading");
                 }
-                Image imageGalaxy = new Image();
-                imageGalaxy.setImageName("galaxy");
-                imageGalaxy.setContentType("image/png");
-                imageGalaxy.setData(byteBuffer2.array());
+                byte[] fileContent2 = byteBuffer2.array();
                 channel2.close();
                 fs2.close();
-                imageGalaxy.setDate(courses.get(1).getDate());
-                imageGalaxy.setCourse(courses.get(0));
-                images.add(imageServiceImpl.save(imageGalaxy));
+                images.add(imageServiceImpl.save("galaxy", "image/png", fileContent2));
                 
                 File imagefile3 = new File(Paths.get(path, "image", "imageCollection.png").toString());
                 FileInputStream fs3 = new FileInputStream(imagefile3);
@@ -188,14 +178,9 @@ public class DataLoader {
                 	// do nothing
                 	// System.out.println("reading");
                 }
-                Image image3 = new Image();
-                image3.setImageName("作品集");
-                image3.setContentType("image/png");
-                image3.setData(byteBuffer3.array());
-                channel3.close();
+                byte[] fileContent3 = byteBuffer3.array();
                 fs3.close();
-                image3.setDate(LocalDate.now().toString());
-                images.add(imageServiceImpl.save(image3));
+                images.add(imageServiceImpl.save("作品集", "image/png", fileContent3));
                 
                 File imagefile4 = new File(Paths.get(path, "image", "course.png").toString());
                 FileInputStream fs4 = new FileInputStream(imagefile4);
@@ -205,14 +190,9 @@ public class DataLoader {
                 	// do nothing
                 	// System.out.println("reading");
                 }
-                Image image4 = new Image();
-                image4.setImageName("course");
-                image4.setContentType("image/png");
-                image4.setData(byteBuffer4.array());
-                channel4.close();
+                byte[] fileContent4 = byteBuffer4.array();
                 fs4.close();
-                image4.setDate(LocalDate.now().toString());
-                images.add(imageServiceImpl.save(image4));
+                images.add(imageServiceImpl.save("course", "image/png", fileContent4));
             }
             ArrayList<ProductCategory> productCategories = new ArrayList<>();
             if (0 == productCategoryRepository.count()) {

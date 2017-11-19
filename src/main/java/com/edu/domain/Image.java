@@ -16,23 +16,19 @@ public class Image {
     private long id;
 
     private String imageName;
-	
-	@Basic(fetch=FetchType.LAZY)
+
     @Column
-    @NotNull
-    @JsonIgnore
-    @Lob
-    private byte[] data;
+    private String path;
+
+    @Column
+    private String thumbnailPath;
+
+    @Column
+    private String smallVersionPath;
 
     @Column
     @NotNull
     private String contentType;
-    
-    @Basic(fetch=FetchType.LAZY)
-    @Column
-    @JsonIgnore
-    @Lob
-    private byte[] thumbnail;
     
     private String date;
     
@@ -73,18 +69,6 @@ public class Image {
 	}
     
 	public Image() {}
-	
-    public Image(byte[] data) {
-        setData(data);
-    }
-    
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
 
     public String getContentType() {
         return contentType;
@@ -92,14 +76,6 @@ public class Image {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
-    }
-
-    public byte[] getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(byte[] thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
 	public Set<ImageCollection> getImageCollections() {
@@ -116,5 +92,29 @@ public class Image {
 
     public long getId() {
         return id;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
+    }
+
+    public String getSmallVersionPath() {
+        return smallVersionPath;
+    }
+
+    public void setSmallVersionPath(String smallVersionPath) {
+        this.smallVersionPath = smallVersionPath;
     }
 }
