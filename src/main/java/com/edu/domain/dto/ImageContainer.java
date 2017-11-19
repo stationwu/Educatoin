@@ -5,6 +5,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.edu.domain.Course;
+import com.edu.domain.Image;
+import com.edu.domain.Student;
 
 public class ImageContainer {
 	@Id
@@ -20,6 +22,8 @@ public class ImageContainer {
     private String imageUrl;
     
     private String thumbnailUrl;
+    
+    private String createdBy;
 
 	public ImageContainer(long id,String imageName, String date, Course course, String imageUrl, String thumbnailUrl) {
 		super();
@@ -29,6 +33,21 @@ public class ImageContainer {
 		this.course = course;
 		this.imageUrl = imageUrl;
 		this.thumbnailUrl = thumbnailUrl;
+	}
+	
+	public ImageContainer(Image image) {
+		super();
+		this.id = image.getId();
+		this.imageName = image.getImageName();
+		this.date = image.getDate();
+		this.course = image.getCourse();
+		this.imageUrl = "/Images/" + image.getId();
+		this.thumbnailUrl = "/Images/" + image.getId() + "/thumbnail";
+	}
+
+	public ImageContainer(Image x, Student student) {
+		this(x);
+		this.createdBy = student.getStudentName();
 	}
 
 	public String getImageName() {
@@ -77,5 +96,13 @@ public class ImageContainer {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

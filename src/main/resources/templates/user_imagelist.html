@@ -10,20 +10,65 @@
     <link href="/css/weui.min.css" rel="stylesheet" />
     <link href="/css/jquery-weui.min.css" rel="stylesheet" />
     <link href="/css/app.css" media="screen" rel="stylesheet"/>
+    <link href="/css/swiper.min.css" media="screen" rel="stylesheet"/>
+    <style>
+    html, body {
+      position: relative;
+      height: 100%;
+    }
+    .swiper-container {
+      width: 100%;
+      height: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .swiper-slide {
+      background-size: cover;
+      background-position: center;
+    }
+    .gallery-top {
+      width: 100%;
+    }
+    .gallery-thumbs {
+      height: 75px;
+      box-sizing: border-box;
+      padding: 10px 0;
+    }
+    .gallery-thumbs .swiper-slide {
+      width: 15%;
+      height: 100%;
+      opacity: 0.4;
+    }
+    .gallery-thumbs .swiper-slide-active {
+      opacity: 1;
+    }
+
+  </style>
 </head>
 <body>
 	<header class="dsx-header">
         <h1 class="dsx-title">我的作品</h1>
     </header>
-    <div th:each="image : ${images}" class="page grid js_show">
-	  <div class="page grid js_show">
-	  		<a href="/derivation/works" class="dsx-myworks-area">
-				<div class="dsx-myworks-image">
-						<img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
-				</div>
-				<p class="weui-grid__label" th:text="${{image.imageName}}"></p>
-			</a>
-	  </div>
+	<div id="imageContainer">
+		<div class="swiper-container gallery-top">
+		  <div class="swiper-wrapper" >
+	          <div class="swiper-slide" v-for="(image, index) in imageList" v-bind:style="'background-image:url('+image.imageUrl+')'"></div>
+		  </div>
+		  <!-- Add Arrows -->
+		  <div class="swiper-button-next swiper-button-white"></div>
+		  <div class="swiper-button-prev swiper-button-white"></div>
+		</div>
+		<div class="button_sp_area">
+			<div class="weui-btn_mini" > 作者：{{current.createdBy}}</div>
+			<div class="weui-btn_mini" > 作品名称：{{current.imageName}}</div>
+			<div class="weui-btn_mini" > 上传课程：{{current.course.courseName}}</div>
+		</div>
+		<div class="swiper-container gallery-thumbs">
+		  <div class="swiper-wrapper">
+	          <div class="swiper-slide" v-for="(image, index) in imageList" 
+	          v-bind:style="'background-image:url('+image.imageUrl+')'" ></div>
+		  </div>
+		</div>
 	</div>
 	<div class="page__bd">
 		<div class="weui-cells__tips tip-bar-color">本月主推，你还可以做...</div>
@@ -94,17 +139,54 @@
 		  </div>
 		</div>
     </div>
-	<div id="code" style="visibility:hidden" th:text="${{code}}" />
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/vue.min.js"></script>
+	<script src="/js/swiper.min.js"></script>
     <script type="text/javascript">
     /*<![CDATA[*/
 	    $(document).ready(function () {
 	    	$("img").click(function(){
 	    		window.location.href = "/user/derivedproduct?imgcontainer="+this.alt;
 	    	});
+	    	$.get("/user/image").done(function (data) {
+	    		var imageList = data;
+	    		var current = imageList[0];
+	    		var images = new Vue({
+	                el: '#imageContainer',
+	                methods: {
+	                	select:function(index, event){
+	                		
+						}
+	                },
+	                data: {
+	                	imageList: imageList,
+	                	current: current
+	                }
+	            })
+	    		var galleryTop = new Swiper('.gallery-top', {
+	  			  spaceBetween: 10,
+	  			  navigation: {
+	  			    nextEl: '.swiper-button-next',
+	  			    prevEl: '.swiper-button-prev',
+	  			  },
+	  			});
+	  			var galleryThumbs = new Swiper('.gallery-thumbs', {
+	  			  spaceBetween: 10,
+	  			  centeredSlides: true,
+	  			  slidesPerView: 'auto',
+	  			  touchRatio: 0.2,
+	  			  slideToClickedSlide: true,
+	  			});
+	  			galleryTop.controller.control = galleryThumbs;
+	  			galleryThumbs.controller.control = galleryTop;
+	  			
+	  			galleryTop.on('slideChange', function () {
+	  				images.current=images.imageList[galleryTop.activeIndex];
+	  			});
+
+        	});
 	    })
    	/*]]>*/
     </script>

@@ -36,7 +36,6 @@ public class DerivedProductCenterController {
 
     public final static String SESSION_OPENID_KEY = "openCode";
     public final static String RELATED_IMAGE_PATH = "/user/relatedimage";
-    public final static String RELATED_IMAGE_CALLBACK_PATH = "/user/relatedimage/cb";
     
     public final static String PATH_WORKS = "/derivation/works";
     public final static String PATH_GIFTS = "/derivation/gift";
@@ -46,9 +45,6 @@ public class DerivedProductCenterController {
     @GetMapping(PATH_WORKS)
     public String navWorksPage(HttpServletRequest request, Model model) {
     	String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
-        if (openId == null) {
-            return "error_500";
-        }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
         ArrayList<ImageContainer> imageContainer = new ArrayList<>();
@@ -56,14 +52,7 @@ public class DerivedProductCenterController {
             Set<Image> images = student.getImagesSet();
             ArrayList<ImageContainer> imagesContainer = 
             		images.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
-                    	.map(x -> new ImageContainer(
-                    			x.getId(), 
-                    			x.getImageName(), 
-                    			x.getDate(), 
-                    			x.getCourse(),
-                    			"/Images/" + x.getId(), 
-                    			"/Images/" + x.getId() + "/thumbnail")
-                    	)
+                    	.map(x -> new ImageContainer(x))
                     .collect(Collectors.toCollection(ArrayList::new));
             
             imageContainer.addAll(imagesContainer);
@@ -91,9 +80,6 @@ public class DerivedProductCenterController {
     @GetMapping(RELATED_IMAGE_PATH)
     private String doShowRelatedImage(HttpServletRequest request, Model model) {
     	String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
-        if (openId == null) {
-            return "error_500";
-        }
 
         Customer customer = custRepo.findOneByOpenCode(openId);
         ArrayList<ImageContainer> imageContainer = new ArrayList<>();
@@ -101,8 +87,7 @@ public class DerivedProductCenterController {
             Set<Image> images = student.getImagesSet();
             ArrayList<ImageContainer> imagesContainer = images.stream()
                     .sorted((x, y) -> y.getDate().compareTo(x.getDate()))
-                    .map(x -> new ImageContainer(x.getId(), x.getImageName(), x.getDate(), x.getCourse(),
-                            "/Images/" + x.getId(), "/Images/" + x.getId() + "/thumbnail"))
+                    .map(x -> new ImageContainer(x))
                     .collect(Collectors.toCollection(ArrayList::new));
             
             imageContainer.addAll(imagesContainer);
@@ -151,24 +136,14 @@ public class DerivedProductCenterController {
         HttpSession session = request.getSession();
         Object openCodeObject = session.getAttribute("openCode");
 
-        if (null == openCodeObject) {
-            return "error_500";
-        }
-
         String openId = openCodeObject.toString();
         Customer customer = custRepo.findOneByOpenCode(openId);
-        if (customer == null) {
-            Customer newCustomer = new Customer();
-            newCustomer.setOpenCode(openId);
-            model.addAttribute("customer", newCustomer);
-            return "user_signup";
-        } else {
-            DerivedProduct derivedProduct = new DerivedProduct();
-            derivedProduct.setProduct(productRepository.findOne(Long.parseLong(productid)));
-            derivedProduct.setImage(imageRepository.findOne(Long.parseLong(imageid)));
-            customer.getCart().addDerivedProducts(derivedProductRepository.save(derivedProduct));
-            custRepo.save(customer);
-            return "请至购物车查看";
-        }
+        
+        DerivedProduct derivedProduct = new DerivedProduct();
+        derivedProduct.setProduct(productRepository.findOne(Long.parseLong(productid)));
+        derivedProduct.setImage(imageRepository.findOne(Long.parseLong(imageid)));
+        customer.getCart().addDerivedProducts(derivedProductRepository.save(derivedProduct));
+        custRepo.save(customer);
+        return "请至购物车查看";
     }
 }
