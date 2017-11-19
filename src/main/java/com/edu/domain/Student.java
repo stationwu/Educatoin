@@ -76,7 +76,7 @@ public class Student {
     }
 
     public Student(String studentName, String birthday, int classPeriod,
-                   int donePeriods, int leftPeriods, boolean isChild) {
+                   int leftPeriods, int donePeriods, boolean isChild) {
         this.studentName = studentName;
         this.birthday = birthday;
         this.classPeriod = classPeriod;

@@ -5,11 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-    <link href="/css/style.css" rel="stylesheet" media="screen"/>
     <link href="/css/weui.min.css" rel="stylesheet" />
     <link href="/css/jquery-weui.min.css" rel="stylesheet" />
-    <link href="/css/app.css" media="screen" rel="stylesheet"/>  
 </head>
 <body>
     <div class="weui-flex">
@@ -22,18 +19,25 @@
 		class="weui-btn weui-btn_mini weui-btn_default" 
 		th:text="${{student.studentName}}" th:rel="${{student.id}}">按钮</a>
 	</div>
-	<div class="weui-cells" id="courseList">
-	    <div class="weui-cell dsx-weui-cell" v-for="(course, index) in courseArray">
-	        <div class="weui-cell__bd">
-	            {{course.date}}
-	        </div>
-	        <div class="weui-cell__bd">
-	            {{course.timeFrom}} - {{course.timeTo}}
-	        </div>
-	        <div class="weui-cell__ft">
-	            
-	        </div>
-	    </div>
+	<div id="courseList">
+		<div class="button_sp_area">
+			<div class="weui-btn_mini" > 学号：{{student.id}}</div>
+			<div class="weui-btn_mini" > 剩余课时：{{student.leftPeriods}}</div>
+			<div class="weui-btn_mini" > 已上课时：{{student.donePeriods}}</div>
+		</div>
+		<div class="weui-cells" >
+		    <div class="weui-cell dsx-weui-cell" v-for="(course, index) in courseArray">
+		        <div class="weui-cell__bd">
+		            {{course.date}}
+		        </div>
+		        <div class="weui-cell__bd">
+		            {{course.timeFrom}} - {{course.timeTo}}
+		        </div>
+		        <div class="weui-cell__ft">
+		            
+		        </div>
+		    </div>
+		</div>
 	</div>
 	<div class="weui-footer_fixed-bottom">
 		<a href="javascript:;" class="weui-btn weui-btn_primary" id="buyClass">购买课程</a>
@@ -60,7 +64,8 @@
     })
     
     var courseArray = [];
-    var courses = {}
+    var courses = {};
+    var student={};
     $(document).ready(function () {
     	$('.button_sp_area .weui-btn_mini')[0].classList.add('weui-btn_primary');
     	$('.button_sp_area .weui-btn_mini').click(function() {
@@ -68,6 +73,9 @@
     		window.event.toElement.classList.add('weui-btn_primary');
     		$.get("/user/relatedcourse?studentid=" + $('.button_sp_area .weui-btn_primary')[0].rel).done(function (data) {
     			courses.courseArray = data;
+        	});
+    		$.get("/api/v1/Student/" + $('.button_sp_area .weui-btn_primary')[0].rel).done(function (data) {
+    			courses.student = data;
         	});
     	});
     	
@@ -79,9 +87,13 @@
                     
                 },
                 data: {
-                    courseArray: courseArray
+                    courseArray: courseArray,
+                    student: student
                 }
             })
+            $.get("/api/v1/Student/" + $('.button_sp_area .weui-btn_primary')[0].rel).done(function (data) {
+    			courses.student = data;
+        	});
     	});
     });
 /*]]>*/  

@@ -110,7 +110,8 @@ public class StudentManagerController {
 				student.addImage(img);
 			}
 		}
-
+		student.setDonePeriods(student.getDonePeriods()+1);
+		student.setLeftPeriods(student.getClassPeriod()-student.getDonePeriods());
 		Student entity = studentRepository.save(student);
 		return new ResponseEntity<>(buildResource(entity), HttpStatus.OK);
 	}

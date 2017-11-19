@@ -131,6 +131,9 @@
 								  data: JSON.stringify(buylist),
 								  contentType:"application/json; charset=utf-8",
 								}).done(function( data ) {
+									$.get( "/user/cartcontent?code="+$('#code').text()).done(function(data){
+										products.productList = data;
+									})
 									alert(data,"消息");
 							    });
 						}
