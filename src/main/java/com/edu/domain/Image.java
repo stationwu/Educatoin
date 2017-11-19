@@ -25,22 +25,10 @@ public class Image {
 
     @Column
     private String smallVersionPath;
-	
-	@Basic(fetch=FetchType.LAZY)
-    @Column
-    @JsonIgnore
-    @Lob
-    private byte[] data;
 
     @Column
     @NotNull
     private String contentType;
-    
-    @Basic(fetch=FetchType.LAZY)
-    @Column
-    @JsonIgnore
-    @Lob
-    private byte[] thumbnail;
     
     private String date;
     
@@ -81,18 +69,6 @@ public class Image {
 	}
     
 	public Image() {}
-	
-    public Image(byte[] data) {
-        setData(data);
-    }
-    
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
 
     public String getContentType() {
         return contentType;
@@ -100,14 +76,6 @@ public class Image {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
-    }
-
-    public byte[] getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(byte[] thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
 	public Set<ImageCollection> getImageCollections() {
