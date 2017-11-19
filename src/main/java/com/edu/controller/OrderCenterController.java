@@ -63,51 +63,45 @@ public class OrderCenterController {
 		HttpSession session = request.getSession();
 		Object openCodeObject = session.getAttribute("openCode");
 
-		if (null == openCodeObject) {
-			return "error_500";
-		}
-
 		String openId = openCodeObject.toString();
         Customer customer = custRepo.findOneByOpenCode(openId);
-        if (customer == null) {
-            Customer newCustomer = new Customer();
-            newCustomer.setOpenCode(openId);
-            model.addAttribute("customer", newCustomer);
-            return "user_signup";
-		} else {
-			Order order = new Order();
-			Map<Product, Integer> productMap = new HashMap<>();
-			Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
-			Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
-			double amount = 0d;
-			for (ProductContainer productContainer : products) {
-				switch (productContainer.getType()) {
-				case 1:
-					productMap.put(productRepository.findOne(productContainer.getId()), productContainer.getQuantity());
-					amount += productContainer.getProductPrice() * productContainer.getQuantity();
-					break;
-				case 2:
-					derivedProductMap.put(derivedProductRepository.findOne(productContainer.getId()),
-							productContainer.getQuantity());
-					amount += productContainer.getProductPrice() * productContainer.getQuantity();
-					break;
-				case 3:
-					imageCollectionMap.put(imageCollectionRepository.findOne(productContainer.getId()),
-							productContainer.getQuantity());
-					amount += productContainer.getProductPrice() * productContainer.getQuantity();
-					break;
-				}
+		Order order = new Order();
+		Map<Product, Integer> productMap = new HashMap<>();
+		Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
+		Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
+		double amount = 0d;
+		for (ProductContainer productContainer : products) {
+			switch (productContainer.getType()) {
+			case 1:
+				Product product = productRepository.findOne(productContainer.getId());
+				productMap.put(product, productContainer.getQuantity());
+				amount += productContainer.getProductPrice() * productContainer.getQuantity();
+				customer.getCart().removeProduct(product);
+				break;
+			case 2:
+				DerivedProduct derivedProduct = derivedProductRepository.findOne(productContainer.getId());
+				derivedProductMap.put(derivedProduct, productContainer.getQuantity());
+				amount += productContainer.getProductPrice() * productContainer.getQuantity();
+				customer.getCart().removeDerivedProduct(derivedProduct);
+				break;
+			case 3:
+				ImageCollection imageCollection = imageCollectionRepository.findOne(productContainer.getId());
+				imageCollectionMap.put(imageCollection, productContainer.getQuantity());
+				amount += productContainer.getProductPrice() * productContainer.getQuantity();
+				customer.getCart().removeImageCollection(imageCollection);
+				break;
 			}
-			order.setProductsMap(productMap);
-			order.setDerivedProductsMap(derivedProductMap);
-			order.setImageCollectionMap(imageCollectionMap);
-			order.setTotalAmount(amount);
-			LocalDate localDate = LocalDate.now();
-			order.setDate(localDate.toString());
-			order.setCustomer(customer);
-			orderRepository.save(order);
-			return "下单成功";
 		}
+		custRepo.save(customer);
+		order.setProductsMap(productMap);
+		order.setDerivedProductsMap(derivedProductMap);
+		order.setImageCollectionMap(imageCollectionMap);
+		order.setTotalAmount(amount);
+		LocalDate localDate = LocalDate.now();
+		order.setDate(localDate.toString());
+		order.setCustomer(customer);
+		orderRepository.save(order);
+		return "下单成功";
 	}
 
     @GetMapping(ORDER_LIST_PATH)

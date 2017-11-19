@@ -1,0 +1,146 @@
+body, html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dsx-title {
+    text-align: center;
+    font-size: 24px;
+    color: #3cc51f;
+    font-weight: 400;
+    margin: 0 15%;
+}
+
+.dsx-sub-title {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+.dsx-header {
+    padding: 20px 0;
+}
+
+.dsx-content-padded {
+    padding: 15px;
+}
+
+.dsx-second-title {
+    text-align: center;
+    font-size: 24px;
+    color: #3cc51f;
+    font-weight: 400;
+    margin: 0 15%;
+}
+
+footer {
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+}
+
+footer a {
+    color: #999;
+    text-decoration: none;
+}
+
+.dsx-row {
+    margin: 0.8em !important;
+}
+
+
+.dsx-weui-cell {
+    margin-left: 0.8em !important;
+    margin-right: 0.8em !important;
+}
+.weui-module-grids{
+	position: relative;
+	overflow: hidden;
+}
+
+.weui-module-grid {
+    position: relative;
+    float: left;
+    padding: 20px 10px;
+    width: 50%;
+    height: 50%;
+    box-sizing: border-box;
+    border-width:1px;
+}
+
+.weui-module-grid-prod {
+    position: relative;
+    float: left;
+    padding: 2px 2px;
+    width: 50%;
+    height: 50%;
+    box-sizing: border-box;
+    border-width:1px;
+}
+
+.weui-grid-dsx-icon-prod {
+    height: 120px;
+    margin: 0 auto;
+    border: #124B28;
+    border-style: solid;
+    border-radius: 4px;
+    border-width:2px;
+}
+
+.weui-grid-dsx-icon {
+	width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border: #124B28;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.dsx-custom-vcode-btn {
+	color:#124B28 !important;
+}
+
+.tip-bar-color {
+	background: #124B28 !important;
+	margin-bottom: 4px;
+}
+
+.dsx-ztsp-title {
+	font-weight: 400;
+    font-size: 12px;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.dsx-ztsp-price {
+	color: #124B28;
+    font-size: 12px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.dsx-ztsp-info {
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    padding-left: 6px;
+    min-width: 0;
+}
+
+.dsx-ztsp-thumb-image{ 
+	width: 50%;
+    margin-left: 0px;
+    max-height: 100%;
+    vertical-align: middle;
+}
+

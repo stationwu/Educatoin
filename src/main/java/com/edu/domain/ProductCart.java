@@ -41,6 +41,10 @@ public class ProductCart {
 		this.products.add(product);
 	}
 	
+	public void removeProduct(Product product) {
+		this.products.remove(product);
+	}
+	
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
@@ -53,6 +57,10 @@ public class ProductCart {
 		this.derivedProducts.add(derivedProduct);
 	}
 	
+	public void removeDerivedProduct(DerivedProduct derivedProduct) {
+		this.derivedProducts.remove(derivedProduct);
+	}
+	
 	public void setDerivedProducts(Set<DerivedProduct> derivedProducts) {
 		this.derivedProducts = derivedProducts;
 	}
@@ -63,6 +71,10 @@ public class ProductCart {
 
 	public void addImageCollection(ImageCollection imageCollection) {
 		this.imageCollection.add(imageCollection);
+	}
+	
+	public void removeImageCollection(ImageCollection imageCollection) {
+		this.imageCollection.remove(imageCollection);
 	}
 	
 	public void setImageCollection(Set<ImageCollection> imageCollection) {
