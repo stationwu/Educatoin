@@ -144,3 +144,18 @@ footer a {
     vertical-align: middle;
 }
 
+.dsx-myworks-area {
+	position: relative;
+    overflow: hidden;
+    height: 240px;
+}
+
+.dsx-myworks-image {
+	position: relative;
+    float: left;
+    width: 33.33%;
+    height: 100%;
+    box-sizing: border-box;
+    border-width: 1px;
+}
+

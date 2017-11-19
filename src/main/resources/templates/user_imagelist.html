@@ -15,11 +15,14 @@
 	<header class="dsx-header">
         <h1 class="dsx-title">我的作品</h1>
     </header>
-    <div th:each="image : ${images}">
-	  <div class="weui-module-grids">
-            <div class="weui-module-grid">
-                <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
-            </div>
+    <div th:each="image : ${images}" class="page grid js_show">
+	  <div class="page grid js_show">
+	  		<a href="/derivation/works" class="dsx-myworks-area">
+				<div class="dsx-myworks-image">
+						<img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
+				</div>
+				<p class="weui-grid__label" th:text="${{image.imageName}}"></p>
+			</a>
 	  </div>
 	</div>
 	<div class="page__bd">
