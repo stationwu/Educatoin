@@ -47,4 +47,9 @@ public interface FileStorageService {
      * @return resource
      */
     Resource load(String key);
+
+    /**
+     * Never call it unless you're sure about you won't pay for it
+     */
+    void deleteAll();
 }
