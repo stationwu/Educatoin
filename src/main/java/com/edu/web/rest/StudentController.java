@@ -73,21 +73,21 @@ public class StudentController {
         return new ResponseEntity<>(buildResources(entities), HttpStatus.OK);
     }
 
-    @PostMapping(path = RELATIONSHIP_PATH + "/{id}")
-    public Resources<Resource<Student>> createStudentbyCustomer(@PathVariable(
-        value = "id") String id, @RequestBody @Valid List<Student> students)
-        throws HttpException {
-        Customer studentsParent = customerRepository.findOne(Long.parseLong(id));
-        List<Student> newCreatedStudents = new ArrayList<>();
-        for (Student student : students) {
-            student.setCustomer(studentsParent);
-            Student savedStudent = studentRepository.save(student);
-            
-            newCreatedStudents.add(savedStudent);
-        }
-
-        return buildResources(newCreatedStudents);
-    }
+//    @PostMapping(path = RELATIONSHIP_PATH + "/{id}")
+//    public Resources<Resource<Student>> createStudentbyCustomer(@PathVariable(
+//        value = "id") String id, @RequestBody @Valid List<Student> students)
+//        throws HttpException {
+//        Customer studentsParent = customerRepository.findOne(Long.parseLong(id));
+//        List<Student> newCreatedStudents = new ArrayList<>();
+//        for (Student student : students) {
+//            student.setCustomer(studentsParent);
+//            Student savedStudent = studentRepository.save(student);
+//
+//            newCreatedStudents.add(savedStudent);
+//        }
+//
+//        return buildResources(newCreatedStudents);
+//    }
 
     @PostMapping(path = PATH + "/{id}")
     public Resource<Student> editStudent(@PathVariable(value = "id") String id,

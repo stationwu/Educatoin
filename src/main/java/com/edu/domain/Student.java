@@ -85,6 +85,15 @@ public class Student {
         this.isChild = isChild;
     }
 
+    public Student(String studentName, String birthday) {
+        this.studentName = studentName;
+        this.birthday = birthday;
+        this.classPeriod = 0;
+        this.donePeriods = 0;
+        this.leftPeriods = 0;
+        this.isChild = true;
+    }
+
     public String getStudentName() {
         return studentName;
     }

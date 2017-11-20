@@ -12,39 +12,7 @@ public class CustomerContainer {
 
     private String address;
 
-    private List<Child> children = new ArrayList<>();
-
-    public static class Child {
-        private String childName;
-
-        private int classPeriod;
-
-        private String birthday;
-
-        public String getChildName() {
-            return childName;
-        }
-
-        public void setChildName(String childName) {
-            this.childName = childName;
-        }
-
-        public int getClassPeriod() {
-            return classPeriod;
-        }
-
-        public void setClassPeriod(int classPeriod) {
-            this.classPeriod = classPeriod;
-        }
-
-        public String getBirthday() {
-            return birthday;
-        }
-
-        public void setBirthday(String birthday) {
-            this.birthday = birthday;
-        }
-    }
+    private List<ChildContainer> children = new ArrayList<>();
 
     public String getOpenCode() {
         return openCode;
@@ -78,19 +46,19 @@ public class CustomerContainer {
         this.address = address;
     }
 
-    public List<Child> getChildren() {
+    public List<ChildContainer> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Child> children) {
+    public void setChildren(List<ChildContainer> children) {
         this.children = children;
     }
 
-    public void setChild(int index, Child child) {
+    public void setChild(int index, ChildContainer child) {
         this.children.set(index, child);
     }
 
-    public void addChild(Child child) {
+    public void addChild(ChildContainer child) {
         this.children.add(child);
     }
 }

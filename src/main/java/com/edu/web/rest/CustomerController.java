@@ -4,7 +4,9 @@ import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
+import com.edu.domain.dto.ChildContainer;
 import com.edu.domain.dto.CustomerContainer;
+import com.edu.utils.Constant;
 import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -43,19 +47,18 @@ public class CustomerController {
     }
 
     @PostMapping(path = PATH + "/SignUp")
-    public Customer create(@RequestBody @Valid CustomerContainer customerForm) {
+    public Customer create(@RequestBody @Valid CustomerContainer customerDTO) {
         Customer customer;
 
-        if (repository.isCustomerAlreadyRegistered(customerForm.getOpenCode())) {
-            customer = repository.findOneByOpenCode(customerForm.getOpenCode());
+        if (repository.isCustomerAlreadyRegistered(customerDTO.getOpenCode())) {
+            customer = repository.findOneByOpenCode(customerDTO.getOpenCode());
         } else {
-            customer = new Customer(customerForm.getOpenCode(), customerForm.getName(),
-                    customerForm.getMobilePhone(), customerForm.getAddress());
+            customer = new Customer(customerDTO.getOpenCode(), customerDTO.getName(),
+                    customerDTO.getMobilePhone(), customerDTO.getAddress());
             customer = repository.save(customer);
 
-            for (CustomerContainer.Child childForm : customerForm.getChildren()) {
-                Student student = new Student(childForm.getChildName(), childForm.getBirthday(), childForm.getClassPeriod(),
-                        0, childForm.getClassPeriod(), true);
+            for (ChildContainer childDTO : customerDTO.getChildren()) {
+                Student student = new Student(childDTO.getChildName(), childDTO.getBirthday());
                 student.setCustomer(customer);
                 student = studentRepository.save(student);
                 customer.addStudent(student);
@@ -65,14 +68,26 @@ public class CustomerController {
         return customer;
     }
 
-    @PostMapping(path = PATH + "/{id}")
-    public Customer edit(@PathVariable(value = "id") Long id,
-                         @RequestBody @Valid Customer customer) {
-        Customer entity = repository.findOne(id);
-        entity.setName(customer.getName());
-        entity.setAddress(customer.getAddress());
-        entity.setMobilePhone(customer.getMobilePhone());
-        return repository.save(entity);
+    @PostMapping(path = PATH + "/AddChild")
+    public Customer addChild(@RequestBody @Valid List<ChildContainer> children, HttpSession session) {
+        Customer customer = null;
+
+        String openId = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
+
+        if (openId != null) {
+            customer = repository.findOneByOpenCode(openId);
+
+            if (customer != null) {
+                for (ChildContainer childDTO : children) {
+                    Student student = new Student(childDTO.getChildName(), childDTO.getBirthday());
+                    student.setCustomer(customer);
+                    student = studentRepository.save(student);
+                    customer.addStudent(student);
+                }
+            }
+        }
+
+        return customer;
     }
 
     @PutMapping(path = PATH + "/{id}")

@@ -2,7 +2,10 @@ var app = new Vue({
     el: '#signup',
     data: {
         children : [
-            { name: "", birthday: "", numberOfClasses: 0 }
+            {
+                name: "",
+                birthday: ""
+            }
         ],
         mobilePhone : "",
         verificationCode : "",
@@ -17,7 +20,10 @@ var app = new Vue({
             }
         },
         addChild: function() {
-            app.children.push({ name: "", birthday: "", numberOfClasses: 0 });
+            app.children.push({
+                name: "",
+                birthday: ""
+            });
             if (app.children.length > 1) {
                 app.removable = true;
             }
@@ -29,19 +35,16 @@ var app = new Vue({
         	var openCode   = $('#wxOpenCode').text();
         	var customerid = $('#customerid').text();
         	var students = [];
-        	
+
             for(var i = 0; i < app.children.length; ++i) {
             	students.push({
-                    "studentName"   : app.children[i].name,
-                    "birthday"    : app.children[i].birthday,
-                    "classPeriod" : app.children[i].numberOfClasses,
-                    "leftPeriods" : app.children[i].numberOfClasses,
-                    "donePeriods" : 0
+                    "childName"   : app.children[i].name,
+                    "birthday"    : app.children[i].birthday
                 });
             }
-            
+
             $.ajax({
-                url: '/api/v1/Student/Customer/' + customerid,
+                url: '/api/v1/Customer/AddChild',
                 contentType: 'application/json',
                 type: 'POST',
                 data: JSON.stringify(students),
@@ -61,8 +64,7 @@ var app = new Vue({
             for(var i = 0; i < app.children.length; ++i) {
                 customer.children.push({
                     "childName"   : app.children[i].name,
-                    "birthday"    : app.children[i].birthday,
-                    "classPeriod" : app.children[i].numberOfClasses
+                    "birthday"    : app.children[i].birthday
                 });
             }
 
