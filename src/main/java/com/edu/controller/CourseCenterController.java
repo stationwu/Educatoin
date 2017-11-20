@@ -118,6 +118,9 @@ public class CourseCenterController {
 	private String reserveCourse(@RequestParam(value = "studentid") String studentId,
 			@RequestParam(value = "courseid") String courseId) {
 		Student student = studentRepository.findOne(studentId);
+		if(student.getLeftPeriods()>0){
+			return "剩余课程数为0，请购买课程";
+		}
 		Course course = courseRepository.findOne(Long.parseLong(courseId));
 		student.addReservedCourse(course);
 		studentRepository.save(student);
@@ -130,7 +133,6 @@ public class CourseCenterController {
 		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
 		Customer customer = custRepo.findOneByOpenCode(openId);
 		
-		Student student = studentRepository.findOne(studentId);
 		customer.getCart().addProducts(productRepository.getClassProductList().get(0));
 		custRepo.save(customer);
 		
