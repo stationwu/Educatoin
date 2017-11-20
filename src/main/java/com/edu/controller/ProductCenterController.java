@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -41,6 +42,13 @@ public class ProductCenterController {
 
 	@GetMapping(CLASS_PRODUCT_EDIT_PATH)
 	public String getClassProduct(@RequestParam(value = "productid") String productId, Model model) {
+		Product product = productRepository.findOne(Long.parseLong(productId));
+		model.addAttribute("product", product);
+		return "user_editclassproduct";
+	}
+	
+	@PostMapping(CLASS_PRODUCT_EDIT_PATH)
+	public String updateClassProduct(@RequestParam(value = "productid") String productId, Model model) {
 		Product product = productRepository.findOne(Long.parseLong(productId));
 		model.addAttribute("product", product);
 		return "user_editclassproduct";

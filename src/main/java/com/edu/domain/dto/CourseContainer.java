@@ -16,12 +16,14 @@ public class CourseContainer {
 	private int maxSeat;
 	
 	private int reservedStudentCount;
+	
+	private String status;
 
 	public CourseContainer() {
 
 	}
 	
-	public CourseContainer(Course course) {
+	public CourseContainer(Course course, String status) {
 		this.id = course.getId();
 		this.courseName = course.getCourseName();
 		this.date = course.getDate();
@@ -29,6 +31,7 @@ public class CourseContainer {
 		this.timeTo = course.getTimeTo();
 		this.reservedStudentCount = course.getReservedStudentsSet().size();
 		this.maxSeat = course.getMaxSeat();
+		this.status = status;
 	}
 
 	public long getId() {
@@ -85,6 +88,14 @@ public class CourseContainer {
 
 	public void setMaxSeat(int maxSeat) {
 		this.maxSeat = maxSeat;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

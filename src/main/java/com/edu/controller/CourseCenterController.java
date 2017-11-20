@@ -82,8 +82,8 @@ public class CourseCenterController {
 		Student student = studentRepository.findOne(studentId);
 		Set<Course> signedCourses = student.getCoursesSet();
 		Set<Course> reservedCourses = student.getReservedCoursesSet();
-		Stream<CourseContainer> signedStream = signedCourses.stream().map(x -> new CourseContainer(x));
-		Stream<CourseContainer> reservedStream = reservedCourses.stream().map(x -> new CourseContainer(x));
+		Stream<CourseContainer> signedStream = signedCourses.stream().map(x -> new CourseContainer(x,"已签到"));
+		Stream<CourseContainer> reservedStream = reservedCourses.stream().map(x -> new CourseContainer(x,"已预约"));
 		return Stream.of(signedStream, reservedStream).flatMap(i -> i)
 				.sorted((x, y) -> (y.getDate() + y.getTimeFrom()).compareTo(x.getDate() + x.getTimeFrom()))
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -108,7 +108,7 @@ public class CourseCenterController {
 			Model model) {
 		String dateStr = DateToStringConverter.convertDatetoString(date);
 		Collection<Course> entities = courseRepository.findByDateOrderByTimeFromAsc(dateStr);
-		ArrayList<CourseContainer> courseContainers = entities.stream().map(x -> new CourseContainer(x))
+		ArrayList<CourseContainer> courseContainers = entities.stream().map(x -> new CourseContainer(x,"预约课程"))
 				.collect(Collectors.toCollection(ArrayList::new));
 		return courseContainers;
 	}
