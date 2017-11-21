@@ -11,6 +11,8 @@ public interface ImageService {
     public Image find(Long id);
 
     public Image save(String imageName, String contentType, byte[] fileContent);
+    
+    public Image save(String imageName, MultipartFile file);
 
     public Image saveIn3Size(String imageName, Student student, Course course, MultipartFile file);
 

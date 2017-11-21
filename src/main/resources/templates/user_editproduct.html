@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>更新商品信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/weui.min.css" rel="stylesheet" />
+    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="productForm">
+		<div class="weui-cells weui-cells_form">
+	      <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="name" th:placeholder="${{product.productName}}"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品价格</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="number" pattern="[0-9]*" id="price" th:placeholder="${{product.productPrice}}"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品描述</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="description" th:placeholder="${{product.productDescription}}"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品长描述</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="longDescription" th:placeholder="${{product.longProductDescription}}"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">数字优先级</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="number" pattern="[0-9]*" id="priority" th:placeholder="${{product.priority}}"/>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	<div class="weui-cells weui-cells_form">
+		<div class="weui-cell">
+			<div class="weui-cell__bd">
+				<div class="weui-uploader">
+					<div class="weui-uploader__bd">
+						<ul class="weui-uploader__files" id="uploaderFiles" th:each="image : ${product}">
+						</ul>
+						<div id="image-holder"></div>
+						<form class="weui-uploader__input-box">
+							<input id="fileUpload" class="weui-uploader__input" type="file"
+								accept="image/*" multiple="" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="weui-footer_fixed-bottom">
+		<a href="javascript:;" class="weui-btn weui-btn_primary" id="updateProduct" th:rel="${{product.id}}">更新商品</a>
+	</div>
+    <script src="/js/jquery.min.js"></script>
+	<script src="/js/jquery-weui.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/vue.min.js"></script>
+	<script>
+	/*<![CDATA[*/
+		$("#updateProduct").on('click', function() {
+			var price = $("#price")[0].value;
+			var name = $("#name")[0].value;
+			var description = $("#description")[0].value;
+			var longDescription = $("#longDescription")[0].value;
+			var priority = $("#priority")[0].value;
+			if(name === ""){
+				name=$("#name")[0].placeholder;
+			}
+			if(price === ""){
+				price=$("#price")[0].placeholder;
+			}
+			if(description === ""){
+				description=$("#description")[0].placeholder;
+			}
+			if(longDescription === ""){
+				description=$("#longDescription")[0].placeholder;
+			}
+			if(longDescription === ""){
+				description=$("#priority")[0].placeholder;
+			}
+			var files = $("#fileUpload")[0].files;
+			var formData = new FormData();
+			if(files[0] !== undefined || files[1] !== undefined || files[2] !== undefined){
+				formData.append("file", files[0]);
+				formData.append("file", files[1]);
+				formData.append("file", files[2]);
+			}else{
+				if(files[0] === undefined){
+					formData.append("file", null);
+				}else{
+					alert("请上传三张图片");
+				}
+			}
+			formData.append("price", price);
+			formData.append("name", name);
+			formData.append("description", description);
+			formData.append("longDescription", longDescription);
+			formData.append("priority", priority);
+			
+			$.ajax({
+			  url: "/user/classprod/edit?productid="+$("#updateProduct")[0].rel,
+			  data: formData,
+			  processData: false,
+			  contentType: false,
+			  type: 'POST'
+			}).done(function(){
+				alert("更新成功");
+			}).fail(function(){
+				alert("更新失败");
+			});
+		})
+		
+		$("#fileUpload").on(
+		'change',
+		function() {
+
+			//获取上传文件的数量
+			var countFiles = $(this)[0].files.length;
+
+			var imgPath = $(this)[0].value;
+			var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1)
+					.toLowerCase();
+			var image_holder = $("#uploaderFiles");
+			image_holder.empty();
+
+			if (extn == "gif" || extn == "png" || extn == "jpg"
+					|| extn == "jpeg") {
+				if (typeof (FileReader) != "undefined") {
+
+					// 循环所有要上传的图片
+					for (var i = 0; i < countFiles; i++) {
+
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							$("<img />", {
+								"src" : e.target.result,
+								"class" : "weui-uploader__file"
+							}).appendTo(image_holder);
+						}
+
+						image_holder.show();
+						reader.readAsDataURL($(this)[0].files[i]);
+					}
+
+				} else {
+					alert("你的浏览器不支持FileReader！");
+				}
+			} else {
+				alert("请选择图像文件。");
+			}
+		});
+	/*]]>*/  
+	</script>
+</body>
+</html>

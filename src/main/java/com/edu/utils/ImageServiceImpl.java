@@ -176,4 +176,31 @@ public class ImageServiceImpl implements ImageService {
         ImageIO.write(scaledBI, "jpg", out);
         return out.toByteArray();
     }
+
+	@Override
+	public Image save(String imageName, MultipartFile file) {
+		// TODO Auto-generated method stub
+		Image img = new Image();
+        img.setImageName(imageName);
+     // Each file must save 3 versions - full, small, thumbnail
+        BufferedImage imageFull = readFromUploaded(file);
+        BufferedImage imageSmall = scale(imageFull,
+                imageProperties.getSmallVersionMaxWidth(), imageProperties.getSmallVersionMaxHeight());
+        BufferedImage imageThumbnail = scale(imageFull,
+                imageProperties.getThumbnailMaxWidth(), imageProperties.getThumbnailMaxHeight());
+        
+        String pathToFull = fileStorageService.store(imageFull);
+        String pathToSmall = fileStorageService.store(imageSmall);
+        String pathToThumbnail = fileStorageService.store(imageThumbnail);
+        img.setPath(pathToFull);
+        img.setSmallVersionPath(pathToSmall);
+        img.setThumbnailPath(pathToThumbnail);
+
+        img.setContentType(file.getContentType());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        img.setDate(LocalDateTime.now().format(formatter));
+        
+		return imageRepository.save(img);
+	}
 }

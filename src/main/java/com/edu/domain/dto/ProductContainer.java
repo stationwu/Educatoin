@@ -9,11 +9,11 @@ import com.edu.domain.Product;
 
 public class ProductContainer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    private String productName;
+	private String productName;
 
 	private String category;
 
@@ -25,8 +25,12 @@ public class ProductContainer {
 
 	private int quantity;
 
+	private String longProductDescription;
+	
 	private int type;
 	
+	private int priority;
+
 	private final boolean checked = false;
 
 	public String getProductName() {
@@ -88,9 +92,11 @@ public class ProductContainer {
 	public boolean getChecked() {
 		return checked;
 	}
-	public ProductContainer(){
-		
+
+	public ProductContainer() {
+
 	}
+
 	public ProductContainer(String productName, String category, double productPrice, String productDescription,
 			String imageUrl, int quantity, Long id, int type) {
 		super();
@@ -103,49 +109,66 @@ public class ProductContainer {
 		this.id = id;
 		this.type = type;
 	}
-	
-	public ProductContainer(Product product,int quantity, int type) {
+
+	public ProductContainer(Product product, int quantity, int type) {
 		super();
 		this.productName = product.getProductName();
 		this.category = product.getProductCategory().getCategoryName();
 		this.productPrice = product.getProductPrice();
 		this.productDescription = product.getProductDescription();
-		this.imageUrl = "/Images/" + product.getProductImages().stream().findFirst().get().getId() + "/thumbnail";
+		this.longProductDescription = product.getLongProductDescription();
+		this.priority = product.getPriority();
+		this.imageUrl = "/Images/" + product.getProductImages().stream().sorted((x, y) -> (int) (x.getId() - y.getId()))
+				.findFirst().get().getId() + "/thumbnail";
 		this.quantity = quantity;
 		this.id = product.getId();
 		this.type = type;
 	}
-	
-	public ProductContainer(DerivedProduct product,int quantity, int type) {
+
+	public ProductContainer(DerivedProduct product, int quantity, int type) {
 		super();
 		this.productName = product.getProduct().getProductName();
 		this.category = product.getProduct().getProductCategory().getCategoryName();
 		this.productPrice = product.getProduct().getProductPrice();
 		this.productDescription = product.getProduct().getProductDescription();
-		this.imageUrl = "/Images/" + product.getProduct().getProductImages().stream().findFirst().get().getId() + "/thumbnail";
+		this.longProductDescription = product.getProduct().getLongProductDescription();
+		this.priority = product.getProduct().getPriority();
+		this.imageUrl = "/Images/" + product.getProduct().getProductImages().stream()
+				.sorted((x, y) -> (int) (x.getId() - y.getId())).findFirst().get().getId() + "/thumbnail";
 		this.quantity = quantity;
 		this.id = product.getId();
 		this.type = type;
 	}
-	
-	public ProductContainer(ImageCollection product,int quantity, int type) {
+
+	public ProductContainer(ImageCollection product, int quantity, int type) {
 		super();
 		this.productName = product.getProduct().getProductName();
 		this.category = product.getProduct().getProductCategory().getCategoryName();
 		this.productPrice = product.getProduct().getProductPrice();
 		this.productDescription = product.getProduct().getProductDescription();
-		this.imageUrl = "/Images/" + product.getImageCollection().stream().findFirst().get().getId() + "/thumbnail";
+		this.longProductDescription = product.getProduct().getLongProductDescription();
+		this.priority = product.getProduct().getPriority();
+		this.imageUrl = "/Images/" + product.getImageCollection().stream()
+				.sorted((x, y) -> (int) (x.getId() - y.getId())).findFirst().get().getId() + "/thumbnail";
 		this.quantity = quantity;
 		this.id = product.getId();
 		this.type = type;
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public String getLongProductDescription() {
+		return longProductDescription;
+	}
+
+	public void setLongProductDescription(String longProductDescription) {
+		this.longProductDescription = longProductDescription;
+	}
+	
 }

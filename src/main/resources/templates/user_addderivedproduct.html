@@ -12,10 +12,34 @@
 <body>
 	<div id="productForm">
 		<div class="weui-cells weui-cells_form">
+	      <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="name" placeholder="商品名称"/>
+		    </div>
+		  </div>
 		  <div class="weui-cell">
 		    <div class="weui-cell__hd"><label class="weui-label">商品价格</label></div>
 		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="number" pattern="[0-9]*" id="price" th:placeholder="${{product.productPrice}}"/>
+		      <input class="weui-input" type="number" pattern="[0-9]*" id="price" placeholder="100"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品描述</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="description" placeholder="商品描述"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">商品长描述</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="longDescription" placeholder="商品长描述"/>
+		    </div>
+		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">数字优先级</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="number" pattern="[0-9]*" id="priority" placeholder="100"/>
 		    </div>
 		  </div>
 		</div>
@@ -25,7 +49,7 @@
 			<div class="weui-cell__bd">
 				<div class="weui-uploader">
 					<div class="weui-uploader__bd">
-						<ul class="weui-uploader__files" id="uploaderFiles" th:each="image : ${product}">
+						<ul class="weui-uploader__files" id="uploaderFiles">
 						</ul>
 						<div id="image-holder"></div>
 						<form class="weui-uploader__input-box">
@@ -38,7 +62,7 @@
 		</div>
 	</div>
 	<div class="weui-footer_fixed-bottom">
-		<a href="javascript:;" class="weui-btn weui-btn_primary" id="updateProduct">更新商品</a>
+		<a href="javascript:;" class="weui-btn weui-btn_primary" id="createProduct" >添加衍生商品</a>
 	</div>
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
@@ -46,10 +70,26 @@
 	<script src="/js/vue.min.js"></script>
 	<script>
 	/*<![CDATA[*/
-		$("#updateProduct").on('click', function() {
+		$("#createProduct").on('click', function() {
 			var price = $("#price")[0].value;
+			var name = $("#name")[0].value;
+			var description = $("#description")[0].value;
+			var longDescription = $("#longDescription")[0].value;
+			var priority = $("#priority")[0].value;
+			if(name === ""){
+				name=$("#name")[0].placeholder;
+			}
 			if(price === ""){
 				price=$("#price")[0].placeholder;
+			}
+			if(description === ""){
+				description=$("#description")[0].placeholder;
+			}
+			if(longDescription === ""){
+				description=$("#longDescription")[0].placeholder;
+			}
+			if(longDescription === ""){
+				description=$("#priority")[0].placeholder;
 			}
 			var files = $("#fileUpload")[0].files;
 			var formData = new FormData();
@@ -59,23 +99,27 @@
 				formData.append("file", files[2]);
 			}else{
 				if(files[0] === undefined){
-					
+					formData.append("file", null);
 				}else{
 					alert("请上传三张图片");
 				}
 			}
 			formData.append("price", price);
+			formData.append("name", name);
+			formData.append("description", description);
+			formData.append("longDescription", longDescription);
+			formData.append("priority", priority);
 			
 			$.ajax({
-			  url: "/StudentManager/"+$("#studentid")[0].textContent,
+			  url: "/user/derivedprod/add",
 			  data: formData,
 			  processData: false,
 			  contentType: false,
 			  type: 'POST'
 			}).done(function(){
-				alert("更新成功");
+				alert("添加成功");
 			}).fail(function(){
-				alert("更新失败");
+				alert("添加失败");
 			});
 		})
 		
