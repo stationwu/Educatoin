@@ -1,5 +1,6 @@
 package com.edu.config;
 
+import com.edu.interceptor.WebAPIInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -15,6 +16,11 @@ public class InterceptorConfigurerAdapter extends WebMvcConfigurerAdapter {
 	SessionInterceptor sessionInterceptor() {
          return new SessionInterceptor();
     }
+
+    @Bean
+	WebAPIInterceptor webAPIInterceptor() {
+		return new WebAPIInterceptor();
+	}
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -22,5 +28,6 @@ public class InterceptorConfigurerAdapter extends WebMvcConfigurerAdapter {
 		// addPathPatterns 用于添加拦截规则
 		// excludePathPatterns 用户排除拦截
 		registry.addInterceptor(sessionInterceptor()).addPathPatterns("/user/**").excludePathPatterns("/user/signup").excludePathPatterns("/user/center");
+		registry.addInterceptor(webAPIInterceptor()).addPathPatterns("/api/**").excludePathPatterns("/api/**/Customer/SignUp");
 	}
 }
