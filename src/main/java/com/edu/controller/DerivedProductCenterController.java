@@ -86,14 +86,14 @@ public class DerivedProductCenterController {
         for (Student student : customer.getStudents()) {
             Set<Image> images = student.getImagesSet();
             ArrayList<ImageContainer> imagesContainer = images.stream()
-                    .sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+                    .sorted((x, y) -> (int)(y.getId()-x.getId()))
                     .map(x -> new ImageContainer(x))
                     .collect(Collectors.toCollection(ArrayList::new));
             
             imageContainer.addAll(imagesContainer);
         }
         model.addAttribute("code", openId);
-        model.addAttribute("images", imageContainer.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+        model.addAttribute("images", imageContainer.stream().sorted((x, y) -> (int)(y.getId()-x.getId()))
 				.collect(Collectors.toCollection(ArrayList::new)));
         return "user_imagelist";
     }
@@ -120,9 +120,7 @@ public class DerivedProductCenterController {
             model.addAttribute("image", new ImageContainer(image.getId(), image.getImageName(), image.getDate(),
                     image.getCourse(), "/Images/" + image.getId(), "/Images/" + image.getId() + "/thumbnail"));
             ArrayList<ProductContainer> products = productRepository.getDerivedProductList().stream()
-                    .map(x -> new ProductContainer(x.getProductName(), x.getProductCategory().getCategoryName(),
-                            x.getProductPrice(), x.getProductDescription(),
-                            "/Images/" + x.getProductImages().stream().findFirst().get().getId(), 1, x.getId(), 2))
+                    .map(x -> new ProductContainer(x, 1, 2))
                     .collect(Collectors.toCollection(ArrayList::new));
             model.addAttribute("products", products);
             return "derivation";

@@ -76,7 +76,7 @@ public class ImageCenterController {
 		for (Student student : customer.getStudents()) {
 			Set<Image> images = student.getImagesSet();
 			ArrayList<ImageContainer> imagesContainer = images.stream()
-					.sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+					.sorted((x, y) -> (int)(y.getId() - x.getId()))
 					.map(x -> new ImageContainer(x))
 					.collect(Collectors.toCollection(ArrayList::new));
 	
