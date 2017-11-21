@@ -3,22 +3,33 @@ package com.edu.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "customer")
+@Table(
+        name = "customer",
+        indexes = {
+                @Index(name = "idx_open_code", columnList = "openCode", unique = true),
+                @Index(name = "idx_phone_number", columnList = "mobilePhone", unique = true)
+        }
+)
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotNull
     private String openCode;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String mobilePhone;
-    
+
+    @NotNull
     private String address;
     
     private boolean isActivated;

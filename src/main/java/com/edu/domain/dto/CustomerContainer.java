@@ -1,15 +1,20 @@
 package com.edu.domain.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerContainer {
+    @NotNull
     private String openCode;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String mobilePhone;
 
+    @NotNull
     private String address;
 
     private List<ChildContainer> children = new ArrayList<>();
