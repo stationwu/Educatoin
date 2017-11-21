@@ -23,6 +23,10 @@
 	    <label class="weui-form-preview__label">手机号</label>
 	    <em class="weui-form-preview__value" th:text="${customer.mobilePhone}"></em>
 	  </div>
+	  <div class="weui-form-preview__bd">
+	    <label class="weui-form-preview__label">地址</label>
+	    <em class="weui-form-preview__value" th:text="${customer.address}"></em>
+	  </div>
 	  
 	  <div id="children" class="weui-form-preview__bd" th:each="student : ${customer.students}">
 	    <div class="weui-form-preview__item">
