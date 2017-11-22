@@ -17,57 +17,58 @@
     <script src="/js/vue.min.js"></script>
 </head>
 <body>
-<ul th:each="image : ${images}">
-    <li class="col-xs-4">
-        <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}" style="display: block; margin: 0 auto;"/>
-    </li>
-</ul>
-
-<button class="weui-btn weui-btn_primary" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
-<div id="code" style="visibility:hidden" th:text="${{code}}"/>
-<script type="text/javascript">
-    var items = [];
-    // item selection
-    $('li').click(function () {
-        $(this).toggleClass('selected');
-        if ($('li.selected').length == 0) {
-            $('.select').removeClass('selected');
-            items.splice(items.indexOf($(this)[0].getElementsByTagName('img')[0].alt), 1);
-        }
-        else {
-            $('.select').addClass('selected');
-            items.push($(this)[0].getElementsByTagName('img')[0].alt);
-        }
-        counter();
-    });
-
-    // all item selection
-    $('.select').click(function () {
-        if ($('li.selected').length == 0) {
-            $('li').addClass('selected');
-            $('.select').addClass('selected');
-        }
-        else {
-            $('li').removeClass('selected');
-            $('.select').removeClass('selected');
-        }
-        counter();
-    });
-
-    // number of selected items
-    function counter() {
-        if ($('li.selected').length > 0)
-            $('.send').addClass('selected');
-        else
-            $('.send').removeClass('selected');
-        $('.send').attr('data-counter', $('li.selected').length);
-    }
-
-    function generateImageCollection() {
-        $.post("/user/generateImagecollection?images=" + items.join(',')).done(function (data) {
-            $.alert(data, "消息");
-        });
-    }
-</script>
+	<ul th:each="image : ${images}">
+		<li class="col-xs-4">
+			<img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}" width="100" height="100"/>
+		</li>
+	</ul>
+	<div class="button_sp_area" >
+		<button class="weui-btn weui-btn_mini weui-btn_primary" style="display: block; margin: 0 auto;" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
+	</div>
+	<div id="code" style="visibility:hidden" th:text="${{code}}"/>
+	<script type="text/javascript">
+	    var items = [];
+	    // item selection
+	    $('li').click(function () {
+	        $(this).toggleClass('selected');
+	        if ($('li.selected').length == 0) {
+	            $('.select').removeClass('selected');
+	            items.splice(items.indexOf($(this)[0].getElementsByTagName('img')[0].alt), 1);
+	        }
+	        else {
+	            $('.select').addClass('selected');
+	            items.push($(this)[0].getElementsByTagName('img')[0].alt);
+	        }
+	        counter();
+	    });
+	
+	    // all item selection
+	    $('.select').click(function () {
+	        if ($('li.selected').length == 0) {
+	            $('li').addClass('selected');
+	            $('.select').addClass('selected');
+	        }
+	        else {
+	            $('li').removeClass('selected');
+	            $('.select').removeClass('selected');
+	        }
+	        counter();
+	    });
+	
+	    // number of selected items
+	    function counter() {
+	        if ($('li.selected').length > 0)
+	            $('.send').addClass('selected');
+	        else
+	            $('.send').removeClass('selected');
+	        $('.send').attr('data-counter', $('li.selected').length);
+	    }
+	
+	    function generateImageCollection() {
+	        $.post("/user/generateImagecollection?images=" + items.join(',')).done(function (data) {
+	            $.alert(data, "消息");
+	        });
+	    }
+	</script>
 </body>
 </html>

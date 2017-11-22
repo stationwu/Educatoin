@@ -12,13 +12,16 @@
     <link href="/css/app.css" media="screen" rel="stylesheet"/> 
 </head>
 <body>
-	<ul th:each="image : ${images}">
-	    <li class="col-xs-4">
-	        <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}" style="display: block; margin: 0 auto;"/>
-	    </li>
-	</ul>
+	<div class="container" id="container">
+		<ul th:each="image : ${images}">
+		    <li class="col-xs-4">
+		        <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}" style="display: block; margin: 0 auto;"/>
+		    </li>
+		</ul>
+	</div>
+	
 	<div class="button_sp_area">
-	   <button class="weui-btn weui-btn_primary" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
+	   <button class="weui-btn weui-btn_mini weui-btn_primary" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
 	</div>
 
     <div id="code" style="visibility:hidden" th:text="${{code}}"/>
