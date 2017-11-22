@@ -17,14 +17,19 @@
     <script src="/js/vue.min.js"></script>
 </head>
 <body>
+
 	<ul th:each="image : ${images}">
 		<li class="col-xs-4">
 			<img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}" width="100" height="100"/>
 		</li>
 	</ul>
+	
 	<div class="button_sp_area" >
-		<button class="weui-btn weui-btn_mini weui-btn_primary" style="display: block; margin: 0 auto;" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
+	  	<a class="weui-btn weui-btn_mini weui-btn_primary" 
+	  		style="display: block; margin: 0 auto;" 
+	  		data-counter="0" onclick="generateImageCollection()">生成作品集</a>		
 	</div>
+	
 	<div id="code" style="visibility:hidden" th:text="${{code}}"/>
 	<script type="text/javascript">
 	    var items = [];
