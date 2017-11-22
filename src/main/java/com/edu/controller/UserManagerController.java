@@ -22,7 +22,11 @@ public class UserManagerController {
 	@Autowired
 	private StudentRepository studentRepository;
 	
-	@PostMapping("user/search")
+	public final static String MANAGER_SEARCH_PATH = "/manager/search";
+	
+	public final static String MANAGER_SIGN_COURSE_PATH = "/manager/signcourse";
+	
+	@PostMapping(MANAGER_SEARCH_PATH)
 	@ResponseBody
 	public List<Student> searchStudent(@RequestParam(value="keyword") String keyword, HttpSession session) {
 		@SuppressWarnings("unchecked")
@@ -30,7 +34,7 @@ public class UserManagerController {
 		return students;
 	}
 	
-	@GetMapping("user/search")
+	@GetMapping(MANAGER_SEARCH_PATH)
 	public String getSearchPage(HttpSession session) {
 		//String openId = (String) session.getAttribute(Constant.SESSION_OPENID_KEY);
 		return "user_search";
@@ -45,7 +49,7 @@ public class UserManagerController {
 		return "true";
 	}
 	
-    @GetMapping("user/signcourse")
+    @GetMapping(MANAGER_SIGN_COURSE_PATH)
 	private String doSignCourse(@RequestParam(value="id") String id, HttpSession session, Model model) {
 		Student student = studentRepository.findOne(id);
     	model.addAttribute("studentContainer", new StudentContainer(student));

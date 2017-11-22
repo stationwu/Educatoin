@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>商品列表</title>
+    <title th:text="${{title}}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -39,13 +39,13 @@
 		$('.weui-cell_access').bind('click', function (event) {
 			switch(window.event.currentTarget.hreflang) {
 				case '1':
-					window.location.href="/user/product/edit?productid="+window.event.currentTarget.rel;
+					window.location.href="/manager/classprod/edit?productid="+window.event.currentTarget.rel;
 				  break;
 				case '2':
-					window.location.href="/user/product/edit?productid="+window.event.currentTarget.rel;
+					window.location.href="/manager/derivedprod/edit?productid="+window.event.currentTarget.rel;
 				  break;
 				case '3':
-					window.location.href="/user/product/edit?productid="+window.event.currentTarget.rel;
+					window.location.href="/manager/imageprod/edit?productid="+window.event.currentTarget.rel;
 				  break;
 			}
 			

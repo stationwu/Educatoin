@@ -7,6 +7,10 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * @author I067768
+ *
+ */
 @Entity
 @Table(name = "image")
 public class Image {
@@ -31,6 +35,8 @@ public class Image {
     private String contentType;
     
     private String date;
+    
+    private String material;
     
     @ManyToOne
     @JoinColumn(name="COURESE_ID")
@@ -117,4 +123,13 @@ public class Image {
     public void setSmallVersionPath(String smallVersionPath) {
         this.smallVersionPath = smallVersionPath;
     }
+
+	public String getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(String material) {
+		this.material = material;
+	}
+    
 }

@@ -30,6 +30,8 @@ public class ProductContainer {
 	private int type;
 	
 	private int priority;
+	
+	private int classPeriod;
 
 	private final boolean checked = false;
 
@@ -117,6 +119,7 @@ public class ProductContainer {
 		this.productPrice = product.getProductPrice();
 		this.productDescription = product.getProductDescription();
 		this.longProductDescription = product.getLongProductDescription();
+		this.classPeriod = product.getClassPeriod();
 		this.priority = product.getPriority();
 		this.imageUrl = "/Images/" + product.getProductImages().stream().sorted((x, y) -> (int) (x.getId() - y.getId()))
 				.findFirst().get().getId() + "/thumbnail";
@@ -132,6 +135,7 @@ public class ProductContainer {
 		this.productPrice = product.getProduct().getProductPrice();
 		this.productDescription = product.getProduct().getProductDescription();
 		this.longProductDescription = product.getProduct().getLongProductDescription();
+		this.classPeriod = product.getProduct().getClassPeriod();
 		this.priority = product.getProduct().getPriority();
 		this.imageUrl = "/Images/" + product.getProduct().getProductImages().stream()
 				.sorted((x, y) -> (int) (x.getId() - y.getId())).findFirst().get().getId() + "/thumbnail";
@@ -147,6 +151,7 @@ public class ProductContainer {
 		this.productPrice = product.getProduct().getProductPrice();
 		this.productDescription = product.getProduct().getProductDescription();
 		this.longProductDescription = product.getProduct().getLongProductDescription();
+		this.classPeriod = product.getProduct().getClassPeriod();
 		this.priority = product.getProduct().getPriority();
 		this.imageUrl = "/Images/" + product.getImageCollection().stream()
 				.sorted((x, y) -> (int) (x.getId() - y.getId())).findFirst().get().getId() + "/thumbnail";
@@ -169,6 +174,22 @@ public class ProductContainer {
 
 	public void setLongProductDescription(String longProductDescription) {
 		this.longProductDescription = longProductDescription;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public int getClassPeriod() {
+		return classPeriod;
+	}
+
+	public void setClassPeriod(int classPeriod) {
+		this.classPeriod = classPeriod;
 	}
 	
 }
