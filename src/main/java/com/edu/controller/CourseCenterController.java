@@ -118,7 +118,7 @@ public class CourseCenterController {
 	private String reserveCourse(@RequestParam(value = "studentid") String studentId,
 			@RequestParam(value = "courseid") String courseId) {
 		Student student = studentRepository.findOne(studentId);
-		if(student.getLeftPeriods()>0){
+		if(student.getLeftPeriods()<=0){
 			return "剩余课程数为0，请购买课程";
 		}
 		Course course = courseRepository.findOne(Long.parseLong(courseId));

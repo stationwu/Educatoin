@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>已签到课程</title>
+    <title>我的课程</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -30,10 +30,10 @@
 		        <div class="weui-cell__bd">
 		            {{course.date}}
 		        </div>
-		        <div class="weui-cell__bd">
+		        <div class="weui-cell__bd" style="text-align:center">
 		            {{course.timeFrom}} - {{course.timeTo}}
 		        </div>
-		        <div class="weui-cell__bd">
+		        <div class="weui-cell__bd" style="text-align:end">
 		            {{course.status}}
 		        </div>
 		        <div class="weui-cell__ft">
@@ -42,7 +42,7 @@
 		    </div>
 		</div>
 	</div>
-	<div class="weui-footer">
+	<div class="weui-btn-area">
 		<a href="javascript:;" class="weui-btn weui-btn_primary" id="buyClass">购买课程</a>
 	</div>
     <script src="/js/jquery.min.js"></script>
