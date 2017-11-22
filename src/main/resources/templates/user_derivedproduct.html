@@ -52,7 +52,7 @@
     
 		function addToCart(event){
 			$.post("/user/createderivedproduct?productid="+window.event.toElement.id,"imageid="+window.event.toElement.name).done(function(data){
-				alert(data);
+				$.alert(data,"消息");
 			})
 		}
 		

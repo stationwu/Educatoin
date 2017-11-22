@@ -7,14 +7,14 @@
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link href="/css/style.css" rel="stylesheet" media="screen"/>
-    <link href="/css/weui.min.css" rel="stylesheet" />
-    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="/css/weui.min.css" rel="stylesheet"/>
+    <link href="/css/jquery-weui.min.css" rel="stylesheet"/>
     <link href="/css/app.css" media="screen" rel="stylesheet"/>
-    
+
     <script src="/js/jquery.min.js"></script>
-	<script src="/js/jquery-weui.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/vue.min.js"></script>
+    <script src="/js/jquery-weui.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/vue.min.js"></script>
 </head>
 <body>
 <ul th:each="image : ${images}">
@@ -63,9 +63,9 @@
         $('.send').attr('data-counter', $('li.selected').length);
     }
 
-    function generateImageCollection() {        
+    function generateImageCollection() {
         $.post("/user/generateImagecollection?images=" + items.join(',')).done(function (data) {
-            $.alert(data,"消息");
+            $.alert(data, "消息");
         });
     }
 </script>

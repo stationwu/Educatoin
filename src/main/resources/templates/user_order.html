@@ -11,7 +11,10 @@
     <body>
         <div class="weui-form-preview" th:each="e : ${orderList}">
             <div class="weui-form-preview__hd">
-                <label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${e.order.id}"></span></label>
+            	<div class="weui-form-preview__item">
+			      <label class="weui-form-preview__label">订单编号:</label>
+			      <span class="dsx-user-info" th:text="${e.order.id}"></span>
+			    </div>
             </div>
             <div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
                 <div class="weui-form-preview__item">
