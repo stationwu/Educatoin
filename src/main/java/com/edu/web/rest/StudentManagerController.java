@@ -89,6 +89,7 @@ public class StudentManagerController {
                                                             @RequestParam(value = "imageName") String imageName,
                                                             @RequestParam(value = "date") String date,
                                                             @RequestParam(value = "hour") String hour,
+                                                            @RequestParam(value = "material") String material,
                                                             @RequestParam("file") MultipartFile files[])
             throws HttpException {
         Student student = studentRepository.findOne(studentId);
@@ -99,7 +100,7 @@ public class StudentManagerController {
         student.removeReservedCourse(course);
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                Image img = imageService.saveIn3Size(imageName, student, course, file);
+                Image img = imageService.saveIn3Size(imageName, material, student, course, file);
                 student.addImage(img);
             }
         }

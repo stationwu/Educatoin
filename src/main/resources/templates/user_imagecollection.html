@@ -12,9 +12,6 @@
     <link href="/css/app.css" media="screen" rel="stylesheet"/> 
 </head>
 <body>
-	<header class="dsx-header">
-	    <h1 class="dsx-title">作品集</h1>
-	</header>
 	<ul th:each="image : ${images}">
 	    <li class="col-xs-4">
 	        <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}" style="display: block; margin: 0 auto;"/>

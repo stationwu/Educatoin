@@ -12,9 +12,6 @@
     <link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen" />
 </head>
 <body>
-<header class="dsx-header">
-    <h1 class="dsx-title">课程预约</h1>
-</header>
 <div style="overflow:hidden;">
     <div class="form-group">
         <div class="row dsx-row">
@@ -73,9 +70,9 @@
                     sign: function (index, event) {
                         $.post("/user/reserve?studentid=" + $('.button_sp_area .weui-btn_primary')[0].rel, "courseid=" + courses.courseArray[index].id).done(
                                 function (data) {
+                                	$.alert(data, "消息！");
                                 	$.get("/user/searchcourse?date=" + formatDate(new Date())).done(function (data) {
                                 		courses.courseArray = data;
-                                		$.alert("预约成功", "消息！");
                                 	});
                                 }).fail(
                                 function (data) {

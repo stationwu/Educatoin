@@ -9,9 +9,6 @@
 	    <link href="/css/app.css" media="screen" rel="stylesheet"/>
     </head>
     <body>
-        <header class="dsx-header">
-            <h1 class="dsx-title">用户订单</h1>
-        </header>
         <div class="weui-form-preview" th:each="e : ${orderList}">
             <div class="weui-form-preview__hd">
                 <label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${e.order.id}"></span></label>

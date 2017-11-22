@@ -24,6 +24,8 @@ public class ImageContainer {
     private String thumbnailUrl;
     
     private String createdBy;
+    
+    private String material;
 
 	public ImageContainer(long id,String imageName, String date, Course course, String imageUrl, String thumbnailUrl) {
 		super();
@@ -41,6 +43,7 @@ public class ImageContainer {
 		this.imageName = image.getImageName();
 		this.date = image.getDate();
 		this.course = image.getCourse();
+		this.material = image.getMaterial();
 		this.imageUrl = "/Images/" + image.getId();
 		this.thumbnailUrl = "/Images/" + image.getId() + "/thumbnail";
 	}
@@ -105,4 +108,13 @@ public class ImageContainer {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
+
+	public String getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(String material) {
+		this.material = material;
+	}
+	
 }

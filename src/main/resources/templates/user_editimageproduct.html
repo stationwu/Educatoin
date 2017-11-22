@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>添加衍生商品</title>
+    <title>更新作品集商品信息</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -15,31 +15,25 @@
 	      <div class="weui-cell">
 		    <div class="weui-cell__hd"><label class="weui-label">商品名称</label></div>
 		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="text" id="name" placeholder="商品名称"/>
+		      <input class="weui-input" type="text" id="name" th:placeholder="${{product.productName}}"/>
 		    </div>
 		  </div>
 		  <div class="weui-cell">
 		    <div class="weui-cell__hd"><label class="weui-label">商品价格</label></div>
 		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="number" pattern="[0-9]*" id="price" placeholder="100"/>
+		      <input class="weui-input" type="number" pattern="[0-9]*" id="price" th:placeholder="${{product.productPrice}}"/>
 		    </div>
 		  </div>
 		  <div class="weui-cell">
 		    <div class="weui-cell__hd"><label class="weui-label">商品描述</label></div>
 		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="text" id="description" placeholder="商品描述"/>
+		      <input class="weui-input" type="text" id="description" th:placeholder="${{product.productDescription}}"/>
 		    </div>
 		  </div>
 		  <div class="weui-cell">
 		    <div class="weui-cell__hd"><label class="weui-label">商品长描述</label></div>
 		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="text" id="longDescription" placeholder="商品长描述"/>
-		    </div>
-		  </div>
-		  <div class="weui-cell">
-		    <div class="weui-cell__hd"><label class="weui-label">数字优先级</label></div>
-		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="number" pattern="[0-9]*" id="priority" placeholder="100"/>
+		      <input class="weui-input" type="text" id="longDescription" th:placeholder="${{product.longProductDescription}}"/>
 		    </div>
 		  </div>
 		</div>
@@ -49,7 +43,7 @@
 			<div class="weui-cell__bd">
 				<div class="weui-uploader">
 					<div class="weui-uploader__bd">
-						<ul class="weui-uploader__files" id="uploaderFiles">
+						<ul class="weui-uploader__files" id="uploaderFiles" th:each="image : ${product}">
 						</ul>
 						<div id="image-holder"></div>
 						<form class="weui-uploader__input-box">
@@ -62,7 +56,7 @@
 		</div>
 	</div>
 	<div class="weui-footer_fixed-bottom">
-		<a href="javascript:;" class="weui-btn weui-btn_primary" id="createProduct" >添加衍生商品</a>
+		<a href="javascript:;" class="weui-btn weui-btn_primary" id="updateProduct" th:rel="${{product.id}}">更新商品</a>
 	</div>
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
@@ -70,7 +64,7 @@
 	<script src="/js/vue.min.js"></script>
 	<script>
 	/*<![CDATA[*/
-		$("#createProduct").on('click', function() {
+		$("#updateProduct").on('click', function() {
 			if($(".weui-btn_disabled").length>0){
 				return;
 			}
@@ -78,7 +72,6 @@
 			var name = $("#name")[0].value;
 			var description = $("#description")[0].value;
 			var longDescription = $("#longDescription")[0].value;
-			var priority = $("#priority")[0].value;
 			if(name === ""){
 				name=$("#name")[0].placeholder;
 			}
@@ -89,10 +82,7 @@
 				description=$("#description")[0].placeholder;
 			}
 			if(longDescription === ""){
-				description=$("#longDescription")[0].placeholder;
-			}
-			if(priority === ""){
-				priority=$("#priority")[0].placeholder;
+				longDescription=$("#longDescription")[0].placeholder;
 			}
 			var files = $("#fileUpload")[0].files;
 			var formData = new FormData();
@@ -111,22 +101,21 @@
 			formData.append("name", name);
 			formData.append("description", description);
 			formData.append("longDescription", longDescription);
-			formData.append("priority", priority);
 			
 			$.ajax({
-			  url: "/manager/derivedprod/add",
+			  url: "/manager/imageprod/edit?productid="+$("#updateProduct")[0].rel,
 			  data: formData,
 			  processData: false,
 			  contentType: false,
 			  type: 'POST'
 			}).done(function(){
-				alert("添加成功");
-				$("#createProduct").removeClass("weui-btn_disabled");
+				alert("更新成功");
+				$("#updateProduct").removeClass("weui-btn_disabled");
 			}).fail(function(){
-				alert("添加失败");
-				$("#createProduct").removeClass("weui-btn_disabled");
+				alert("更新失败");
+				$("#updateProduct").removeClass("weui-btn_disabled");
 			});
-			$("#createProduct").addClass("weui-btn_disabled");
+			$("#updateProduct").addClass("weui-btn_disabled");
 		})
 		
 		$("#fileUpload").on(

@@ -1,13 +1,19 @@
 package com.edu.controller;
 
+import com.edu.dao.ProductCategoryRepository;
 import com.edu.dao.ProductRepository;
 import com.edu.domain.Image;
 import com.edu.domain.Product;
+import com.edu.domain.ProductCategory;
 import com.edu.domain.dto.ProductContainer;
 import com.edu.utils.ImageService;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,95 +30,101 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductCenterController {
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private ImageService imageService;
 	
-	public final static String PRODUCT_EDIT_PATH = "/user/product/edit";
+	@Autowired
+	private ProductCategoryRepository productCategoryRepository;
 
-	public final static String CLASS_PRODUCT_PATH = "/user/classprod";
+	public final static String CLASS_PRODUCT_PATH = "/manager/classprod";
 
-	public final static String DERIVED_PRODUCT_PATH = "/user/derivedprod";
-	
-	public final static String ADD_DERIVED_PRODUCT_PATH = "/user/derivedprod/add";
+	public final static String CLASS_PRODUCT_EDIT_PATH = "/manager/classprod/edit";
 
-	public final static String IMAGE_PRODUCT_PATH = "/user/imageprod";
+	public final static String DERIVED_PRODUCT_PATH = "/manager/derivedprod";
+
+	public final static String DERIVED_PRODUCT_EDIT_PATH = "/manager/derivedprod/edit";
+
+	public final static String ADD_DERIVED_PRODUCT_PATH = "/manager/derivedprod/add";
+
+	public final static String IMAGE_PRODUCT_PATH = "/manager/imageprod";
+
+	public final static String IMAGE_PRODUCT_EDIT_PATH = "/manager/imageprod/edit";
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 
 	@GetMapping(CLASS_PRODUCT_PATH)
-	public String getClassProduct(Model model) {
+	public String getClassProductList(Model model) {
 		model.addAttribute("productList", productRepository.getClassProductList().stream()
 				.map(x -> new ProductContainer(x, 0, 1)).collect(Collectors.toCollection(ArrayList::new)));
+		model.addAttribute("title", "课程商品列表");
 		return "user_productlist";
 	}
 
-	@GetMapping(PRODUCT_EDIT_PATH)
+	@GetMapping(CLASS_PRODUCT_EDIT_PATH)
 	public String getClassProduct(@RequestParam(value = "productid") String productId, Model model) {
 		Product product = productRepository.findOne(Long.parseLong(productId));
 		model.addAttribute("product", product);
-		return "user_editproduct";
+		return "user_editclassproduct";
 	}
 
-	@PostMapping(PRODUCT_EDIT_PATH)
+	@PostMapping(CLASS_PRODUCT_EDIT_PATH)
 	@ResponseBody
-	public Product editClassProduct(@RequestParam(value = "productid") String productId, @RequestParam(value = "name") String name,
-			@RequestParam(value = "description") String description, @RequestParam(value = "longDescription") String longDescription,
-			@RequestParam(value = "priority") String priority, @RequestParam(value = "price") String price, 
+	public Product editClassProduct(@RequestParam(value = "productid") String productId,
+			@RequestParam(value = "name") String name, @RequestParam(value = "description") String description,
+			@RequestParam(value = "longDescription") String longDescription,
+			@RequestParam(value = "classPeriod") String classPeriod, @RequestParam(value = "price") String price,
 			@RequestParam(value = "file") MultipartFile files[]) {
 		Product product = productRepository.findOne(Long.parseLong(productId));
 		Set<Image> images = new HashSet<>();
 		for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
-                Image img = imageService.save(product.getProductName(), file);
-                images.add(img);
-            }
-        }
-		if(files.length != 0){
+			if (!file.isEmpty()) {
+				Image img = imageService.save(product.getProductName(), file);
+				images.add(img);
+			}
+		}
+		if (files.length != 0) {
 			product.setProductImages(images);
 		}
 		product.setProductName(name);
 		product.setProductPrice(Double.parseDouble(price));
 		product.setProductDescription(description);
 		product.setLongProductDescription(longDescription);
-		product.setPriority(Integer.parseInt(priority));
+		product.setClassPeriod(Integer.parseInt(classPeriod));
 		return productRepository.save(product);
 	}
 
 	@GetMapping(DERIVED_PRODUCT_PATH)
-	public String getDerivedProduct(Model model) {
+	public String getDerivedProductList(Model model) {
 		model.addAttribute("productList", productRepository.getDerivedProductList().stream()
 				.map(x -> new ProductContainer(x, 0, 2)).collect(Collectors.toCollection(ArrayList::new)));
+		model.addAttribute("title", "衍生品商品列表");
 		return "user_productlist";
 	}
-	
-	@GetMapping(IMAGE_PRODUCT_PATH)
-	public String getImageProduct(Model model) {
-		model.addAttribute("productList", productRepository.getImageCollectionProductList().stream()
-				.map(x -> new ProductContainer(x, 0, 3)).collect(Collectors.toCollection(ArrayList::new)));
-		return "user_productlist";
+
+	@GetMapping(DERIVED_PRODUCT_EDIT_PATH)
+	public String getDerivedProduct(@RequestParam(value = "productid") String productId, Model model) {
+		Product product = productRepository.findOne(Long.parseLong(productId));
+		model.addAttribute("product", product);
+		return "user_editderivedproduct";
 	}
-	
-	@GetMapping(ADD_DERIVED_PRODUCT_PATH)
-	public String addDerivedProduct(Model model) {
-		return "user_addderivedproduct";
-	}
-	
-	@PostMapping(ADD_DERIVED_PRODUCT_PATH)
+
+	@PostMapping(DERIVED_PRODUCT_EDIT_PATH)
 	@ResponseBody
-	public Product createDerivedProduct( @RequestParam(value = "name") String name,
-			@RequestParam(value = "description") String description, @RequestParam(value = "longDescription") String longDescription,
-			@RequestParam(value = "priority") String priority, @RequestParam(value = "price") String price, 
+	public Product editDerivedProduct(@RequestParam(value = "productid") String productId,
+			@RequestParam(value = "name") String name, @RequestParam(value = "description") String description,
+			@RequestParam(value = "longDescription") String longDescription,
+			@RequestParam(value = "priority") String priority, @RequestParam(value = "price") String price,
 			@RequestParam(value = "file") MultipartFile files[]) {
-		Product product = new Product();
+		Product product = productRepository.findOne(Long.parseLong(productId));
 		Set<Image> images = new HashSet<>();
 		for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
-                Image img = imageService.save(product.getProductName(), file);
-                images.add(img);
-            }
-        }
-		if(files.length != 0){
+			if (!file.isEmpty()) {
+				Image img = imageService.save(product.getProductName(), file);
+				images.add(img);
+			}
+		}
+		if (files.length != 0) {
 			product.setProductImages(images);
 		}
 		product.setProductName(name);
@@ -122,5 +134,79 @@ public class ProductCenterController {
 		product.setPriority(Integer.parseInt(priority));
 		return productRepository.save(product);
 	}
-	
+
+	@GetMapping(IMAGE_PRODUCT_PATH)
+	public String getImageProductList(Model model) {
+		model.addAttribute("productList", productRepository.getImageCollectionProductList().stream()
+				.map(x -> new ProductContainer(x, 0, 3)).collect(Collectors.toCollection(ArrayList::new)));
+		model.addAttribute("title", "作品集商品列表");
+		return "user_productlist";
+	}
+
+	@GetMapping(IMAGE_PRODUCT_EDIT_PATH)
+	public String getImageProduct(@RequestParam(value = "productid") String productId, Model model) {
+		Product product = productRepository.findOne(Long.parseLong(productId));
+		model.addAttribute("product", product);
+		return "user_editimageproduct";
+	}
+
+	@PostMapping(IMAGE_PRODUCT_EDIT_PATH)
+	@ResponseBody
+	public Product editImageProduct(@RequestParam(value = "productid") String productId,
+			@RequestParam(value = "name") String name, @RequestParam(value = "description") String description,
+			@RequestParam(value = "longDescription") String longDescription,
+			@RequestParam(value = "price") String price, @RequestParam(value = "file") MultipartFile files[]) {
+		Product product = productRepository.findOne(Long.parseLong(productId));
+		Set<Image> images = new HashSet<>();
+		for (MultipartFile file : files) {
+			if (!file.isEmpty()) {
+				Image img = imageService.save(product.getProductName(), file);
+				images.add(img);
+			}
+		}
+		if (files.length != 0) {
+			product.setProductImages(images);
+		}
+		product.setProductName(name);
+		product.setProductPrice(Double.parseDouble(price));
+		product.setProductDescription(description);
+		product.setLongProductDescription(longDescription);
+		return productRepository.save(product);
+	}
+
+	@GetMapping(ADD_DERIVED_PRODUCT_PATH)
+	public String addDerivedProduct(Model model) {
+		return "user_addderivedproduct";
+	}
+
+	@PostMapping(ADD_DERIVED_PRODUCT_PATH)
+	@ResponseBody
+	public Product createDerivedProduct(@RequestParam(value = "name") String name,
+			@RequestParam(value = "description") String description,
+			@RequestParam(value = "longDescription") String longDescription,
+			@RequestParam(value = "priority") String priority, @RequestParam(value = "price") String price,
+			@RequestParam(value = "file") MultipartFile files[]) {
+		Product product = new Product();
+		Set<Image> images = new HashSet<>();
+		for (MultipartFile file : files) {
+			if (!file.isEmpty()) {
+				Image img = imageService.save(product.getProductName(), file);
+				images.add(img);
+			}
+		}
+		if (files.length != 0) {
+			product.setProductImages(images);
+		}
+		product.setProductName(name);
+		product.setProductPrice(Double.parseDouble(price));
+		product.setProductDescription(description);
+		product.setLongProductDescription(longDescription);
+		product.setPriority(Integer.parseInt(priority));
+		product.setDerivedProductFlag(true);
+		List<ProductCategory> target = new ArrayList<>();
+		productCategoryRepository.findAll().forEach(target::add);
+		product.setProductCategory(target.stream().filter(x -> x.getCategoryName().equals("衍生品")).findFirst().get());
+		return productRepository.save(product);
+	}
+
 }

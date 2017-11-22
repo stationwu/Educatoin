@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>作品相关衍生品</title>
+    <title>我的作品</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -46,9 +46,6 @@
   </style>
 </head>
 <body>
-	<header class="dsx-header">
-        <h1 class="dsx-title">我的作品</h1>
-    </header>
 	<div id="imageContainer">
 		<div class="swiper-container gallery-top">
 		  <div class="swiper-wrapper" >
@@ -61,6 +58,9 @@
 		<div class="button_sp_area">
 			<div class="weui-btn_mini" > 作者：{{current.createdBy}}</div>
 			<div class="weui-btn_mini" > 作品名称：{{current.imageName}}</div>
+			<div class="weui-btn_mini" > 作品材质：{{current.material}}</div>
+		</div>
+		<div class="button_sp_area" style="text-align: center;">
 			<div class="weui-btn_mini" > 上传课程：{{current.course.courseName}}</div>
 		</div>
 		<div class="swiper-container gallery-thumbs">

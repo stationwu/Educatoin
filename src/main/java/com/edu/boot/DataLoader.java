@@ -96,7 +96,7 @@ public class DataLoader {
                 Instant instantFrom8 = localDateTimeFrom8.atZone(zone).toInstant();
                 Instant instantTo8 = localDateTimeTo8.atZone(zone).toInstant();
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                DateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 for (int i = 0; i < 10; i++) {
                     LocalDate date = localDate.plusDays(i);
                     courses.add(courseRepository.save(new Course(

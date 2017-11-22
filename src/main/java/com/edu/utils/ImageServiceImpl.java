@@ -100,6 +100,14 @@ public class ImageServiceImpl implements ImageService {
         img.setDate(LocalDateTime.now().format(formatter));
         return imageRepository.save(img);
     }
+    
+    @Transactional
+    @Override
+    public Image saveIn3Size(String imageName, String material,Student student, Course course, MultipartFile file) {
+    	Image img = this.saveIn3Size(imageName, student, course, file);
+    	img.setMaterial(material);
+    	return imageRepository.save(img);
+    }
 
     @Override
     public BufferedImage scale(BufferedImage image, int maxWidth, int maxHeight) {

@@ -54,7 +54,7 @@
             methods: {
             	navToDetail:function(index, event){
 					var student = students.studentArray[index];
-					window.location.href="/user/signcourse?id="+student.id;
+					window.location.href="/manager/signcourse?id="+student.id;
 				}
             },
             data: {
@@ -65,7 +65,7 @@
 		$('#searchInput').bind('keypress', function (event) {
 			if (event.keyCode == "13") {
 			    var keyword = $('#searchInput')[0].value.replace(".","-").replace(".","-");   ;
-				$.post("/user/search?keyword="+keyword,function(data){
+				$.post("/manager/search?keyword="+keyword,function(data){
 					students.studentArray=data;
 				},"json");
 			}

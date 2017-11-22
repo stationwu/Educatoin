@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>更新商品信息</title>
+    <title>更新课程商品信息</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -37,9 +37,9 @@
 		    </div>
 		  </div>
 		  <div class="weui-cell">
-		    <div class="weui-cell__hd"><label class="weui-label">数字优先级</label></div>
+		    <div class="weui-cell__hd"><label class="weui-label">包含课时</label></div>
 		    <div class="weui-cell__bd">
-		      <input class="weui-input" type="number" pattern="[0-9]*" id="priority" th:placeholder="${{product.priority}}"/>
+		      <input class="weui-input" type="number" pattern="[0-9]*" id="classPeriod" th:placeholder="${{product.classPeriod}}"/>
 		    </div>
 		  </div>
 		</div>
@@ -71,11 +71,14 @@
 	<script>
 	/*<![CDATA[*/
 		$("#updateProduct").on('click', function() {
+			if($(".weui-btn_disabled").length>0){
+				return;
+			}
 			var price = $("#price")[0].value;
 			var name = $("#name")[0].value;
 			var description = $("#description")[0].value;
 			var longDescription = $("#longDescription")[0].value;
-			var priority = $("#priority")[0].value;
+			var classPeriod = $("#classPeriod")[0].value;
 			if(name === ""){
 				name=$("#name")[0].placeholder;
 			}
@@ -86,10 +89,10 @@
 				description=$("#description")[0].placeholder;
 			}
 			if(longDescription === ""){
-				description=$("#longDescription")[0].placeholder;
+				longDescription=$("#longDescription")[0].placeholder;
 			}
-			if(longDescription === ""){
-				description=$("#priority")[0].placeholder;
+			if(classPeriod === ""){
+				classPeriod=$("#classPeriod")[0].placeholder;
 			}
 			var files = $("#fileUpload")[0].files;
 			var formData = new FormData();
@@ -108,19 +111,22 @@
 			formData.append("name", name);
 			formData.append("description", description);
 			formData.append("longDescription", longDescription);
-			formData.append("priority", priority);
+			formData.append("classPeriod", classPeriod);
 			
 			$.ajax({
-			  url: "/user/classprod/edit?productid="+$("#updateProduct")[0].rel,
+			  url: "/manager/classprod/edit?productid="+$("#updateProduct")[0].rel,
 			  data: formData,
 			  processData: false,
 			  contentType: false,
 			  type: 'POST'
 			}).done(function(){
 				alert("更新成功");
+				$("#updateProduct").removeClass("weui-btn_disabled");
 			}).fail(function(){
 				alert("更新失败");
+				$("#updateProduct").removeClass("weui-btn_disabled");
 			});
+			$("#updateProduct").addClass("weui-btn_disabled");
 		})
 		
 		$("#fileUpload").on(

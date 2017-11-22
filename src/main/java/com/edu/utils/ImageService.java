@@ -15,6 +15,8 @@ public interface ImageService {
     public Image save(String imageName, MultipartFile file);
 
     public Image saveIn3Size(String imageName, Student student, Course course, MultipartFile file);
+    
+    public Image saveIn3Size(String imageName, String material ,Student student, Course course, MultipartFile file);
 
     public BufferedImage scale(final BufferedImage image, int maxWidth, int maxHeight);
 }

@@ -7,7 +7,6 @@
 	<!-- Bootstrap -->
     <link href="/css/weui.min.css" rel="stylesheet" />
     <link href="/css/jquery-weui.min.css" rel="stylesheet" />
-    <link href="/css/app.css" media="screen" rel="stylesheet"/> 
 </head>
 <body>
 	<div class="weui-form-preview">
@@ -54,6 +53,12 @@
 		    <input class="weui-input" type="text" id="imgName" placeholder="请输入作品名"/>
 		  </div>
 		</div>
+		<div class="weui-cell">
+		  <div class="weui-cell__hd"><label class="weui-label">作品材质</label></div>
+		  <div class="weui-cell__bd">
+		    <input class="weui-input" type="text" id="imgMaterial" placeholder="请输入作品材质"/>
+		  </div>
+		</div>
 	</div>
 
 	<div class="weui-cells weui-cells_form">
@@ -80,7 +85,6 @@
 	<script src="/js/jquery-weui.min.js" type="text/javascript" ></script>
 	<script src="/js/bootstrap.min.js" type="text/javascript" ></script>
 	<script src="/js/vue.min.js" type="text/javascript" ></script>
-	<script src="https://unpkg.com/vue"></script>
 	<script>
 		/*<![CDATA[*/
 		function getNowFormatDate() {
@@ -124,12 +128,20 @@
 		})
 
 		$("#sign").on('click', function() {
+			if($(".weui-btn_disabled").length>0){
+				return;
+			}
 			var datetime = $("#datetime-picker")[0].value;
+			var material = $("#imgMaterial")[0].value;
 			var date = datetime.split(" ")[0];
 			var hour = datetime.split(" ")[1].substring(0, 2)+":00:00";
 			var files = $("#fileUpload")[0].files;
 			if($("#imgName")[0].value === ''){
 				alert("请输入作品名称");
+				return;
+			}
+			if($("#imgMaterial")[0].value === ''){
+				alert("请输入作品材质");
 				return;
 			}
 			if(files[0] === undefined){
@@ -141,9 +153,7 @@
 			formData.append("file", files[0]);
 			formData.append("date", date);
 			formData.append("hour", hour);
-			//var oReq = new XMLHttpRequest();
-			//oReq.open("POST","/StudentManager/"+$("#studentid")[0].textContent);
-			//oReq.send(formData);
+			formData.append("material", material);
 			
 			$.ajax({
 			  url: "/StudentManager/"+$("#studentid")[0].textContent,
@@ -153,9 +163,12 @@
 			  type: 'POST'
 			}).done(function(){
 				alert("签到上传成功");
+				$("#sign").removeClass("weui-btn_disabled");
 			}).fail(function(){
 				alert("签到上传失败");
+				$("#sign").removeClass("weui-btn_disabled");
 			});
+			$("#sign").addClass("weui-btn_disabled");
 		})
 
 		$("#fileUpload").on(

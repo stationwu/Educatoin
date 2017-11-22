@@ -13,9 +13,6 @@
 	<link href="/css/app.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
-	<header class="dsx-header">
-        <h3 class="dsx-title">我的作品</h3>
-    </header>
 	<div th:each="image : ${images}">
 	  <div class="weui-module-grids">
 	  	<a th:href="${{image.imageUrl}}" class="weui-module-grid">
