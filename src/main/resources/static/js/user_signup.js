@@ -35,22 +35,34 @@ var app = new Vue({
         	var openCode   = $('#wxOpenCode').text();
         	var customerid = $('#customerid').text();
         	var students = [];
+        	var bHasError = false;
         	
             for(var i = 0; i < app.children.length; ++i) {
-            	students.push({
-                    "childName"   : app.children[i].name,
-                    "birthday"    : app.children[i].birthday
-                });
+            	var sChildName 	   = app.children[i].name.trim();
+            	var sChildBirthday = app.children[i].birthday.trim();
+            	
+            	if(sChildName === '' || sChildBirthday === ''){
+            		$.alert("请填写学员的姓名，生日信息","提示!");
+            		bHasError = true;
+            		break;
+            	} else {
+            		students.push({
+                        "childName"   : app.children[i].name,
+                        "birthday"    : app.children[i].birthday
+                    });
+            	}
             }
             
-            $.ajax({
-                url: '/api/v1/Customer/AddChild',
-                contentType: 'application/json',
-                type: 'POST',
-                data: JSON.stringify(students),
-            }).done(function(response) {
-                window.location.href = "/user/center";
-            });
+            if(!bHasError || students.length === 0) {
+                $.ajax({
+                    url: '/api/v1/Customer/AddChild',
+                    contentType: 'application/json',
+                    type: 'POST',
+                    data: JSON.stringify(students),
+                }).done(function(response) {
+                    window.location.href = "/user/center";
+                });
+            }
         },
         onSubmit: function() {
             var openCode = $('#wxOpenCode').text();
