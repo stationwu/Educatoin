@@ -12,7 +12,6 @@
         <div class="weui-form-preview" th:each="e : ${orderList}">
             <div class="weui-form-preview__hd">
                 <label class="weui-form-preview__label"><span>订单编号: </span><span th:text="${e.order.id}"></span></label>
-                <span class="dsx-order-money">已收货，待 </span><input type="button" value="评价" class="weui-btn weui-btn_mini weui-btn_default" />
             </div>
             <div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
                 <div class="weui-form-preview__item">
@@ -31,7 +30,6 @@
                     <div class="weui-media-box__bd">
 		                <div class="dsx-order-money">
 		                	<span th:text="'共' + ${item.quantity} + '件商品, 共计￥ '+ ${e.order.totalAmount} " ></span>
-		                	<span th:text="' (含运费￥0.00)'" class="dsx-transport-fee"></span>
 		                </div>
 		            </div>
                 </div>

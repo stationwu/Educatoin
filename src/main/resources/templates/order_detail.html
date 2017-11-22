@@ -12,10 +12,6 @@
         <div class="weui-form-preview">
 		  <div class="weui-form-preview__bd">
 		    <div class="weui-form-preview__item">
-		      <label class="weui-form-preview__label">订单状态:</label>
-		      <span class="weui-form-preview__value" th:text="${detail.status}">已收货，待评价</span>
-		    </div>
-		    <div class="weui-form-preview__item">
 		      <label class="weui-form-preview__label">订单编号:</label>
 		      <span class="weui-form-preview__value" th:text="${detail.id}"></span>
 		    </div>
@@ -40,26 +36,6 @@
               <label class="weui-form-preview__label">详细地址:</label>
               <span class="weui-form-preview__value" th:text="${detail.customer.address}"></span>
             </div>
-
-		  </div>
-		</div>
-		
-		<div class="weui-form-preview">
-		  <div class="weui-form-preview__bd">
-		    <!-- 
-		    <div class="weui-form-preview__item">
-		      <label class="weui-form-preview__label">配送方式:</label>
-		      <span class="weui-form-preview__value">普通快递</span>
-		    </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">物流公司:</label>
-              <span class="weui-form-preview__value">申通快递</span>
-            </div>
-            <div class="weui-form-preview__item">
-              <label class="weui-form-preview__label">物流单号:</label>
-              <span class="weui-form-preview__value">201701010101010</span>
-            </div>
-             -->
 		  </div>
 		</div>
 
@@ -68,10 +44,6 @@
 		    <div class="weui-form-preview__item">
 		      <label class="weui-form-preview__label">商品总额:</label>
 		      <span class="weui-form-preview__value" th:text="'￥ ' + ${detail.totalAmount}"></span>
-		    </div>
-		    <div class="weui-form-preview__item">
-		      <label class="weui-form-preview__label">＋　运费 :</label>
-		      <span class="weui-form-preview__value" th:text="'￥ 0.00'"></span>
 		    </div>
 		    <div class="weui-form-preview__item">
 		      <span class="weui-form-preview__value" th:text="'实付金额：￥ ' + ${detail.totalAmount}"></span>
