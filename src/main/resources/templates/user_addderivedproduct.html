@@ -104,7 +104,7 @@
 				if(files[0] === undefined){
 					formData.append("file", null);
 				}else{
-					alert("请上传三张图片");
+					$.alert("请上传三张图片", "提醒!");
 				}
 			}
 			formData.append("price", price);
@@ -120,10 +120,10 @@
 			  contentType: false,
 			  type: 'POST'
 			}).done(function(){
-				alert("添加成功");
+				$.alert("添加成功","消息");
 				$("#createProduct").removeClass("weui-btn_disabled");
 			}).fail(function(){
-				alert("添加失败");
+				$.alert("添加失败","消息");
 				$("#createProduct").removeClass("weui-btn_disabled");
 			});
 			$("#createProduct").addClass("weui-btn_disabled");
@@ -162,10 +162,10 @@
 					}
 
 				} else {
-					alert("你的浏览器不支持FileReader！");
+					$.alert("你的浏览器不支持FileReader！","错误!");
 				}
 			} else {
-				alert("请选择图像文件。");
+				$.alert("请选择图像文件","消息");
 			}
 		});
 	/*]]>*/  

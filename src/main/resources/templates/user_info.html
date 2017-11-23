@@ -20,14 +20,16 @@
 	<div class="weui-form-preview" id="signup">
 	  <div id="customerid" th:text="${customer.id}" style="display:none" />
 	  <div class="weui-form-preview__hd">
-	    <label class="weui-form-preview__label">手机号</label>
-	    <em class="weui-form-preview__value" th:text="${customer.mobilePhone}"></em>
-	  </div>
-	  <div class="weui-form-preview__bd">
-	    <label class="weui-form-preview__label">地址</label>
-	    <em class="weui-form-preview__value" th:text="${customer.address}"></em>
-	  </div>
-	  
+	  	<div class="weui-form-preview__item">
+		    <label class="weui-form-preview__label">手机号</label>
+		    <span class="dsx-user-info" th:text="${customer.mobilePhone}"></span>
+		</div>
+		<div class="weui-form-preview__item">
+		   	<label class="weui-form-preview__label">地址</label>
+		    <span class="dsx-user-info" th:text="${customer.address}"></span>
+	    </div>
+	  </div>	
+	    
 	  <div id="children" class="weui-form-preview__bd" th:each="student : ${customer.students}">
 	    <div class="weui-form-preview__item">
 	      <label class="weui-form-preview__label">孩子姓名</label>

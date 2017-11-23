@@ -62,7 +62,7 @@
     
     $("#buyClass").on('click', function() {
     	$.post("/user/buycourse?studentid="+$('.button_sp_area .weui-btn_primary')[0].rel).done(function(data){
-			alert(data);
+			$.alert(data,"消息");
 		})
     })
     

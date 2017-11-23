@@ -2,195 +2,202 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>我的作品</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link href="/css/style.css" rel="stylesheet" media="screen"/>
-    <link href="/css/weui.min.css" rel="stylesheet" />
-    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="/css/weui.min.css" rel="stylesheet"/>
+    <link href="/css/jquery-weui.min.css" rel="stylesheet"/>
     <link href="/css/app.css" media="screen" rel="stylesheet"/>
     <link href="/css/swiper.min.css" media="screen" rel="stylesheet"/>
     <style>
-    html, body {
-      position: relative;
-      height: 100%;
-    }
-    .swiper-container {
-      width: 100%;
-      height: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .swiper-slide {
-      background-size: cover;
-      background-position: center;
-    }
-    .gallery-top {
-      width: 100%;
-    }
-    .gallery-thumbs {
-      height: 75px;
-      box-sizing: border-box;
-      padding: 10px 0;
-    }
-    .gallery-thumbs .swiper-slide {
-      width: 15%;
-      height: 100%;
-      opacity: 0.4;
-    }
-    .gallery-thumbs .swiper-slide-active {
-      opacity: 1;
-    }
+        html, body {
+            position: relative;
+            height: 100%;
+        }
 
-  </style>
+        .swiper-container {
+            width: 100%;
+            height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .gallery-top {
+            width: 100%;
+        }
+
+        .gallery-thumbs {
+            height: 75px;
+            box-sizing: border-box;
+            padding: 10px 0;
+        }
+
+        .gallery-thumbs .swiper-slide {
+            width: 15%;
+            height: 100%;
+            opacity: 0.4;
+        }
+
+        .gallery-thumbs .swiper-slide-active {
+            opacity: 1;
+        }
+
+    </style>
 </head>
 <body>
-	<div id="imageContainer">
-		<div class="swiper-container gallery-top">
-		  <div class="swiper-wrapper" >
-	          <div class="swiper-slide" v-for="(image, index) in imageList" v-bind:style="'background-image:url('+image.imageUrl+')'"></div>
-		  </div>
-		  <!-- Add Arrows -->
-		  <div class="swiper-button-next swiper-button-white"></div>
-		  <div class="swiper-button-prev swiper-button-white"></div>
-		</div>
-		<div class="button_sp_area">
-			<div class="weui-btn_mini" > 作者：{{current.createdBy}}</div>
-			<div class="weui-btn_mini" > 作品名称：{{current.imageName}}</div>
-			<div class="weui-btn_mini" > 作品材质：{{current.material}}</div>
-		</div>
-		<div class="button_sp_area" style="text-align: center;">
-			<div class="weui-btn_mini" > 上传课程：{{current.course.courseName}}</div>
-		</div>
-		<div class="swiper-container gallery-thumbs">
-		  <div class="swiper-wrapper">
-	          <div class="swiper-slide" v-for="(image, index) in imageList" 
-	          v-bind:style="'background-image:url('+image.imageUrl+')'" ></div>
-		  </div>
-		</div>
-	</div>
-	<div class="page__bd">
-		<div class="weui-cells__tips tip-bar-color">本月主推，你还可以做...</div>
+<div id="imageContainer">
+    <div class="swiper-container gallery-top">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="(image, index) in imageList"
+                 v-bind:style="'background-image:url('+image.imageUrl+')'"></div>
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next swiper-button-white"></div>
+        <div class="swiper-button-prev swiper-button-white"></div>
     </div>
-    <div class="container" id="container">
-    	<div class="weui-flex">
-		  <div class="weui-flex__item">
-            	<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-			      <div class="weui-media-box__hd">
-			        <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-			      </div>
-			      <div class="dsx-ztsp-info">
-			        <h4 class="dsx-ztsp-title">丝巾</h4>
-			        <p class="dsx-ztsp-price">298.00</p>
-			        <div class="weui-cell__hd">
-			          <input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
-			          <i class="weui-icon-checked"></i>
-			        </div>
-			      </div>
-			    </a>		  
-		  </div>
-		  <div class="weui-flex__item">
-		        <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-			      <div class="weui-media-box__hd">
-			        <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-			      </div>
-			      <div class="dsx-ztsp-info">
-			        <h4 class="dsx-ztsp-title">丝巾</h4>
-			        <p class="dsx-ztsp-price">298.00</p>
-			        <div class="weui-cell__hd">
-			          <input type="checkbox" class="weui-check" name="checkbox1" id="s12" checked="checked"/>
-			          <i class="weui-icon-checked"></i>
-			        </div>
-			      </div>
-			    </a>
-		  </div>
-		</div>
-    	<div class="weui-flex">
-		  <div class="weui-flex__item">
-            	<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-			      <div class="weui-media-box__hd">
-			        <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-			      </div>
-			      <div class="dsx-ztsp-info">
-			        <h4 class="dsx-ztsp-title">丝巾</h4>
-			        <p class="dsx-ztsp-price">298.00</p>
-			        <div class="weui-cell__hd">
-			          <input type="checkbox" class="weui-check" name="checkbox1" id="s13" checked="checked"/>
-			          <i class="weui-icon-checked"></i>
-			        </div>
-			      </div>
-			    </a>		  
-		  </div>
-		  <div class="weui-flex__item">
-		        <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-			      <div class="weui-media-box__hd">
-			        <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-			      </div>
-			      <div class="dsx-ztsp-info">
-			        <h4 class="dsx-ztsp-title">丝巾</h4>
-			        <p class="dsx-ztsp-price">298.00</p>
-			        <div class="weui-cell__hd">
-			          <input type="checkbox" class="weui-check" name="checkbox1" id="s14" checked="checked"/>
-			          <i class="weui-icon-checked"></i>
-			        </div>
-			      </div>
-			    </a>
-		  </div>
-		</div>
+    <div class="button_sp_area">
+        <div class="weui-btn_mini"> 作者：{{current.createdBy}}</div>
+        <div class="weui-btn_mini"> 作品名称：{{current.imageName}}</div>
+        <div class="weui-btn_mini"> 作品材质：{{current.material}}</div>
     </div>
-    <script src="/js/jquery.min.js"></script>
-	<script src="/js/jquery-weui.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/vue.min.js"></script>
-	<script src="/js/swiper.min.js"></script>
-    <script type="text/javascript">
+    <div class="button_sp_area" style="text-align: center;">
+        <div class="weui-btn_mini"> 上传课程：{{current.course.courseName}}</div>
+    </div>
+    <div class="swiper-container gallery-thumbs">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="(image, index) in imageList"
+                 v-bind:style="'background-image:url('+image.imageUrl+')'"></div>
+        </div>
+    </div>
+</div>
+<div class="page__bd">
+    <div class="weui-cells__tips tip-bar-color">本月主推，你还可以做...</div>
+</div>
+<div class="container" id="container">
+    <div class="weui-flex">
+        <div class="weui-flex__item">
+            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                <div class="weui-media-box__hd">
+                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
+                </div>
+                <div class="dsx-ztsp-info">
+                    <h4 class="dsx-ztsp-title">丝巾</h4>
+                    <p class="dsx-ztsp-price">298.00</p>
+                    <div class="weui-cell__hd">
+                        <input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="weui-flex__item">
+            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                <div class="weui-media-box__hd">
+                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
+                </div>
+                <div class="dsx-ztsp-info">
+                    <h4 class="dsx-ztsp-title">丝巾</h4>
+                    <p class="dsx-ztsp-price">298.00</p>
+                    <div class="weui-cell__hd">
+                        <input type="checkbox" class="weui-check" name="checkbox1" id="s12" checked="checked"/>
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="weui-flex">
+        <div class="weui-flex__item">
+            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                <div class="weui-media-box__hd">
+                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
+                </div>
+                <div class="dsx-ztsp-info">
+                    <h4 class="dsx-ztsp-title">丝巾</h4>
+                    <p class="dsx-ztsp-price">298.00</p>
+                    <div class="weui-cell__hd">
+                        <input type="checkbox" class="weui-check" name="checkbox1" id="s13" checked="checked"/>
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="weui-flex__item">
+            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                <div class="weui-media-box__hd">
+                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
+                </div>
+                <div class="dsx-ztsp-info">
+                    <h4 class="dsx-ztsp-title">丝巾</h4>
+                    <p class="dsx-ztsp-price">298.00</p>
+                    <div class="weui-cell__hd">
+                        <input type="checkbox" class="weui-check" name="checkbox1" id="s14" checked="checked"/>
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-weui.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/vue.min.js"></script>
+<script src="/js/swiper.min.js"></script>
+<script type="text/javascript">
     /*<![CDATA[*/
-	    $(document).ready(function () {
-	    	$("img").click(function(){
-	    		window.location.href = "/user/derivedproduct?imgcontainer="+this.alt;
-	    	});
-	    	$.get("/user/image").done(function (data) {
-	    		var imageList = data;
-	    		var current = imageList[0];
-	    		var images = new Vue({
-	                el: '#imageContainer',
-	                methods: {
-	                	select:function(index, event){
-	                		
-						}
-	                },
-	                data: {
-	                	imageList: imageList,
-	                	current: current
-	                }
-	            })
-	    		var galleryTop = new Swiper('.gallery-top', {
-	  			  spaceBetween: 10,
-	  			  navigation: {
-	  			    nextEl: '.swiper-button-next',
-	  			    prevEl: '.swiper-button-prev',
-	  			  },
-	  			});
-	  			var galleryThumbs = new Swiper('.gallery-thumbs', {
-	  			  spaceBetween: 10,
-	  			  centeredSlides: true,
-	  			  slidesPerView: 'auto',
-	  			  touchRatio: 0.2,
-	  			  slideToClickedSlide: true,
-	  			});
-	  			galleryTop.controller.control = galleryThumbs;
-	  			galleryThumbs.controller.control = galleryTop;
-	  			
-	  			galleryTop.on('slideChange', function () {
-	  				images.current=images.imageList[galleryTop.activeIndex];
-	  			});
+    $(document).ready(function () {
+        $("img").click(function () {
+            window.location.href = "/user/derivedproduct?imgcontainer=" + this.alt;
+        });
+        $.get("/user/image").done(function (data) {
+            var imageList = data;
+            var current = imageList[0];
+            var images = new Vue({
+                el: '#imageContainer',
+                methods: {
+                    select: function (index, event) {
 
-        	});
-	    })
-   	/*]]>*/
-    </script>
-    <script src="/js/jquery.min.js"></script>
-	<script src="/js/jquery-weui.min.js"></script>
+                    }
+                },
+                data: {
+                    imageList: imageList,
+                    current: current
+                }
+            })
+            var galleryTop = new Swiper('.gallery-top', {
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+            var galleryThumbs = new Swiper('.gallery-thumbs', {
+                spaceBetween: 10,
+                centeredSlides: true,
+                slidesPerView: 'auto',
+                touchRatio: 0.2,
+                slideToClickedSlide: true,
+            });
+            galleryTop.controller.control = galleryThumbs;
+            galleryThumbs.controller.control = galleryTop;
+
+            galleryTop.on('slideChange', function () {
+                images.current = images.imageList[galleryTop.activeIndex];
+            });
+
+        });
+    })
+    /*]]>*/
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-weui.min.js"></script>
 </body>
 </html>
