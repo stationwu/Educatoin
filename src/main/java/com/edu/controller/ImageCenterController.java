@@ -37,8 +37,12 @@ public class ImageCenterController {
 	public final static String SESSION_OPENID_KEY = "openCode";
 
 	public final static String IMAGE_COLLECTION_PATH = "/user/imagecollection";
+	
+	public final static String IMAGE_PATH = "/user/image";
+	
+	public final static String CREATE_IMAGECOLLECTION_PATH = "/user/generateImagecollection";
 
-	@GetMapping("/user/image")
+	@GetMapping(IMAGE_PATH)
 	@ResponseBody
 	public List<ImageContainer> getImages(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
@@ -63,7 +67,7 @@ public class ImageCenterController {
 
 			imageList.addAll(imagesContainer);
 		}
-		return imageList;
+		return imageList.stream().sorted((x,y) -> (int)(y.getId() - x.getId())).collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@GetMapping(IMAGE_COLLECTION_PATH)
@@ -86,7 +90,7 @@ public class ImageCenterController {
 		return "derivation";
 	}
 
-	@PostMapping("/user/generateImagecollection")
+	@PostMapping(CREATE_IMAGECOLLECTION_PATH)
 	@ResponseBody
 	public String createImageCollection(HttpServletRequest request, @RequestParam(value = "images") String images,
 			Model model) {
