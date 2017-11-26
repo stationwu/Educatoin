@@ -10,7 +10,7 @@ import com.edu.domain.Product;
 
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
 	
-	@Query("select s from Product s where s.derivedProductFlag = TRUE order by s.priority")
+	@Query("select s from Product s where s.derivedProductFlag = TRUE order by s.priority desc")
 	List<Product> getDerivedProductList();
 	
 	@Query("select s from Product s where s.imageCollectionFlag = TRUE")
