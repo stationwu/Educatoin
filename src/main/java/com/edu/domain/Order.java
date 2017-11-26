@@ -17,7 +17,7 @@ public class Order {
 
     private String date;
     
-    private String status;
+    private Status status;
 
     private double totalAmount;
     
@@ -109,11 +109,45 @@ public class Order {
 		this.name = name;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public String getStatusText() {
+		if (status == null) {
+			return "未知订单状态";
+		}
+
+		String text;
+
+		switch (status) {
+			case PAID:
+				text = "已支付";
+				break;
+			case CREATED:
+				text = "等待支付";
+				break;
+			case PREPAID:
+				text = "付款中";
+				break;
+			case CANCELLED:
+				text = "已取消";
+				break;
+			case COMPLETED:
+				text = "已完成";
+				break;
+			default:
+				text = "未知订单状态";
+		}
+
+		return text;
+	}
+
+	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public enum Status {
+		CREATED, PREPAID, PAID, CANCELLED, COMPLETED
 	}
 }

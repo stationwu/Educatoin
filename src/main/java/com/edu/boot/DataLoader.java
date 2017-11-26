@@ -306,6 +306,7 @@ public class DataLoader {
                 order.setTotalAmount(1000d);
                 Set<Order> orderSet = new HashSet<>();
                 order.setCustomer(customers.get(0));
+                order.setStatus(Order.Status.CREATED);
                 orderSet.add(orderRepository.save(order));
             }
         };

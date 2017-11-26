@@ -115,6 +115,7 @@ public class OrderCenterController {
         LocalDate localDate = LocalDate.now();
         order.setDate(localDate.toString());
         order.setCustomer(customer);
+        order.setStatus(Order.Status.CREATED);
         orderRepository.save(order);
         return "下单成功";
     }

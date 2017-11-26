@@ -35,6 +35,12 @@
 		                	<span th:text="'共' + ${item.quantity} + '件商品, 共计￥ '+ ${e.order.totalAmount} " ></span>
 		                </div>
 		            </div>
+                    <div class="weui-media-box__bd">
+                        <span th:text="'订单状态：' + ${e.order.statusText} " ></span>
+                        <span style="display: none;" th:text="${e.order.status}"></span>
+                    </div>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default">支付</a>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn">取消</a>
                 </div>
             </div>
         </div>
@@ -45,5 +51,10 @@
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
 		<script src="/js/vue.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                //TODO: Hide the buttons if the order status is NOT "CREATED"
+            });
+        </script>
     </body>
 </html>
