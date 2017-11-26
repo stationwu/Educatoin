@@ -15,6 +15,8 @@ import com.edu.dao.CustomerRepository;
 import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
+import com.edu.domain.Product;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -139,9 +141,10 @@ public class CourseCenterController {
 		Customer customer = custRepo.findOneByOpenCode(openId);
 		Student student = studentRepository.findOne(studentId);
 		ClassProduct classProduct = new ClassProduct();
-		classProduct.setProduct(productRepository.getClassProductList().get(0));
+		Product product = productRepository.getClassProductList().get(0);
+		classProduct.setProduct(product);
 		classProduct.setStudent(student);
-		classProduct.setDescription(student.getStudentName()+"的课程");
+		classProduct.setDescription(student.getStudentName()+"的课程:"+product.getClassPeriod()+"课时");
 		customer.getCart().addClassProduct(classProductRepository.save(classProduct));
 		custRepo.save(customer);
 		
