@@ -3,7 +3,6 @@ package com.edu.domain;
 import java.util.Map;
 import javax.persistence.*;
 
-import com.edu.domain.dto.DerivedProduct;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -44,7 +43,12 @@ public class Order {
 	@Column(name="COPIES_IN_ORDER")
 	private Map<ImageCollection, Integer> imageCollectionMap;
 
-
+	@ElementCollection
+    @CollectionTable(name="ORDER_CLASSPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="CLASSPRODUCT_ID", referencedColumnName="ID")
+	@Column(name="COPIES_IN_ORDER")
+	private Map<ClassProduct, Integer> classProductsMap;
+	
 	public String getDate() {
 		return date;
 	}
@@ -116,4 +120,13 @@ public class Order {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public Map<ClassProduct, Integer> getClassProductsMap() {
+		return classProductsMap;
+	}
+
+	public void setClassProductsMap(Map<ClassProduct, Integer> classProductsMap) {
+		this.classProductsMap = classProductsMap;
+	}
+	
 }

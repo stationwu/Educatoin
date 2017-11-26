@@ -4,6 +4,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.edu.domain.ClassProduct;
+import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Order;
 import com.edu.domain.Product;
@@ -39,7 +41,8 @@ public class OrderContainer {
 	}
 
 	public OrderContainer(Order order, Map<Product, Integer> productsMap,
-			Map<DerivedProduct, Integer> derivedProductsMap, Map<ImageCollection, Integer> imageCollectionMap) {
+			Map<DerivedProduct, Integer> derivedProductsMap, Map<ImageCollection, Integer> imageCollectionMap,
+			Map<ClassProduct, Integer> classProductMap) {
 		super();
 		this.order = order;
 		Stream<ProductContainer> productsStream = productsMap.entrySet().stream()
@@ -48,7 +51,9 @@ public class OrderContainer {
 				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 2));
 		Stream<ProductContainer> imageCollectionStream = imageCollectionMap.entrySet().stream()
 				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 3));
-		this.productContainers = Stream.of(productsStream, derivedProductsStream, imageCollectionStream).flatMap(i -> i)
+		Stream<ProductContainer> classProductStream = classProductMap.entrySet().stream()
+				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 4));
+		this.productContainers = Stream.of(productsStream, derivedProductsStream, imageCollectionStream, classProductStream).flatMap(i -> i)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 

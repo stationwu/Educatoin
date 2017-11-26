@@ -30,7 +30,7 @@
     <div class="weui-cell dsx-weui-cell" v-for="(course, index) in courseArray">
         <div class="weui-cell__hd"></div>
         <div class="weui-cell__bd">
-            {{course.date}} ({{course.reservedStudentCount}}/{{course.maxSeat}}) {{course.timeFrom}} - {{course.timeTo}}
+            {{course.timeFrom}} - {{course.timeTo}}({{course.reservedStudentCount}}/{{course.maxSeat}})
         </div>
         <div class="weui-cell__ft">
             <button type="button" class="weui-btn weui-btn_mini weui-btn_primary" v-on:click="sign(index,$event)">预约

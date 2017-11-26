@@ -106,7 +106,12 @@ public class ImageCenterController {
 		List<Product> products = productRepository.getImageCollectionProductList();
 		imageCollection.setProduct(products.get(0));
 		imageCollection.setCollectionName("作品集");
-		imageCollection.setCollectionDescription(imageList.size() + "幅作品");
+		String nameList="";
+		for(Image image:imageList){
+			nameList+=image.getImageName()+",";
+		}
+		nameList.substring(0, nameList.length()-1);
+		imageCollection.setCollectionDescription(imageList.size() + "幅作品:"+nameList);
 		ImageCollection entity = imageCollectionRepository.save(imageCollection);
 		customer.getCart().addImageCollection(entity);
 		custRepo.save(customer);
