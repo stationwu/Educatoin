@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-    <link href="/css/style.css" rel="stylesheet" media="screen"/>
     <link href="/css/weui.min.css" rel="stylesheet"/>
     <link href="/css/jquery-weui.min.css" rel="stylesheet"/>
     <link href="/css/app.css" media="screen" rel="stylesheet"/>
     <link href="/css/swiper.min.css" media="screen" rel="stylesheet"/>
+    <link href="/css/reset.css" type="text/css" rel="stylesheet" />
+	<link href="/css/find.css" type="text/css" rel="stylesheet" />
     <style>
         html, body {
             position: relative;
@@ -80,72 +81,19 @@
 <div class="page__bd">
     <div class="weui-cells__tips tip-bar-color">本月主推，你还可以做...</div>
 </div>
-<div class="container" id="container">
-    <div class="weui-flex">
-        <div class="weui-flex__item">
-            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-                </div>
-                <div class="dsx-ztsp-info">
-                    <h4 class="dsx-ztsp-title">丝巾</h4>
-                    <p class="dsx-ztsp-price">298.00</p>
-                    <div class="weui-cell__hd">
-                        <input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
-                        <i class="weui-icon-checked"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="weui-flex__item">
-            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-                </div>
-                <div class="dsx-ztsp-info">
-                    <h4 class="dsx-ztsp-title">丝巾</h4>
-                    <p class="dsx-ztsp-price">298.00</p>
-                    <div class="weui-cell__hd">
-                        <input type="checkbox" class="weui-check" name="checkbox1" id="s12" checked="checked"/>
-                        <i class="weui-icon-checked"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="weui-flex">
-        <div class="weui-flex__item">
-            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-                </div>
-                <div class="dsx-ztsp-info">
-                    <h4 class="dsx-ztsp-title">丝巾</h4>
-                    <p class="dsx-ztsp-price">298.00</p>
-                    <div class="weui-cell__hd">
-                        <input type="checkbox" class="weui-check" name="checkbox1" id="s13" checked="checked"/>
-                        <i class="weui-icon-checked"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="weui-flex__item">
-            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                <div class="weui-media-box__hd">
-                    <img class="dsx-ztsp-thumb-image" src="/images/works.jpg" alt="1" width="80" height="80"/>
-                </div>
-                <div class="dsx-ztsp-info">
-                    <h4 class="dsx-ztsp-title">丝巾</h4>
-                    <p class="dsx-ztsp-price">298.00</p>
-                    <div class="weui-cell__hd">
-                        <input type="checkbox" class="weui-check" name="checkbox1" id="s14" checked="checked"/>
-                        <i class="weui-icon-checked"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
+<aside class="fall-box grid" >
+	<div class="grid-item item" th:each="product : ${products}">
+		<img th:src="${{product.imageUrl}}" class="item-img" />
+		<section class="section-p">
+		   <p class="title-p" th:text="${{product.productName}}"></p>
+	       <p class="name-p" th:text="${{product.productDescription}}"></p>
+	       <div>
+		       <p class="price-p" th:text="￥+${{product.productPrice}}" style="width:70%;display:inline-block ;"></p>
+		       <span class="glyphicon glyphicon-shopping-cart addToCart" th:id="${{product.id}}" aria-hidden="true" style="margin-top: 5px;float: right;margin-right: 10px;"></span>
+	       </div>
+		</section>
+	</div><!--item end-->
+</aside>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-weui.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -153,6 +101,7 @@
 <script src="/js/swiper.min.js"></script>
 <script type="text/javascript">
     /*<![CDATA[*/
+    var images={};
     $(document).ready(function () {
         $("img").click(function () {
             window.location.href = "/user/derivedproduct?imgcontainer=" + this.alt;
@@ -160,7 +109,7 @@
         $.get("/user/image").done(function (data) {
             var imageList = data;
             var current = imageList[0];
-            var images = new Vue({
+            images = new Vue({
                 el: '#imageContainer',
                 methods: {
                     select: function (index, event) {
@@ -195,9 +144,86 @@
 
         });
     })
+    $(".addToCart").click(function(){
+    	$.post("/user/createderivedproduct?productid="+window.event.toElement.id,"imageid="+images.current.id).done(function(data){
+			$.alert(data,"消息");
+		})
+    })
+    $(function(){
+	
+		/*顶部nav*/
+		var swiper = new Swiper('.nav-container', {
+	        slidesPerView: 'auto',
+	        paginationClickable: true
+	    });
+	    $(".nav-ul .swiper-slide").click(function(){
+	    	$(this).addClass("active-li").siblings().removeClass("active-li");
+	    });
+	    /*瀑布流初始化设置*/
+		var $grid = $('.grid').masonry({
+			itemSelector : '.grid-item',
+			gutter:10
+	    });
+	    // layout Masonry after each image loads
+		$grid.imagesLoaded().done( function() {
+			console.log('uuuu===');
+		  $grid.masonry('layout');
+		});
+	   var pageIndex = 0 ; var dataFall = [];
+	   var totalItem = 10;
+	   $(window).scroll(function(){
+	   	$grid.masonry('layout');
+                var scrollTop = $(this).scrollTop();var scrollHeight = $(document).height();var windowHeight = $(this).height();  
+                if(scrollTop + windowHeight == scrollHeight){
+                        $.ajax({
+	               		dataType:"json",
+				        type:'get',
+				        url:'./article.json',
+			            success:function(result){
+			            	dataFall = result.result.article;
+			            	setTimeout(function(){
+			            		appendFall();
+			            	},500)
+			            },
+			            error:function(e){
+			            	console.log('请求失败')
+			            }
+			            
+	                   })
+                }
+         })  
+        function appendFall(){
+          $.each(dataFall, function(index ,value) {
+          	var dataLength = dataFall.length;
+          	$grid.imagesLoaded().done( function() {
+	        $grid.masonry('layout');
+	           });
+	      var detailUrl;
+      	  var $griDiv = $('<div class="grid-item item">');
+      	  var $img = $("<img class='item-img'>");
+      	  $img.attr('src',value.articlePic).appendTo($griDiv);
+      	  var $section = $('<section class="section-p">');
+      	  $section.appendTo($griDiv);
+      	  var $p1 = $("<p class='title-p'>");
+      	  $p1.html(value.title).appendTo($section);
+      	  var $p2 = $("<p class='name-p'>");
+      	  $p2.html(value.name).appendTo($section);
+      	  var $p3 = $("<p class='price-p'>");
+      	  $p3.html(value.commentCount).appendTo($section);
+      	  var $items = $griDiv;
+		  $items.imagesLoaded().done(function(){
+				 $grid.masonry('layout');
+	             $grid.append( $items ).masonry('appended', $items);
+			})
+           });
+        }
+	})
+
     /*]]>*/
 </script>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/jquery-weui.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
 </body>
 </html>

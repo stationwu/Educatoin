@@ -95,6 +95,10 @@ public class DerivedProductCenterController {
         model.addAttribute("code", openId);
         model.addAttribute("images", imageContainer.stream().sorted((x, y) -> (int)(y.getId()-x.getId()))
 				.collect(Collectors.toCollection(ArrayList::new)));
+        ArrayList<ProductContainer> products = productRepository.getDerivedProductList().stream()
+                .map(x -> new ProductContainer(x, 1, 2))
+                .collect(Collectors.toCollection(ArrayList::new));
+        model.addAttribute("products", products);
         return "user_imagelist";
     }
 
