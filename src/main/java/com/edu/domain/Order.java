@@ -164,6 +164,7 @@ public class Order {
         CANCELLED,   // equals to wechat CLOSED
         PAYERROR,    // equals to wechat PAYERROR
         DELIVERED,   // Paid and goods delivered
+		REFUND_REQUESTED, // paid and request to refund
         REFUND       // equals to wechat REFUND
 	}
 
