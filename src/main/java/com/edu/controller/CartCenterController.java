@@ -6,10 +6,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.edu.dao.ClassProductRepository;
 import com.edu.dao.CustomerRepository;
+import com.edu.dao.DerivedProductRepository;
+import com.edu.dao.ImageCollectionRepository;
+import com.edu.dao.ProductRepository;
 import com.edu.domain.*;
 import com.edu.domain.dto.ProductContainer;
 
@@ -17,12 +22,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class CartCenterController {
 	@Autowired
 	private CustomerRepository custRepo;
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	@Autowired
+	private DerivedProductRepository derivedProductRepository;
+	
+	@Autowired
+	private ImageCollectionRepository imageCollectionRepository;
+	
+	@Autowired
+	private ClassProductRepository classProductRepository;
 
 	public final static String CART_PATH = "/user/cart";
 
@@ -51,6 +70,31 @@ public class CartCenterController {
 						.flatMap(i -> i).collect(Collectors.toCollection(ArrayList::new)));
 		model.addAttribute("code", openId);
 		return "user_cart";
+	}
+	
+	@PostMapping(CART_PATH)
+	@ResponseBody
+	private String deleteProduct(@RequestParam(value = "id") String id,@RequestParam(value = "type") String type,HttpSession session) {
+		Object openCodeObject = session.getAttribute("openCode");
+		String openId = openCodeObject.toString();
+		Customer customer = custRepo.findOneByOpenCode(openId);
+		ProductCart cart = customer.getCart();
+		switch (type) {
+		case "1":
+			cart.removeProduct(productRepository.findOne(Long.parseLong(id)));
+			break;
+		case "2":
+			cart.removeDerivedProduct(derivedProductRepository.findOne(Long.parseLong(id)));
+			break;
+		case "3":
+			cart.removeImageCollection(imageCollectionRepository.findOne(Long.parseLong(id)));
+			break;
+		case "4":
+			cart.removeClassProduct(classProductRepository.findOne(Long.parseLong(id)));
+			break;
+		}
+		custRepo.save(customer);
+		return "删除成功";
 	}
 
 	@GetMapping("/user/cartcontent")
