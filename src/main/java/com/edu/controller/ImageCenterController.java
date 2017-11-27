@@ -114,7 +114,7 @@ public class ImageCenterController {
 		for(Image image:imageList){
 			nameList+=image.getImageName()+",";
 		}
-		nameList.substring(0, nameList.length()-1);
+		nameList = nameList.substring(0, nameList.length()-1);
 		imageCollection.setCollectionDescription(imageList.size() + "幅作品:"+nameList);
 		ImageCollection entity = imageCollectionRepository.save(imageCollection);
 		customer.getCart().addImageCollection(entity);
