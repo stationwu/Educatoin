@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,6 +82,18 @@ public class UserCenterController {
         }
 
         return view;
+    }
+	
+	@PostMapping(USER_CENTER_PATH)
+	@ResponseBody
+	private String editCustomerInfo(@RequestParam(value = "mobilePhone")String mobilePhone,
+			@RequestParam(value = "address")String address ,HttpSession session) {
+		String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
+		Customer customer = repository.findOneByOpenCode(openId);
+		customer.setAddress(address);
+		customer.setMobilePhone(mobilePhone);
+		repository.save(customer);
+		return "修改成功";
     }
 	
 	@GetMapping(USER_SIGNIN_PATH)

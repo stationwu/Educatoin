@@ -9,11 +9,14 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.HttpSession;
 
+import com.edu.dao.ClassProductRepository;
 import com.edu.dao.CourseRepository;
 import com.edu.dao.CustomerRepository;
 import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Customer;
+import com.edu.domain.Product;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edu.domain.ClassProduct;
 import com.edu.domain.Course;
 import com.edu.domain.Student;
 import com.edu.domain.dto.CourseContainer;
@@ -37,6 +41,9 @@ public class CourseCenterController {
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private ClassProductRepository classProductRepository;
 
 	@Autowired
 	private StudentRepository studentRepository;
@@ -132,8 +139,13 @@ public class CourseCenterController {
 	private String buyCourse(@RequestParam(value = "studentid") String studentId, HttpSession session) {
 		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
 		Customer customer = custRepo.findOneByOpenCode(openId);
-		
-		customer.getCart().addProducts(productRepository.getClassProductList().get(0));
+		Student student = studentRepository.findOne(studentId);
+		ClassProduct classProduct = new ClassProduct();
+		Product product = productRepository.getClassProductList().get(0);
+		classProduct.setProduct(product);
+		classProduct.setStudent(student);
+		classProduct.setDescription(student.getStudentName()+"的课程:"+product.getClassPeriod()+"课时");
+		customer.getCart().addClassProduct(classProductRepository.save(classProduct));
 		custRepo.save(customer);
 		
 		return "课程已加入购物车";

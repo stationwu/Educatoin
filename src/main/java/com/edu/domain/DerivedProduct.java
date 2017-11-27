@@ -1,9 +1,6 @@
-package com.edu.domain.dto;
+package com.edu.domain;
 
 import javax.persistence.*;
-
-import com.edu.domain.Image;
-import com.edu.domain.Product;
 
 @Entity
 @Table(name="derprod")
@@ -11,6 +8,9 @@ public class DerivedProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
+    
+    private String description;
+    
     @ManyToOne
 	private Product product;
 	
@@ -40,4 +40,13 @@ public class DerivedProduct {
     public long getId() {
         return id;
     }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }

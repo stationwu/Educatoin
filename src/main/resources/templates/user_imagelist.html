@@ -56,8 +56,8 @@
 <div id="imageContainer">
     <div class="swiper-container gallery-top">
         <div class="swiper-wrapper">
-            <div class="swiper-slide" v-for="(image, index) in imageList"
-                 v-bind:style="'background-image:url('+image.imageUrl+')'"></div>
+            <div class="swiper-slide bigPic" v-for="(image, index) in imageList"
+                 v-bind:style="'background-image:url('+image.imageUrl+')'" v-bind:id="image.id" onclick="navTo()"></div>
         </div>
         <!-- Add Arrows -->
         <div class="swiper-button-next swiper-button-white"></div>
@@ -65,16 +65,16 @@
     </div>
     <div class="button_sp_area">
         <div class="weui-btn_mini"> 作者：{{current.createdBy}}</div>
-        <div class="weui-btn_mini"> 作品名称：{{current.imageName}}</div>
-        <div class="weui-btn_mini"> 作品材质：{{current.material}}</div>
+        <div class="weui-btn_mini"> 标题：{{current.imageName}}</div>
+        <div class="weui-btn_mini"> 材质：{{current.material}}</div>
     </div>
     <div class="button_sp_area" style="text-align: center;">
-        <div class="weui-btn_mini"> 上传课程：{{current.course.courseName}}</div>
+        <div class="weui-btn_mini"> 上传日期：{{current.course.date}}</div>
     </div>
     <div class="swiper-container gallery-thumbs">
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(image, index) in imageList"
-                 v-bind:style="'background-image:url('+image.imageUrl+')'"></div>
+                 v-bind:style="'background-image:url('+image.imageUrl+')'" ></div>
         </div>
     </div>
 </div>
@@ -102,6 +102,9 @@
 <script type="text/javascript">
     /*<![CDATA[*/
     var images={};
+    function navTo(){
+    	window.location.href="/Images/"+window.event.currentTarget.id;
+    }
     $(document).ready(function () {
 //        $("img").click(function () {
 //            window.location.href = "/user/derivedproduct?imgcontainer=" + this.alt;
@@ -123,6 +126,7 @@
             })
             var galleryTop = new Swiper('.gallery-top', {
                 spaceBetween: 10,
+                preventLinksPropagation: false,
                 navigation: {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
@@ -142,6 +146,7 @@
                 images.current = images.imageList[galleryTop.activeIndex];
             });
 
+            //$('.bigPic').fullscreenslides();
         });
     })
     $(".addToCart").click(function(){
@@ -169,5 +174,6 @@
 <script src="/js/jquery-weui.min.js"></script>
 <script src="/js/imagesloaded.pkgd.min.js"></script>
 <script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/jquery.fullscreenslides.js"></script>
 </body>
 </html>

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.*;
 import com.edu.domain.*;
-import com.edu.domain.dto.DerivedProduct;
 import com.edu.domain.dto.ImageContainer;
 import com.edu.domain.dto.ProductContainer;
 import com.edu.utils.Constant;
@@ -143,7 +142,9 @@ public class DerivedProductCenterController {
         
         DerivedProduct derivedProduct = new DerivedProduct();
         derivedProduct.setProduct(productRepository.findOne(Long.parseLong(productid)));
-        derivedProduct.setImage(imageRepository.findOne(Long.parseLong(imageid)));
+        Image image = imageRepository.findOne(Long.parseLong(imageid));
+        derivedProduct.setImage(image);
+        derivedProduct.setDescription("已选作品："+image.getImageName());
         customer.getCart().addDerivedProducts(derivedProductRepository.save(derivedProduct));
         custRepo.save(customer);
         return "请至购物车查看";

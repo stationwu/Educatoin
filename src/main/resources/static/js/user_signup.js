@@ -19,6 +19,19 @@ var app = new Vue({
                 app.removable = false;
             }
         },
+        saveBasic: function () {
+    		var mobilePhone = $("#mobilePhone")[0].value;
+    		var address = $("#address")[0].value;
+    		if(mobilePhone === ""){
+    			mobilePhone=$("#mobilePhone")[0].placeholder;
+    		}
+    		if(address === ""){
+    			address=$("#address")[0].placeholder;
+    		}
+    		$.post("/user/center?mobilePhone="+mobilePhone,"address="+address).done(function(data){
+    			alert(data);
+    		});
+        },
         addChild: function () {
             app.children.push({
                 name: "",

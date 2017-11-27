@@ -4,6 +4,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.edu.domain.ClassProduct;
+import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Product;
 
@@ -133,7 +135,7 @@ public class ProductContainer {
 		this.productName = product.getProduct().getProductName();
 		this.category = product.getProduct().getProductCategory().getCategoryName();
 		this.productPrice = product.getProduct().getProductPrice();
-		this.productDescription = product.getProduct().getProductDescription();
+		this.productDescription = product.getDescription();
 		this.longProductDescription = product.getProduct().getLongProductDescription();
 		this.classPeriod = product.getProduct().getClassPeriod();
 		this.priority = product.getProduct().getPriority();
@@ -149,11 +151,27 @@ public class ProductContainer {
 		this.productName = product.getProduct().getProductName();
 		this.category = product.getProduct().getProductCategory().getCategoryName();
 		this.productPrice = product.getProduct().getProductPrice();
-		this.productDescription = product.getProduct().getProductDescription();
+		this.productDescription = product.getCollectionDescription();
 		this.longProductDescription = product.getProduct().getLongProductDescription();
 		this.classPeriod = product.getProduct().getClassPeriod();
 		this.priority = product.getProduct().getPriority();
 		this.imageUrl = "/Images/" + product.getImageCollection().stream()
+				.sorted((x, y) -> (int) (x.getId() - y.getId())).findFirst().get().getId() + "/thumbnail";
+		this.quantity = quantity;
+		this.id = product.getId();
+		this.type = type;
+	}
+
+	public ProductContainer(ClassProduct product, int quantity, int type) {
+		super();
+		this.productName = product.getProduct().getProductName();
+		this.category = product.getProduct().getProductCategory().getCategoryName();
+		this.productPrice = product.getProduct().getProductPrice();
+		this.productDescription = product.getDescription();
+		this.longProductDescription = product.getProduct().getLongProductDescription();
+		this.classPeriod = product.getProduct().getClassPeriod();
+		this.priority = product.getProduct().getPriority();
+		this.imageUrl = "/Images/" + product.getProduct().getProductImages().stream()
 				.sorted((x, y) -> (int) (x.getId() - y.getId())).findFirst().get().getId() + "/thumbnail";
 		this.quantity = quantity;
 		this.id = product.getId();

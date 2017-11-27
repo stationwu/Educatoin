@@ -3,7 +3,6 @@ package com.edu.domain;
 import java.util.Map;
 import javax.persistence.*;
 
-import com.edu.domain.dto.DerivedProduct;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -44,7 +43,12 @@ public class Order {
 	@Column(name="COPIES_IN_ORDER")
 	private Map<ImageCollection, Integer> imageCollectionMap;
 
-
+	@ElementCollection
+    @CollectionTable(name="ORDER_CLASSPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
+	@MapKeyJoinColumn(name="CLASSPRODUCT_ID", referencedColumnName="ID")
+	@Column(name="COPIES_IN_ORDER")
+	private Map<ClassProduct, Integer> classProductsMap;
+	
 	public String getDate() {
 		return date;
 	}
@@ -122,20 +126,26 @@ public class Order {
 
 		switch (status) {
 			case PAID:
-				text = "已支付";
+				text = "已付款";
 				break;
 			case CREATED:
-				text = "等待支付";
+				text = "等待付款";
 				break;
-			case PREPAID:
+			case NOTPAY:
 				text = "付款中";
 				break;
 			case CANCELLED:
 				text = "已取消";
 				break;
-			case COMPLETED:
-				text = "已完成";
+            case PAYERROR:
+                text = "付款错误";
+                break;
+			case DELIVERED:
+				text = "已发货";
 				break;
+            case REFUND:
+                text = "已退款";
+                break;
 			default:
 				text = "未知订单状态";
 		}
@@ -148,6 +158,20 @@ public class Order {
 	}
 
 	public enum Status {
-		CREATED, PREPAID, PAID, CANCELLED, COMPLETED
+		CREATED,     // Order created at this app but not yet at wechat
+        NOTPAY,      // equals to wechat NOTPAY
+        PAID,        // equals to wechat SUCCESS
+        CANCELLED,   // equals to wechat CLOSED
+        PAYERROR,    // equals to wechat PAYERROR
+        DELIVERED,   // Paid and goods delivered
+        REFUND       // equals to wechat REFUND
+	}
+
+	public Map<ClassProduct, Integer> getClassProductsMap() {
+		return classProductsMap;
+	}
+
+	public void setClassProductsMap(Map<ClassProduct, Integer> classProductsMap) {
+		this.classProductsMap = classProductsMap;
 	}
 }

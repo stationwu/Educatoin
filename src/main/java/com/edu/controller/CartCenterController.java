@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import com.edu.dao.CustomerRepository;
 import com.edu.domain.*;
-import com.edu.domain.dto.DerivedProduct;
 import com.edu.domain.dto.ProductContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,30 +24,31 @@ public class CartCenterController {
 	@Autowired
 	private CustomerRepository custRepo;
 
+	public final static String CART_PATH = "/user/cart";
 
-    public final static String CART_PATH = "/user/cart";
-    public final static String CART_CALLBACK_PATH = "/user/cart/cb";
+	public final static String SESSION_OPENID_KEY = "openCode";
 
-    public final static String SESSION_OPENID_KEY = "openCode";
-
-    @GetMapping(CART_PATH)
+	@GetMapping(CART_PATH)
 	private String doShowCart(HttpSession session, Model model) {
-    	String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
+		String openId = (String) session.getAttribute(SESSION_OPENID_KEY);
 
 		Customer customer = custRepo.findOneByOpenCode(openId);
 
 		Set<Product> products = customer.getCart().getProducts();
 		Set<DerivedProduct> derivedProducts = customer.getCart().getDerivedProducts();
 		Set<ImageCollection> imageCollection = customer.getCart().getImageCollection();
+		Set<ClassProduct> classProducts = customer.getCart().getClassProducts();
 
-		Stream<ProductContainer> productsStream = products.stream()
-				.map(x -> new ProductContainer(x, 1,1));
+		Stream<ProductContainer> productsStream = products.stream().map(x -> new ProductContainer(x, 1, 1));
 		Stream<ProductContainer> derivedProductsStream = derivedProducts.stream()
-				.map(x -> new ProductContainer(x,1, 2));
+				.map(x -> new ProductContainer(x, 1, 2));
 		Stream<ProductContainer> imageCollectionStream = imageCollection.stream()
-				.map(x -> new ProductContainer(x,1, 3));
-		model.addAttribute("products", Stream.of(productsStream, derivedProductsStream, imageCollectionStream)
-				.flatMap(i -> i).collect(Collectors.toCollection(ArrayList::new)));
+				.map(x -> new ProductContainer(x, 1, 3));
+		Stream<ProductContainer> classProductsStream = classProducts.stream().map(x -> new ProductContainer(x, 1, 4));
+
+		model.addAttribute("products",
+				Stream.of(productsStream, derivedProductsStream, imageCollectionStream, classProductsStream)
+						.flatMap(i -> i).collect(Collectors.toCollection(ArrayList::new)));
 		model.addAttribute("code", openId);
 		return "user_cart";
 	}
@@ -68,15 +68,16 @@ public class CartCenterController {
 		Set<Product> products = customer.getCart().getProducts();
 		Set<DerivedProduct> derivedProducts = customer.getCart().getDerivedProducts();
 		Set<ImageCollection> imageCollection = customer.getCart().getImageCollection();
+		Set<ClassProduct> classProducts = customer.getCart().getClassProducts();
 
-		Stream<ProductContainer> productsStream = products.stream()
-				.map(x -> new ProductContainer(x,1, 1));
+		Stream<ProductContainer> productsStream = products.stream().map(x -> new ProductContainer(x, 1, 1));
 		Stream<ProductContainer> derivedProductsStream = derivedProducts.stream()
-				.map(x -> new ProductContainer(x,1, 2));
+				.map(x -> new ProductContainer(x, 1, 2));
 		Stream<ProductContainer> imageCollectionStream = imageCollection.stream()
-				.map(x -> new ProductContainer(x,1, 3));
+				.map(x -> new ProductContainer(x, 1, 3));
+		Stream<ProductContainer> classProductsStream = classProducts.stream().map(x -> new ProductContainer(x, 1, 4));
 
-		return Stream.of(productsStream, derivedProductsStream, imageCollectionStream).flatMap(i -> i)
-				.collect(Collectors.toCollection(ArrayList::new));
+		return Stream.of(productsStream, derivedProductsStream, imageCollectionStream, classProductsStream)
+				.flatMap(i -> i).collect(Collectors.toCollection(ArrayList::new));
 	}
 }

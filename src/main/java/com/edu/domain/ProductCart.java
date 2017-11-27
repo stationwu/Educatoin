@@ -4,8 +4,6 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import com.edu.domain.dto.DerivedProduct;
-
 @Entity
 @Table(name="productcart")
 public class ProductCart {
@@ -24,6 +22,9 @@ public class ProductCart {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<ImageCollection> imageCollection;
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private Set<ClassProduct> classProducts;
 	
 	public Customer getCustomer() {
 		return customer;
@@ -88,4 +89,21 @@ public class ProductCart {
     public long getId() {
         return id;
     }
+
+	public Set<ClassProduct> getClassProducts() {
+		return classProducts;
+	}
+
+	public void setClassProducts(Set<ClassProduct> classProducts) {
+		this.classProducts = classProducts;
+	}
+	
+	public void addClassProduct(ClassProduct classProduct) {
+		this.classProducts.add(classProduct);
+	}
+	
+	public void removeClassProduct(ClassProduct classProduct) {
+		this.classProducts.remove(classProduct);
+	}
+    
 }
