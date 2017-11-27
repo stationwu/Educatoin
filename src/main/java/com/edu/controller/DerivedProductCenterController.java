@@ -59,7 +59,7 @@ public class DerivedProductCenterController {
         model.addAttribute("code", openId);
         model.addAttribute("images", imageContainer.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
 				.collect(Collectors.toCollection(ArrayList::new)));
-        return "derivation_works";
+        return "user_imagecollection";
     }
     
     @GetMapping(PATH_GIFTS)
