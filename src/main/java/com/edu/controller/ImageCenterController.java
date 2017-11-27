@@ -101,6 +101,11 @@ public class ImageCenterController {
 		Customer customer = custRepo.findOneByOpenCode(openId);
 		ImageCollection imageCollection = new ImageCollection();
 		List<String> imagesWithId = Arrays.asList(images.split(","));
+		List<Product> productList = productRepository.getImageCollectionProductList();
+		Product product = productList.get(0);
+		if(imagesWithId.size()!=product.getNumberOfPic()){
+			return "请选择"+product.getNumberOfPic()+"张作品！";
+		}
 		Set<Image> imageList = new HashSet<>();
 		for (String id : imagesWithId) {
 			imageList.add(imageRepository.findOne(Long.parseLong(id)));

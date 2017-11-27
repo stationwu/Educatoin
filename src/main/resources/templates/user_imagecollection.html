@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/jquery-weui.min.css" rel="stylesheet"/>
 	<style>
 	.clearfix {
 	  *zoom: 1;
@@ -261,6 +262,7 @@
 	</style>
 </head>
 <body>
+	<h2 style="font-weight: 900;font-size: 39px;letter-spacing: 2px;color: #00c09e;" th:text="请选择+${{numberOfPic}}+张作品"></h2>
 	<ul th:each="image : ${images}">
 	  <li class="col-xs-6" >
 	      <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
@@ -271,17 +273,15 @@
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-    var items=[];
+    /*<![CDATA[*/
     // item selection
 	$('li').click(function () {
 	  $(this).toggleClass('selected');
 	  if ($('li.selected').length == 0){
 	    $('.select').removeClass('selected');
-	  	items.splice(items.indexOf($(this)[0].getElementsByTagName('img')[0].alt),1);
 	  }
 	  else{
 	    $('.select').addClass('selected');
-	  	items.push($(this)[0].getElementsByTagName('img')[0].alt);
 	  }
 	  counter();
 	});
@@ -310,12 +310,18 @@
 	
 	function generateImageCollection(){
 		if($("button.selected").length>0){
+			var items=[];
+	    	var length=$('li.selected').length;
+	    	for(var i=0;i<length;i++){
+	    		items.push($('li.selected')[i].getElementsByTagName('img')[0].alt);
+	    	}
 			$.post("/user/generateImagecollection?code="+$('#code').text(),"images="+items.join(',')).done(
 				function(data){
 					alert(data);
 			})
 		}
 	}
+    /*]]>*/
 	</script>
 </body>
 </html>

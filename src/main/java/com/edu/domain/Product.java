@@ -37,6 +37,8 @@ public class Product {
 	
 	private int classPeriod;
 	
+	private int numberOfPic;
+	
 	private int priority;
 	
 	public Product() {
@@ -149,6 +151,14 @@ public class Product {
 
 	public void setClassPeriod(int classPeriod) {
 		this.classPeriod = classPeriod;
+	}
+
+	public int getNumberOfPic() {
+		return numberOfPic;
+	}
+
+	public void setNumberOfPic(int numberOfPic) {
+		this.numberOfPic = numberOfPic;
 	}
 	
 }

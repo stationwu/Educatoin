@@ -36,6 +36,12 @@
 		      <input class="weui-input" type="text" id="longDescription" th:placeholder="${{product.longProductDescription}}"/>
 		    </div>
 		  </div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__hd"><label class="weui-label">作品集张数</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-input" type="text" id="numberOfPic" th:placeholder="${{product.numberOfPic}}"/>
+		    </div>
+		  </div>
 		</div>
 	</div>
 	<div class="weui-cells weui-cells_form">
@@ -72,6 +78,7 @@
 			var name = $("#name")[0].value;
 			var description = $("#description")[0].value;
 			var longDescription = $("#longDescription")[0].value;
+			var numberOfPic = $("#numberOfPic")[0].value;
 			if(name === ""){
 				name=$("#name")[0].placeholder;
 			}
@@ -83,6 +90,9 @@
 			}
 			if(longDescription === ""){
 				longDescription=$("#longDescription")[0].placeholder;
+			}
+			if(numberOfPic === ""){
+				numberOfPic=$("#numberOfPic")[0].placeholder;
 			}
 			var files = $("#fileUpload")[0].files;
 			var formData = new FormData();
@@ -101,6 +111,7 @@
 			formData.append("name", name);
 			formData.append("description", description);
 			formData.append("longDescription", longDescription);
+			formData.append("numberOfPic", numberOfPic);
 			
 			$.ajax({
 			  url: "/manager/imageprod/edit?productid="+$("#updateProduct")[0].rel,
