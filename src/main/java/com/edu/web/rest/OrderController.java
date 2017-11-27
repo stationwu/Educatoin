@@ -1,0 +1,19 @@
+package com.edu.web.rest;
+
+import com.edu.dao.OrderRepository;
+import com.github.binarywang.wxpay.service.WxPayService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class OrderController {
+    public static final String PATH = "/api/v1/Student";
+
+    @Autowired
+    private OrderRepository repository;
+
+    @Autowired
+    private WxPayService wxPayService;
+
+
+}
