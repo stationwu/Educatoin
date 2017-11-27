@@ -1,5 +1,6 @@
 package com.edu.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -35,7 +36,13 @@ public class ProductCart {
 	}
 
 	public Set<Product> getProducts() {
-		return products;
+		Set<Product> productSet = new HashSet<>();
+		for(Product product : this.products){
+			if(product.isInvalidFlag() != true){
+				productSet.add(product);
+			}
+		}
+		return productSet;
 	}
 
 	public void addProducts(Product product) {
@@ -51,7 +58,13 @@ public class ProductCart {
 	}
 
 	public Set<DerivedProduct> getDerivedProducts() {
-		return derivedProducts;
+		Set<DerivedProduct> derivedProductList = new HashSet<>();
+		for(DerivedProduct derivedProduct : this.derivedProducts){
+			if(derivedProduct.getProduct().isInvalidFlag() != true){
+				derivedProductList.add(derivedProduct);
+			}
+		}
+		return derivedProductList;
 	}
 
 	public void addDerivedProducts(DerivedProduct derivedProduct) {
@@ -67,7 +80,13 @@ public class ProductCart {
 	}
 
 	public Set<ImageCollection> getImageCollection() {
-		return imageCollection;
+		Set<ImageCollection> imageCollectionSet = new HashSet<>();
+		for(ImageCollection imageCollection : this.imageCollection){
+			if(imageCollection.getProduct().isInvalidFlag() != true){
+				imageCollectionSet.add(imageCollection);
+			}
+		}
+		return imageCollectionSet;
 	}
 
 	public void addImageCollection(ImageCollection imageCollection) {
@@ -91,7 +110,13 @@ public class ProductCart {
     }
 
 	public Set<ClassProduct> getClassProducts() {
-		return classProducts;
+		Set<ClassProduct> classProductSet = new HashSet<>();
+		for(ClassProduct classProduct : this.classProducts){
+			if(classProduct.getProduct().isInvalidFlag() != true){
+				classProductSet.add(classProduct);
+			}
+		}
+		return classProductSet;
 	}
 
 	public void setClassProducts(Set<ClassProduct> classProducts) {
