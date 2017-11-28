@@ -39,6 +39,6 @@
 .payment-bar .all-checkbox{float:left;line-height:49px;padding-left:40px;}
 .payment-bar .checkbox{background:url(../images/icon/icon_radio3.png) no-repeat left center;background-size:20px 20px;position:absolute;top:50%;left:15px;margin-top:-60px;width:20px;height:120px;}
 .payment-bar .shop-total{float:left;-webkit-box-flex:1.0;box-flex:1.0;margin:9px 20px 9px 35px;}
-.payment-bar .shop-total strong{display:block;font-size:16px;}
+.payment-bar .shop-total strong{display:block;font-size:20px;}
 .payment-bar .shop-total span{display:block;font-size:12px;}
 .payment-bar .settlement{display:inline-block;float:right;width:100px;height:49px;line-height:49px;text-align:center;color:#fff;font-size:16px;background:#f23030;}
