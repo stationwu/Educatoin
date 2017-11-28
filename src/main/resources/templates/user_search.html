@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>用户搜索</title>
+    <title th:text="${{title}}">用户搜索</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- Bootstrap -->
@@ -43,6 +43,7 @@
 		  </a>
 		</div>
 	</div>
+	<div id="type" th:text="${{type}}" style="visibility:hidden"/>
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
@@ -53,8 +54,16 @@
             el: '#studentList',
             methods: {
             	navToDetail:function(index, event){
-					var student = students.studentArray[index];
-					window.location.href="/manager/signcourse?id="+student.id;
+            		switch($("#type").text()){
+	            		case "1":
+							var student = students.studentArray[index];
+							window.location.href="/manager/signcourse?id="+student.id;
+							break;
+	            		case "2":
+							var student = students.studentArray[index];
+							window.location.href="/manager/deleteimage?id="+student.id;
+							break;
+            		}
 				}
             },
             data: {

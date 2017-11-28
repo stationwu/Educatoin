@@ -110,12 +110,12 @@ public class Student {
         this.isChild = isChild;
     }
 
-    public void setImagesList(Set<Image> imagesSet) {
-        this.imagesSet = imagesSet;
-    }
-
     public void addImage(Image image) {
         this.imagesSet.add(image);
+    }
+    
+    public void removeImage(Image image) {
+        this.imagesSet.remove(image);
     }
 
     public Set<Course> getCoursesSet() {
