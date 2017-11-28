@@ -25,8 +25,8 @@
 	
 	ul, div {
 	  position: relative;
-	  margin: 50px auto;
-	  width: 710px;
+	  margin: 20px auto;
+	  width: 100%;
 	  padding: 0;
 	  list-style: none;
 	  text-align: center;
@@ -41,7 +41,7 @@
 	  position: absolute;
 	  margin: 0;
 	  padding: 0;
-	  width: 710px;
+	  width: 100%;
 	  height: 45px;
 	  line-height: 45px;
 	  text-align: center;
@@ -53,7 +53,7 @@
 	  width: 100%;
 	  height: 100%;
 	  border-radius: 1px;
-	  box-shadow: 0 0 0 10px #fff;
+	  box-shadow: 0 0 0 5px #fff;
 	  cursor: pointer;
 	  animation:        unselected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
 	  -o-animation:     unselected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
@@ -63,34 +63,34 @@
 	}
 	
 	@keyframes unselected {
-	  0% { box-shadow: 0 0 0 10px #00c09e; }
-	  50% { transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #fff; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #fff; }
+	  0% { box-shadow: 0 0 0 5px #00c09e; }
+	  50% { transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #fff; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #fff; }
 	}
 	@-o-keyframes unselected {
-	  0% { box-shadow: 0 0 0 10px #00c09e; }
-	  50% { -o-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #fff; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #fff; }
+	  0% { box-shadow: 0 0 0 5px #00c09e; }
+	  50% { -o-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #fff; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #fff; }
 	}
 	@-ms-keyframes unselected {
-	  0% { box-shadow: 0 0 0 10px #00c09e; }
-	  50% { width: 45%; height: 45%; opacity: 0.8; box-shadow: 0 0 0 10px #fff; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #fff; }
+	  0% { box-shadow: 0 0 0 5px #00c09e; }
+	  50% { width: 45%; height: 45%; opacity: 0.8; box-shadow: 0 0 0 5px #fff; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #fff; }
 	}
 	@-moz-transition unselected {
-	  0% { box-shadow: 0 0 0 10px #00c09e; }
-	  50% { -moz-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #fff; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #fff; }
+	  0% { box-shadow: 0 0 0 5px #00c09e; }
+	  50% { -moz-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #fff; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #fff; }
 	}
 	@-webkit-keyframes unselected {
-	  0% { box-shadow: 0 0 0 10px #00c09e; }
-	  50% { -webkit-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #fff; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #fff; }
+	  0% { box-shadow: 0 0 0 5px #00c09e; }
+	  50% { -webkit-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #fff; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #fff; }
 	}
 	
 	li {
 	  position: relative;
-	  height: 350px;
+	  height: 160px;
 	  padding-bottom: 20px;
 	  float: left;
 	}
@@ -101,14 +101,14 @@
 	  position: absolute;
 	  margin: auto;
 	  top: 0; left: 0; bottom: 0; right: 0;
-	  width: 60px;
-	  height: 60px;
-	  line-height: 60px;
+	  width: 40px;
+	  height: 40px;
+	  line-height: 40px;
 	  background:  #00c09e;
-	  border-radius: 60px;
+	  border-radius: 40px;
 	  color: #fff;
 	  text-align: center;
-	  font-size: 28px;
+	  font-size: 18px;
 	  z-index: 10;
 	  opacity: 0;
 	  transition:         0.3s linear;
@@ -129,7 +129,7 @@
 	/* img selection */
 	
 	li.selected img {
-	  box-shadow: 0 0 0 8px #00c09e;
+	  box-shadow: 0 0 0 5px #00c09e;
 	  animation:        selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
 	  -o-animation:     selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
 	  -ms-animation:    selected 0.3s cubic-bezier(0.250, 0.100, 0.250, 1.000);
@@ -139,38 +139,38 @@
 	
 	@keyframes selected {
 	  0% { border-color: #fff; }
-	  50% { transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #00c09e; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #00c09e; }
+	  50% { transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #00c09e; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #00c09e; }
 	}
 	@-o-keyframes selected {
-	  0% { box-shadow: 0 0 0 10px #fff; }
-	  50% { -o-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #00c09e; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #00c09e; }
+	  0% { box-shadow: 0 0 0 5px #fff; }
+	  50% { -o-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #00c09e; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #00c09e; }
 	}
 	@-ms-keyframes selected {
-	  0% { box-shadow: 0 0 0 10px #fff; }
-	  50% { width: 45%; height: 45%; opacity: 0.8; box-shadow: 0 0 0 10px #00c09e; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #00c09e; }
+	  0% { box-shadow: 0 0 0 5px #fff; }
+	  50% { width: 45%; height: 45%; opacity: 0.8; box-shadow: 0 0 0 5px #00c09e; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #00c09e; }
 	}
 	@-moz-transition selected {
-	  0% { box-shadow: 0 0 0 10px #fff; }
-	  50% { -moz-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #00c09e; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #00c09e; }
+	  0% { box-shadow: 0 0 0 5px #fff; }
+	  50% { -moz-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #00c09e; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #00c09e; }
 	}
 	@-webkit-keyframes selected {
-	  0% { box-shadow: 0 0 0 10px #fff; }
-	  50% { -webkit-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 10px #00c09e; }
-	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 10px #00c09e; }
+	  0% { box-shadow: 0 0 0 5px #fff; }
+	  50% { -webkit-transform: scale(0.5); opacity: 0.8; box-shadow: 0 0 0 5px #00c09e; }
+	  80%,100% { width: 100%; height: 100%; box-shadow: 0 0 0 5px #00c09e; }
 	}
 	
 	/* button */
 	
 	button {
-	  height: 85px;
+	  height: 40px;
 	  margin: 0 7px;
 	  padding: 5px 0;
 	  font-weight: 900;
-	  font-size: 39px;
+	  font-size: 20px;
 	  letter-spacing: 2px;
 	  color: #fff;
 	  border: 0;
@@ -242,11 +242,11 @@
 	button.send:after {
 	  position: absolute;
 	  content:  attr(data-counter);
-	  padding: 10px 15px;
-	  margin: -40px 0 0 0px;
+	  padding: 5px 7px;
+	  margin: -25px 0 0 0px;
 	  line-height: 100%;
-	  border: 5px #fff solid;
-	  border-radius: 60px;
+	  border: 3px #fff solid;
+	  border-radius: 30px;
 	  background: #00c09e;
 	  transition:         0.1s linear;
 	  -o-transition:      0.1s linear;
@@ -262,14 +262,18 @@
 	</style>
 </head>
 <body>
-	<h2 style="font-weight: 900;font-size: 39px;letter-spacing: 2px;color: #00c09e;" th:text="请选择+${{numberOfPic}}+张作品"></h2>
+	<h4 style="font-weight: 800;font-size: 20px;letter-spacing: 1px;color: #00c09e;text-align:center;" th:text="请选择+${{numberOfPic}}+张作品">
+	</h4>
 	<ul th:each="image : ${images}">
 	  <li class="col-xs-6" >
 	      <img th:src="${{image.thumbnailUrl}}" th:alt="${{image.id}}"/>
 	  </li>
 	</ul>
-	<button class="send navbar-fixed-bottom col-xs-12" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
 	<div id="code" style="visibility:hidden" th:text="${{code}}" />
+	<div style="visibility:hidden">123456</div>
+	<div style="visibility:hidden">123456</div>
+	<button class="send navbar-fixed-bottom col-xs-12" data-counter="0" onclick="generateImageCollection()">生成作品集</button>
+	
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript">

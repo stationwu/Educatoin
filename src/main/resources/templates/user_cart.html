@@ -51,6 +51,7 @@
 	<script src="/js/vue.min.js"></script>	
     
     <script type="text/javascript">
+    /*<![CDATA[*/
 	    $(document).ready(function () {
 			$.get( "/user/cartcontent?code="+$('#code').text()).done(function(data){
 				products = new Vue({
@@ -125,6 +126,9 @@
 									buylist.push(temp);
 								}
 							}
+							if(buylist.length <= 0){
+								return;
+							}
 							$.ajax({
 								  type: "POST",
 								  url: "/user/order",
@@ -146,7 +150,7 @@
 				})
 			});
     	});
-
+     /*]]>*/  
 	 </script>
 </body>
 </html>
