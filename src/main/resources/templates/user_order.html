@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="weui-media-box__bd">
-                    <span th:text="'订单状态：' + ${e.order.statusText} " >
+                    <span>
                         {{ '订单状态：' + order.statusText }}
                     </span>
                 </div>
@@ -75,12 +75,33 @@
                 },
                 created: function() {
                     $.ajax({
-                        url: '/api/v1/Customer/AddChild',
+                        url: '/api/v1/Order',
                         contentType: 'application/json',
+                        accept: 'application/json',
                         type: 'GET',
                         //data: JSON.stringify(students),
                     }).done(function (response) {
-                        //window.location.href = "/user/center";
+                        response.forEach(function(orderEntity) {
+                            var order = {
+                                id : orderEntity.id,
+                                totalAmount : orderEntity.totalAmount,
+                                status : orderEntity.status,
+                                statusText : orderEntity.statusText,
+                                creationDate : orderEntity.creationDate,
+                                items : [],
+                                itemCount : 0,
+                            };
+
+                            orderEntity.items.forEach(function(itemEntity) {
+                                var item = {
+
+                                };
+
+                                order.items.push(item);
+                            });
+
+                            app.data.orders.push(order);
+                        });
                     });
                 },
                 methods: {

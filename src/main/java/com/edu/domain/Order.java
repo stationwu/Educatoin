@@ -23,26 +23,30 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
     @JsonIgnore
-    private Customer customer;  
-    
+    private Customer customer;
+
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="PRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<Product,Integer > productsMap;
 
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_DERIVEDPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="DERIVEDPRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<DerivedProduct, Integer> derivedProductsMap;
 
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_IMAGECOLLECTION", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<ImageCollection, Integer> imageCollectionMap;
 
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_CLASSPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="CLASSPRODUCT_ID", referencedColumnName="ID")
@@ -142,6 +146,9 @@ public class Order {
                 break;
 			case DELIVERED:
 				text = "已发货";
+				break;
+			case REFUND_REQUESTED:
+				text = "退款申请中";
 				break;
             case REFUND:
                 text = "已退款";
