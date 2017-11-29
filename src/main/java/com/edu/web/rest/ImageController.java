@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.edu.dao.CustomerRepository;
+import com.edu.errorhandler.ResourceNotFoundException;
 import com.edu.storage.FileStorageService;
 import com.edu.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,7 @@ public class ImageController {
 		Image img = imageRepository.findOne(id);
 
 		if (img == null) {
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-			return;
+			throw new ResourceNotFoundException("Image " + id + " does not exist");
 		}
 
 		// Interceptor already checked it's not null

@@ -4,46 +4,100 @@
         <title>用户订单</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-	    <link href="/css/weui.min.css" rel="stylesheet" />
-	    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
-	    <link href="/css/app.css" media="screen" rel="stylesheet"/>
+        <link href="/css/weui.min.css" rel="stylesheet" />
+        <link href="/css/jquery-weui.min.css" rel="stylesheet" />
+        <link href="/css/app.css" media="screen" rel="stylesheet"/>
     </head>
     <body>
-        <div class="weui-form-preview" th:each="e : ${orderList}">
-            <div class="weui-form-preview__hd">
-            	<div class="weui-form-preview__item">
-			      <label class="weui-form-preview__label">订单编号:</label>
-			      <span class="dsx-user-info" th:text="${e.order.id}"></span>
-			    </div>
-            </div>
-            <div class="weui-form-preview__bd" th:each="item : ${e.productContainers}">
-                <div class="weui-form-preview__item">
-                    <a th:href="'/order/detail/' + ${e.order.id}" class="weui-media-box weui-media-box_appmsg">
-                        <div class="weui-media-box__hd">
-                          <img class="dsx-order-thumb" th:src="${item.imageUrl}" width="60" height="60" alt="${e.order.id}"></img>
+        <div id="orderList">
+            <div class="weui-form-preview" v-for="(order, index) in orders">
+                <div class="weui-form-preview__hd">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">订单编号:</label>
+                        <span class="dsx-user-info">{{order.id}}</span>
+                    </div>
+                </div>
+                <div class="weui-form-preview__bd">
+                    <div class="weui-form-preview__item" v-for="(item, itemNo) in order.items">
+                        <div class="weui-media-box weui-media-box_appmsg">
+                            <div class="weui-media-box__hd">
+                                <img class="dsx-order-thumb" v-bind:src="item.imageUrl" width="60" height="60">
+                                </img>
+                            </div>
+                            <div class="weui-media-box__bd">
+                                <h4 class="weui-media-box__title">{{item.productName}}</h4>
+                                <span class="weui-form-preview__value">
+                                    {{item.productDescription}}
+                                </span>
+                                <p class="weui-media-box__desc">
+                                    <span>
+                                        {{item.productPrice}} + ' x ' + {{item.quantity}}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                        <div class="weui-media-box__bd">
-                            <h4 class="weui-media-box__title" th:text="${item.productName}"></h4>
-                            <span class="weui-form-preview__value" th:text="${item.productDescription}"></span>
-                            <p class="weui-media-box__desc">
-                                <span th:text="${item.productPrice} + ' x ' + ${item.quantity}"></span> 
-                            </p>
-                        </div>
-                    </a>
+                    </div>
                     <div class="weui-media-box__bd">
-		                <div class="dsx-order-money">
-		                	<span th:text="'共' + ${item.quantity} + '件商品, 共计￥ '+ ${e.order.totalAmount} " ></span>
-		                </div>
-		            </div>
+                        <div class="dsx-order-money">
+                        <span>
+                            {{'共' + order.itemCount + '件商品, 共计￥ '+ order.totalAmount }}
+                        </span>
+                        </div>
+                    </div>
+                    <div class="weui-media-box__bd">
+                    <span>
+                        {{ '订单状态：' + order.statusText }}
+                    </span>
+                    </div>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default"
+                       v-if="order.status === 'CREATED'" v-on:click="onPay(index, $event)">付款</a>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
+                       v-if="order.status === 'CREATED'" v-on:click="onCancel(index, $event)">取消</a>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
+                       v-if="order.status === 'PAID'" v-on:click="onRefund(index, $event)">申请退款</a>
                 </div>
             </div>
         </div>
         
-        <div id="code" style="visibility: hidden" th:text="${{code}}"></div>
-    	<script src="/js/jquery.min.js"></script>
-		<script src="/js/jquery-weui.min.js"></script>
+        <div id="code" style="display:none" th:text="${{code}}"></div>
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/jquery-weui.min.js"></script>
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
-		<script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
+        <script type="text/javascript">
+            var app = new Vue({
+                el: '#orderList',
+                data: {
+                    orders: [
+                    ],
+                },
+                created: function() {
+                    $.ajax({
+                        url: '/api/v1/Order',
+                        contentType: 'application/json',
+                        accept: 'application/json',
+                        type: 'GET',
+                        //data: JSON.stringify(students),
+                    }).done(function (response) {
+                        response.forEach(function(order) {
+                            app.orders.push(order);
+                        });
+                    });
+                },
+                methods: {
+                    onPay : function(index, event) {
+
+                    },
+                    onCancel : function(index, event) {
+
+                    },
+                    onRefund : function(index, event) {
+
+                    },
+                }
+            });
+        </script>
     </body>
 </html>

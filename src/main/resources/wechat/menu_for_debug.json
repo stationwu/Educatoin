@@ -5,13 +5,21 @@
       "sub_button": [
         {
           "type": "view",
+          "name": "课程介绍",
+          "url": "http://guogin.ngrok.io/user/aboutcourse",
+          "sub_button": []
+        },
+        {
+          "type": "view",
           "name": "课程预约",
-          "url": "http://guogin.ngrok.io/user/reservecourse"
+          "url": "http://guogin.ngrok.io/user/reservecourse",
+          "sub_button": []
         },
         {
           "type": "view",
           "name": "我的课程",
-          "url": "http://guogin.ngrok.io/user/course"
+          "url": "http://guogin.ngrok.io/user/course",
+          "sub_button": []
         }
       ]
     },
@@ -21,18 +29,21 @@
         {
           "type": "view",
           "name": "我的作品",
-          "url": "http://guogin.ngrok.io/user/relatedimage"
+          "url": "http://guogin.ngrok.io/user/relatedimage",
+          "sub_button": []
         },
         {
           "type": "view",
-          "name": "生成作品集",
-          "url": "http://guogin.ngrok.io/user/imagecollection"
+          "name": "衍生商品",
+          "url": "http://guogin.ngrok.io/user/imagecollection",
+          "sub_button": []
         },
         {
           "type": "view",
-          "name": "学生注册",
-          "url": "http://guogin.ngrok.io/user/signin"
-        },
+          "name": "我就是我",
+          "url": "http://guogin.ngrok.io/user/signin",
+          "sub_button": []
+        }
       ]
     },
     {
@@ -40,23 +51,27 @@
       "sub_button": [
         {
           "type": "view",
-          "name": "商城",
-          "url": "http://guogin.ngrok.io/shop/mall"
-        },
-        {
-          "type": "view",
           "name": "购物车",
-          "url": "http://guogin.ngrok.io/user/cart"
+          "url": "http://guogin.ngrok.io/user/cart",
+          "sub_button": []
         },
         {
           "type": "view",
-          "name": "我的订单",
-          "url": "http://guogin.ngrok.io/user/orderList"
+          "name": "看订单",
+          "url": "http://guogin.ngrok.io/user/orderList",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "传图片",
+          "url": "http://guogin.ngrok.io/manager/search",
+          "sub_button": []
         },
         {
           "type": "view",
           "name": "关于我们",
-          "url": "http://guogin.ngrok.io/site/about"
+          "url": "http://guogin.ngrok.io/site/about",
+          "sub_button": []
         }
       ]
     }

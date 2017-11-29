@@ -15,7 +15,8 @@ public class FileStorageLoader {
     @Bean
     CommandLineRunner init(FileStorageService service) {
         return (args) -> {
-            if (environment.getProperty("spring.jpa.hibernate.ddl-auto").equals("create-drop")) {
+            String ddlAuto = environment.getProperty("spring.jpa.hibernate.ddl-auto");
+            if (ddlAuto.equals("create-drop") || ddlAuto.equals("create")) {
                 service.deleteAll();
             }
             service.init();
