@@ -17,8 +17,8 @@
                         <span class="dsx-user-info">{{order.id}}</span>
                     </div>
                 </div>
-                <div class="weui-form-preview__bd" v-for="(item, itemNo) in order.items">
-                    <div class="weui-form-preview__item">
+                <div class="weui-form-preview__bd">
+                    <div class="weui-form-preview__item" v-for="(item, itemNo) in order.items">
                         <div class="weui-media-box weui-media-box_appmsg">
                             <div class="weui-media-box__hd">
                                 <img class="dsx-order-thumb" v-bind:src="item.imageUrl" width="60" height="60">
@@ -37,25 +37,25 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="weui-media-box__bd">
-                    <div class="dsx-order-money">
+                    <div class="weui-media-box__bd">
+                        <div class="dsx-order-money">
                         <span>
                             {{'共' + order.itemCount + '件商品, 共计￥ '+ order.totalAmount }}
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="weui-media-box__bd">
+                    <div class="weui-media-box__bd">
                     <span>
                         {{ '订单状态：' + order.statusText }}
                     </span>
+                    </div>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default"
+                       v-if="order.status === 'CREATED'" v-on:click="onPay(index, $event)">付款</a>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
+                       v-if="order.status === 'CREATED'" v-on:click="onCancel(index, $event)">取消</a>
+                    <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
+                       v-if="order.status === 'PAID'" v-on:click="onRefund(index, $event)">申请退款</a>
                 </div>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default"
-                   v-if="order.status === 'CREATED'" v-on:click="onPay(index, $event)">付款</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
-                   v-if="order.status === 'CREATED'" v-on:click="onCancel(index, $event)">取消</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
-                   v-if="order.status === 'PAID'" v-on:click="onRefund(index, $event)">申请退款</a>
             </div>
         </div>
         
