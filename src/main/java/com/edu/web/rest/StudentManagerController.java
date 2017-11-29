@@ -91,11 +91,16 @@ public class StudentManagerController {
                                                             @RequestParam(value = "hour") String hour,
                                                             @RequestParam(value = "material") String material,
                                                             @RequestParam("file") MultipartFile files[])
-            throws HttpException {
+            throws Exception {
         Student student = studentRepository.findOne(studentId);
         @SuppressWarnings("unchecked")
         List<Course> courses = (List<Course>) courseRepository.search(date, hour, new PageRequest(0, 1));
         Course course = courses.get(0);
+        for(Course cou:student.getCoursesSet()){
+        	if(course.getId() == cou.getId()){
+        		throw new Exception("已签到过此次课程！");
+        	}
+        }
         student.addCourse(course);
         student.removeReservedCourse(course);
         for (MultipartFile file : files) {
