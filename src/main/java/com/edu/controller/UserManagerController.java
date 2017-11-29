@@ -35,8 +35,10 @@ public class UserManagerController {
 	}
 	
 	@GetMapping(MANAGER_SEARCH_PATH)
-	public String getSearchPage(HttpSession session) {
+	public String getSearchPage(HttpSession session,Model model) {
 		//String openId = (String) session.getAttribute(Constant.SESSION_OPENID_KEY);
+		model.addAttribute("type", "1");
+		model.addAttribute("title", "用户签到并上传");
 		return "user_search";
 	}
 	
@@ -53,6 +55,7 @@ public class UserManagerController {
 	private String doSignCourse(@RequestParam(value="id") String id, HttpSession session, Model model) {
 		Student student = studentRepository.findOne(id);
     	model.addAttribute("studentContainer", new StudentContainer(student));
+    	
     	return "user_signcourse_upload";
 	}
 }

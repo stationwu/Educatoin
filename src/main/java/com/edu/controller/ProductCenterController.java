@@ -29,7 +29,7 @@ public class ProductCenterController {
 
 	@Autowired
 	private ImageService imageService;
-	
+
 	@Autowired
 	private ProductCategoryRepository productCategoryRepository;
 
@@ -111,6 +111,7 @@ public class ProductCenterController {
 			@RequestParam(value = "name") String name, @RequestParam(value = "description") String description,
 			@RequestParam(value = "longDescription") String longDescription,
 			@RequestParam(value = "priority") String priority, @RequestParam(value = "price") String price,
+			@RequestParam(value = "invalidFlag") Boolean invalidFlag,
 			@RequestParam(value = "file") MultipartFile files[]) {
 		Product product = productRepository.findOne(Long.parseLong(productId));
 		Set<Image> images = new HashSet<>();
@@ -128,6 +129,7 @@ public class ProductCenterController {
 		product.setProductDescription(description);
 		product.setLongProductDescription(longDescription);
 		product.setPriority(Integer.parseInt(priority));
+		product.setInvalidFlag(invalidFlag);
 		return productRepository.save(product);
 	}
 
@@ -151,7 +153,8 @@ public class ProductCenterController {
 	public Product editImageProduct(@RequestParam(value = "productid") String productId,
 			@RequestParam(value = "name") String name, @RequestParam(value = "description") String description,
 			@RequestParam(value = "longDescription") String longDescription,
-			@RequestParam(value = "price") String price, @RequestParam(value = "file") MultipartFile files[]) {
+			@RequestParam(value = "price") String price, @RequestParam(value = "numberOfPic") String numberOfPic,
+			@RequestParam(value = "file") MultipartFile files[]) {
 		Product product = productRepository.findOne(Long.parseLong(productId));
 		Set<Image> images = new HashSet<>();
 		for (MultipartFile file : files) {
@@ -167,6 +170,7 @@ public class ProductCenterController {
 		product.setProductPrice(Double.parseDouble(price));
 		product.setProductDescription(description);
 		product.setLongProductDescription(longDescription);
+		product.setNumberOfPic(Integer.parseInt(numberOfPic));
 		return productRepository.save(product);
 	}
 

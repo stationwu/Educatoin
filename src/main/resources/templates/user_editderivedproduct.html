@@ -42,6 +42,12 @@
 		      <input class="weui-input" type="number" pattern="[0-9]*" id="priority" th:placeholder="${{product.priority}}"/>
 		    </div>
 		  </div>
+		  <div class="weui-cell weui-cell_switch">
+		    <div class="weui-cell__hd"><label class="weui-label">删除标记</label></div>
+		    <div class="weui-cell__bd">
+		      <input class="weui-switch" type="checkbox" id="invalidFlag"/>
+		    </div>
+		  </div>
 		</div>
 	</div>
 	<div class="weui-cells weui-cells_form">
@@ -79,6 +85,7 @@
 			var description = $("#description")[0].value;
 			var longDescription = $("#longDescription")[0].value;
 			var priority = $("#priority")[0].value;
+			var invalidFlag=$("#invalidFlag")[0].checked;
 			if(name === ""){
 				name=$("#name")[0].placeholder;
 			}
@@ -112,6 +119,7 @@
 			formData.append("description", description);
 			formData.append("longDescription", longDescription);
 			formData.append("priority", priority);
+			formData.append("invalidFlag", invalidFlag);
 			
 			$.ajax({
 			  url: "/manager/derivedprod/edit?productid="+$("#updateProduct")[0].rel,

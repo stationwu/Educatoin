@@ -1,6 +1,7 @@
 package com.edu.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -56,10 +57,13 @@ public class DerivedProductCenterController {
             
             imageContainer.addAll(imagesContainer);
         }
+        List<Product> products = productRepository.getImageCollectionProductList();
+        Product product = products.get(0);
         model.addAttribute("code", openId);
-        model.addAttribute("images", imageContainer.stream().sorted((x, y) -> y.getDate().compareTo(x.getDate()))
+        model.addAttribute("numberOfPic", product.getNumberOfPic());
+        model.addAttribute("images", imageContainer.stream().sorted((x, y) -> (int)(y.getId() - x.getId()))
 				.collect(Collectors.toCollection(ArrayList::new)));
-        return "derivation_works";
+        return "user_imagecollection";
     }
     
     @GetMapping(PATH_GIFTS)

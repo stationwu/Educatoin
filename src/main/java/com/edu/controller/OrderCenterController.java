@@ -105,9 +105,9 @@ public class OrderCenterController {
 				classProductMap.put(classProduct, productContainer.getQuantity());
 				amount += productContainer.getProductPrice() * productContainer.getQuantity();
 				Student student = classProduct.getStudent();
-				student.setClassPeriod(student.getClassPeriod()+classProduct.getProduct().getClassPeriod());
-				student.setLeftPeriods(student.getClassPeriod()-student.getDonePeriods());
-				studentRepository.save(student);
+//				student.setClassPeriod(student.getClassPeriod()+classProduct.getProduct().getClassPeriod());
+//				student.setLeftPeriods(student.getClassPeriod()-student.getDonePeriods());
+//				studentRepository.save(student);
 				customer.getCart().removeClassProduct(classProduct);
 				break;
 			}

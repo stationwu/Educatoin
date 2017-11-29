@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="图片删除列表"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="/css/weui.min.css" rel="stylesheet" />
+    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="imageList">
+		<div class="weui-panel__bd" v-for="(image, index) in images">
+		    <div class="weui-cell dsx-weui-cell" >
+		        <div class="weui-media-box__hd">
+			      <img class="weui-media-box__thumb" v-bind:src="image.thumbnailUrl"/>
+			    </div>
+			    <div class="weui-cell__bd">
+			      <p>{{image.date}}</p>
+			    </div>
+		        <div class="weui-cell__ft">
+	            	<button v-bind:id="image.id" type="button" class="weui-btn weui-btn_mini weui-btn_primary" v-on:click="deleteImage(index,$event)">删除</button>
+		        </div>
+		    </div>
+		</div>
+	</div>
+	<div id="code" style="visibility:hidden" th:text="${{code}}" />
+    <script src="/js/jquery.min.js"></script>
+	<script src="/js/jquery-weui.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/vue.min.js"></script>
+	<script>
+	/*<![CDATA[*/
+		var image={};
+		$(document).ready(function () {
+			image= new Vue({
+				el: '#imageList',
+				methods: {
+					deleteImage: function (index, event) {
+                    	$.post( "/manager/deleteimage?id="+$('#code').text(),"imageid="+window.event.toElement.id).done(function(data){
+                    		$.get( "/manager/image?id="+$('#code').text()).done(function(data){
+                				image.images = data;
+                			})
+            			})
+                    }
+                },
+				data: {
+				 	images: []
+				}
+			})
+			$.get( "/manager/image?id="+$('#code').text()).done(function(data){
+				image.images = data;
+			})
+		})
+	/*]]>*/  
+	</script>
+</body>
+</html>

@@ -35,7 +35,11 @@ public class Product {
 	
 	private boolean classFlag;
 	
+	private boolean invalidFlag;
+	
 	private int classPeriod;
+	
+	private int numberOfPic;
 	
 	private int priority;
 	
@@ -150,5 +154,20 @@ public class Product {
 	public void setClassPeriod(int classPeriod) {
 		this.classPeriod = classPeriod;
 	}
-	
+
+	public int getNumberOfPic() {
+		return numberOfPic;
+	}
+
+	public void setNumberOfPic(int numberOfPic) {
+		this.numberOfPic = numberOfPic;
+	}
+
+	public boolean isInvalidFlag() {
+		return invalidFlag;
+	}
+
+	public void setInvalidFlag(boolean invalidFlag) {
+		this.invalidFlag = invalidFlag;
+	}
 }

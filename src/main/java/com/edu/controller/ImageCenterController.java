@@ -4,8 +4,10 @@ import com.edu.dao.CustomerRepository;
 import com.edu.dao.ImageCollectionRepository;
 import com.edu.dao.ImageRepository;
 import com.edu.dao.ProductRepository;
+import com.edu.dao.StudentRepository;
 import com.edu.domain.*;
 import com.edu.domain.dto.ImageContainer;
+import com.edu.domain.dto.StudentContainer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,9 @@ public class ImageCenterController {
 	private ProductRepository productRepository;
 	
 	@Autowired
+	private StudentRepository studentRepository;
+	
+	@Autowired
 	private ImageCollectionRepository imageCollectionRepository;
 
 	public final static String SESSION_OPENID_KEY = "openCode";
@@ -39,6 +44,12 @@ public class ImageCenterController {
 	public final static String IMAGE_COLLECTION_PATH = "/user/imagecollection";
 	
 	public final static String IMAGE_PATH = "/user/image";
+	
+	public final static String MANAGER_IMAGE_LIST_PATH = "/manager/image";
+	
+	public final static String MANAGER_IMAGE_SEARCH_PATH = "/manager/searchimage";
+	
+	public final static String MANAGER_DELETE_IMAGE_PATH = "/manager/deleteimage";
 	
 	public final static String CREATE_IMAGECOLLECTION_PATH = "/user/generateImagecollection";
 
@@ -89,6 +100,49 @@ public class ImageCenterController {
 		}
 		return "derivation";
 	}
+	
+	@GetMapping(MANAGER_IMAGE_SEARCH_PATH)
+	private String deleteImage(Model model) {
+		model.addAttribute("type", "2");
+		model.addAttribute("title", "删除用户图片");
+		return "user_search";
+	}
+	
+	@GetMapping(MANAGER_DELETE_IMAGE_PATH)
+	private String showImageList(@RequestParam(value="id") String id, Model model) {
+		Student student = studentRepository.findOne(id);
+		ArrayList<ImageContainer> imagesContainer = student.getImagesSet().stream()
+				.sorted((x, y) -> (int)(y.getId()-x.getId()))
+				.map(x -> new ImageContainer(x,student))
+				.collect(Collectors.toCollection(ArrayList::new));
+    	model.addAttribute("images", imagesContainer);
+    	model.addAttribute("code", id);
+    	return "user_deleteimage";
+	}
+	
+	@PostMapping(MANAGER_DELETE_IMAGE_PATH)
+	@ResponseBody
+	private String deleteImage(@RequestParam(value="id") String id, @RequestParam(value="imageid") String imageid, Model model) {
+		Student student = studentRepository.findOne(id);
+		student.removeImage(imageRepository.findOne(Long.parseLong(imageid)));
+		studentRepository.save(student);
+    	return "user_deleteimage";
+	}
+
+	
+	@GetMapping(MANAGER_IMAGE_LIST_PATH)
+	@ResponseBody
+	public List<ImageContainer> getImageList(@RequestParam(value="id") String id, HttpServletRequest request, Model model) {
+		Student student = studentRepository.findOne(id);
+		Set<Image> images = student.getImagesSet();
+		ArrayList<ImageContainer> imagesContainer = images.stream()
+				.sorted((x, y) -> (int)(y.getId()-x.getId()))
+				.map(x -> new ImageContainer(x,student))
+				.collect(Collectors.toCollection(ArrayList::new));
+
+
+		return imagesContainer;
+	}
 
 	@PostMapping(CREATE_IMAGECOLLECTION_PATH)
 	@ResponseBody
@@ -101,6 +155,11 @@ public class ImageCenterController {
 		Customer customer = custRepo.findOneByOpenCode(openId);
 		ImageCollection imageCollection = new ImageCollection();
 		List<String> imagesWithId = Arrays.asList(images.split(","));
+		List<Product> productList = productRepository.getImageCollectionProductList();
+		Product product = productList.get(0);
+		if(imagesWithId.size()!=product.getNumberOfPic()){
+			return "请选择"+product.getNumberOfPic()+"张作品！";
+		}
 		Set<Image> imageList = new HashSet<>();
 		for (String id : imagesWithId) {
 			imageList.add(imageRepository.findOne(Long.parseLong(id)));
@@ -114,7 +173,7 @@ public class ImageCenterController {
 		for(Image image:imageList){
 			nameList+=image.getImageName()+",";
 		}
-		nameList.substring(0, nameList.length()-1);
+		nameList = nameList.substring(0, nameList.length()-1);
 		imageCollection.setCollectionDescription(imageList.size() + "幅作品:"+nameList);
 		ImageCollection entity = imageCollectionRepository.save(imageCollection);
 		customer.getCart().addImageCollection(entity);

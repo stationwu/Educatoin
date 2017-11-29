@@ -49,11 +49,9 @@
 	<script src="/js/jquery-weui.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/vue.min.js"></script>	
-    <script src="/js/bootstrap.min.js" type="text/javascript" ></script>
-    <script src="/js/bootstrap-datetimepicker.min.js" type="text/javascript" ></script>
-    <script src="/js/moment-with-locales.js" type="text/javascript" ></script>
     
     <script type="text/javascript">
+    /*<![CDATA[*/
 	    $(document).ready(function () {
 			$.get( "/user/cartcontent?code="+$('#code').text()).done(function(data){
 				products = new Vue({
@@ -77,7 +75,9 @@
 						},
 						minus:function(index, event){
 							if(products.productList[index].quantity-1 ===0){
-								products.productList.splice(index,1);
+								$.post( "/user/cart?id="+products.productList[index].id,"type="+products.productList[index].type).done(function(data){
+									products.productList.splice(index,1);
+								})
 							}else{
 								var temp = products.productList[index];
 								temp.quantity--;
@@ -126,6 +126,9 @@
 									buylist.push(temp);
 								}
 							}
+							if(buylist.length <= 0){
+								return;
+							}
 							$.ajax({
 								  type: "POST",
 								  url: "/user/order",
@@ -147,7 +150,7 @@
 				})
 			});
     	});
-
+     /*]]>*/  
 	 </script>
 </body>
 </html>
