@@ -24,4 +24,11 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
         String body = "Resource Not Found";
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidOrderException.class)
+    public ResponseEntity<Object> handleInvalidOrderException(InvalidOrderException ex, WebRequest request) {
+        String body = ex.getMessage();
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 }
