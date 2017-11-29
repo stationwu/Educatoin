@@ -19,6 +19,10 @@ public class Order {
     private Status status;
 
     private double totalAmount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_id")
+	private Payment payment;
     
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
@@ -181,5 +185,13 @@ public class Order {
 
 	public void setClassProductsMap(Map<ClassProduct, Integer> classProductsMap) {
 		this.classProductsMap = classProductsMap;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 }
