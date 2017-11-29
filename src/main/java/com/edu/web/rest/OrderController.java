@@ -12,6 +12,7 @@ import com.edu.errorhandler.RequestDeniedException;
 import com.edu.utils.Constant;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
+import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,16 +71,18 @@ public class OrderController {
         }
 
         WxPayUnifiedOrderRequest request = WxPayUnifiedOrderRequest.newBuilder()
-                .appid(wxPayProperties.getAppId())
-                .mchId(wxPayProperties.getMchId())
-                .nonceStr(String.valueOf(System.currentTimeMillis()))
                 .feeType("CNY")
                 .outTradeNo(String.valueOf(id))
                 .deviceInfo("WEB")
                 .build();
+        request.setSignType("MD5");
 
-
-        WxPayUnifiedOrderResult result = wxPayService.unifiedOrder(request);
+        WxPayUnifiedOrderResult result = null;
+        try {
+            result = wxPayService.unifiedOrder(request);
+        } catch (WxPayException e) {
+            e.printStackTrace();
+        }
 
         return result;
     }
