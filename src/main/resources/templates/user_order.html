@@ -9,7 +9,7 @@
         <link href="/css/app.css" media="screen" rel="stylesheet"/>
     </head>
     <body>
-        <div id="order-list">
+        <div id="orderList">
             <div class="weui-form-preview" v-for="(order, index) in orders">
                 <div class="weui-form-preview__hd">
                     <div class="weui-form-preview__item">
@@ -19,9 +19,9 @@
                 </div>
                 <div class="weui-form-preview__bd" v-for="(item, itemNo) in order.items">
                     <div class="weui-form-preview__item">
-                        <a v-bind:href="{item.href}" class="weui-media-box weui-media-box_appmsg">
+                        <div class="weui-media-box weui-media-box_appmsg">
                             <div class="weui-media-box__hd">
-                                <img class="dsx-order-thumb" v-bind:src="{item.imageUrl}" width="60" height="60">
+                                <img class="dsx-order-thumb" v-bind:src="item.imageUrl" width="60" height="60">
                                 </img>
                             </div>
                             <div class="weui-media-box__bd">
@@ -35,7 +35,7 @@
                                     </span>
                                 </p>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
                 <div class="weui-media-box__bd">
@@ -65,10 +65,10 @@
         <script src="/js/jquery-weui.min.js"></script>
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/vue.min.js"></script>
+        <script src="/js/vue.js"></script>
         <script type="text/javascript">
             var app = new Vue({
-                el: '#order-list',
+                el: '#orderList',
                 data: {
                     orders: [
                     ],
@@ -81,37 +81,19 @@
                         type: 'GET',
                         //data: JSON.stringify(students),
                     }).done(function (response) {
-                        response.forEach(function(orderEntity) {
-                            var order = {
-                                id : orderEntity.id,
-                                totalAmount : orderEntity.totalAmount,
-                                status : orderEntity.status,
-                                statusText : orderEntity.statusText,
-                                creationDate : orderEntity.creationDate,
-                                items : [],
-                                itemCount : 0,
-                            };
-
-                            orderEntity.items.forEach(function(itemEntity) {
-                                var item = {
-
-                                };
-
-                                order.items.push(item);
-                            });
-
-                            app.data.orders.push(order);
+                        response.forEach(function(order) {
+                            app.orders.push(order);
                         });
                     });
                 },
                 methods: {
-                    onPay : function(index) {
+                    onPay : function(index, event) {
 
                     },
-                    onCancel : function(index) {
+                    onCancel : function(index, event) {
 
                     },
-                    onRefund : function(index) {
+                    onRefund : function(index, event) {
 
                     },
                 }

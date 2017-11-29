@@ -80,4 +80,8 @@ public class OrderContainer {
 	public String getCreationDate() {
 		return order.getDate();
 	}
+
+	public int getItemCount() {
+		return productContainers.size();
+	}
 }
