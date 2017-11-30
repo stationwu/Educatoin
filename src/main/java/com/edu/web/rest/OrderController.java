@@ -10,6 +10,8 @@ import com.edu.domain.dto.OrderContainer;
 import com.edu.errorhandler.InvalidOrderException;
 import com.edu.errorhandler.RequestDeniedException;
 import com.edu.utils.Constant;
+import com.edu.utils.WebUtils;
+import com.edu.utils.WxTimeStampUtil;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +47,10 @@ public class OrderController {
     private WxPayService wxPayService;
 
     @Autowired
-    private WechatPayProperties wxPayProperties;
+    private WebUtils webUtils;
+
+    @Autowired
+    private WxTimeStampUtil wxTimeStampUtil;
 
     @GetMapping(PATH)
     public List<OrderContainer> listOrders(HttpSession session) {
@@ -63,23 +69,29 @@ public class OrderController {
     }
 
     @PostMapping(PATH + "/{id}/initiatePay")
-    public WxPayUnifiedOrderResult initiatePay(@PathVariable("id") long id) {
+    public WxPayUnifiedOrderResult initiatePay(@PathVariable("id") long id,
+                                               HttpServletRequest request) {
+        String openId = (String)request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
         Order order = orderRepository.findOne(id);
 
         if (order == null) {
             throw new InvalidOrderException("Order " + id + " does not exist");
         }
 
-        WxPayUnifiedOrderRequest request = WxPayUnifiedOrderRequest.newBuilder()
+        String clientIpAddr = webUtils.getClientIp(request);
+
+        WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
                 .feeType("CNY")
                 .outTradeNo(String.valueOf(id))
                 .deviceInfo("WEB")
+                .spbillCreateIp(clientIpAddr)
+                .timeStart(wxTimeStampUtil.getCurrentTimeStamp())
+                .openid(openId)
                 .build();
-        request.setSignType("MD5");
 
         WxPayUnifiedOrderResult result = null;
         try {
-            result = wxPayService.unifiedOrder(request);
+            result = wxPayService.unifiedOrder(payRequest);
         } catch (WxPayException e) {
             e.printStackTrace();
         }

@@ -77,6 +77,12 @@ public class Payment {
     private String bankType;
 
     /**
+     * 终端IP
+     * APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
+     */
+    private String spBillCreateIp;
+
+    /**
      * 订单总金额，单位为分
      */
     private int totalFee = 0;
@@ -129,6 +135,18 @@ public class Payment {
      * 商家数据包
      */
     private String attach;
+
+    /**
+     * 交易起始时间
+     * 订单生成时间，格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
+     */
+    private String timeStart;
+
+    /**
+     * 交易结束时间
+     * 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则
+     */
+    private String timeExpire;
 
     /**
      * 支付完成时间
@@ -231,6 +249,14 @@ public class Payment {
         this.bankType = bankType;
     }
 
+    public String getSpBillCreateIp() {
+        return spBillCreateIp;
+    }
+
+    public void setSpBillCreateIp(String spBillCreateIp) {
+        this.spBillCreateIp = spBillCreateIp;
+    }
+
     public int getTotalFee() {
         return totalFee;
     }
@@ -309,6 +335,22 @@ public class Payment {
 
     public void setAttach(String attach) {
         this.attach = attach;
+    }
+
+    public String getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeExpire() {
+        return timeExpire;
+    }
+
+    public void setTimeExpire(String timeExpire) {
+        this.timeExpire = timeExpire;
     }
 
     public String getTimeEnd() {
