@@ -33,6 +33,8 @@ public class CustomerController {
 
     public static final String PATH = "/api/v1/Customer";
 
+    public static final String SIGNUP_PATH = PATH + "/SignUp";
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(path = PATH + "/{id}")
@@ -46,7 +48,7 @@ public class CustomerController {
         return repository.save(customer);
     }
 
-    @PostMapping(path = PATH + "/SignUp")
+    @PostMapping(path = SIGNUP_PATH)
     public Customer create(@RequestBody @Valid CustomerContainer customerDTO) {
         Customer customer;
 

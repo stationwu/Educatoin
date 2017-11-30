@@ -36,6 +36,11 @@ public class WechatPayProperties {
      */
     private String keyPath;
 
+    /**
+     * Expire after N minutes
+     */
+    private long expiryInMinutes = 120;
+
     public String getAppId() {
         return this.appId;
     }
@@ -82,6 +87,14 @@ public class WechatPayProperties {
 
     public void setKeyPath(String keyPath) {
         this.keyPath = keyPath;
+    }
+
+    public long getExpiryInMinutes() {
+        return expiryInMinutes;
+    }
+
+    public void setExpiryInMinutes(long expiryInMinutes) {
+        this.expiryInMinutes = expiryInMinutes;
     }
 
     @Override

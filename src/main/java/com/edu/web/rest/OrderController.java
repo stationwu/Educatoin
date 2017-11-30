@@ -6,33 +6,33 @@ import com.edu.dao.OrderRepository;
 import com.edu.dao.PaymentRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Order;
+import com.edu.domain.Payment;
 import com.edu.domain.dto.OrderContainer;
 import com.edu.errorhandler.InvalidOrderException;
+import com.edu.errorhandler.PaymentException;
 import com.edu.errorhandler.RequestDeniedException;
-import com.edu.utils.Constant;
-import com.edu.utils.WebUtils;
-import com.edu.utils.WxTimeStampUtil;
+import com.edu.utils.*;
+import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.github.binarywang.wxpay.util.SignUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 public class OrderController {
     public static final String PATH = "/api/v1/Order";
 
-    public static final String NOTIFY_PATH = "/public/wxpay_notify";
+    public static final String NOTIFY_PATH = "/api/v1/wxpay/notify";
 
     @Autowired
     private OrderRepository orderRepository;
@@ -52,6 +52,9 @@ public class OrderController {
     @Autowired
     private WxTimeStampUtil wxTimeStampUtil;
 
+    @Autowired
+    private WechatPayProperties wxPayProperties;
+
     @GetMapping(PATH)
     public List<OrderContainer> listOrders(HttpSession session) {
         String openId = (String) session.getAttribute(Constant.SESSION_OPENID_KEY);
@@ -69,8 +72,8 @@ public class OrderController {
     }
 
     @PostMapping(PATH + "/{id}/initiatePay")
-    public WxPayUnifiedOrderResult initiatePay(@PathVariable("id") long id,
-                                               HttpServletRequest request) {
+    public WxPayMpOrderResult initiatePay(@PathVariable("id") long id,
+                                          HttpServletRequest request) {
         String openId = (String)request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
         Order order = orderRepository.findOne(id);
 
@@ -79,28 +82,51 @@ public class OrderController {
         }
 
         String clientIpAddr = webUtils.getClientIp(request);
+        String hostUrl = URLUtil.getHost(request.getRequestURL().toString());
 
         WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
                 .feeType("CNY")
                 .outTradeNo(String.valueOf(id))
                 .deviceInfo("WEB")
                 .spbillCreateIp(clientIpAddr)
+                .notifyURL(hostUrl + NOTIFY_PATH)
                 .timeStart(wxTimeStampUtil.getCurrentTimeStamp())
+                .timeExpire(wxTimeStampUtil.builder().now().afterMinutes(wxPayProperties.getExpiryInMinutes()).build())
                 .openid(openId)
                 .build();
 
-        WxPayUnifiedOrderResult result = null;
+        WxPayUnifiedOrderResult unifiedOrderResult = null;
         try {
-            result = wxPayService.unifiedOrder(payRequest);
+            unifiedOrderResult = wxPayService.unifiedOrder(payRequest);
         } catch (WxPayException e) {
-            e.printStackTrace();
+            throw new PaymentException("创建预付单失败", e);
         }
 
-        return result;
+        Payment payment = new Payment();
+        payment.setOrder(order);
+        payment.setPrepayId(unifiedOrderResult.getPrepayId());
+        paymentRepository.save(payment);
+
+        order.setPayment(payment);
+        order.setStatus(Order.Status.NOTPAY);
+        orderRepository.save(order);
+
+        String timestamp = String.valueOf(System.currentTimeMillis() / 1000L);
+        String nonceStr = String.valueOf(System.currentTimeMillis());
+        WxPayMpOrderResult payResult = WxPayMpOrderResult.newBuilder().appId(unifiedOrderResult.getAppid()).timeStamp(timestamp).nonceStr(nonceStr).packageValue("prepay_id=" + unifiedOrderResult.getPrepayId()).signType("MD5").build();
+        payResult.setPaySign(SignUtils.createSign(payResult, wxPayService.getConfig().getMchKey(), (String)null));
+
+        return payResult;
     }
 
-    @GetMapping(NOTIFY_PATH)
-    public void onNotify() {
+    @PostMapping(NOTIFY_PATH)
+    public void onNotify(@RequestBody String notifyData) {
+        Map<String, String> notifyMap = null;
 
+        try {
+            notifyMap = WxPayUtil.xmlToMap(notifyData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

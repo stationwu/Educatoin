@@ -30,4 +30,27 @@ public class WxTimeStampUtil {
     public String toWxTimeStamp(LocalDateTime localDateTime) {
         return dtf.format(localDateTime);
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private LocalDateTime time;
+
+        public Builder now() {
+            time = LocalDateTime.now();
+            return this;
+        }
+
+        public Builder afterMinutes(long minutes) {
+            time = time.plusMinutes(minutes);
+            return this;
+        }
+
+        public String build() {
+            WxTimeStampUtil util = new WxTimeStampUtil();
+            return util.toWxTimeStamp(time);
+        }
+    }
 }
