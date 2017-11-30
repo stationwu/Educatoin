@@ -1,6 +1,5 @@
 package com.edu.controller;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +14,6 @@ import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.domain.dto.OrderContainer;
 import com.edu.domain.dto.ProductContainer;
-import com.edu.utils.URLUtil;
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

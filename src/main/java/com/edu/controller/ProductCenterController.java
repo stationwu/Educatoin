@@ -8,10 +8,7 @@ import com.edu.domain.ProductCategory;
 import com.edu.domain.dto.ProductContainer;
 import com.edu.utils.ImageService;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

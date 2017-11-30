@@ -30,7 +30,6 @@ import com.edu.dao.CourseRepository;
 import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.Course;
-import com.edu.domain.Customer;
 import com.edu.domain.Image;
 import com.edu.domain.Student;
 
