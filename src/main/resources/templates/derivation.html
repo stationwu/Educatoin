@@ -4,9 +4,54 @@
 <title>衍生商品</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 <link href="/css/weui.min.css" rel="stylesheet"/>
 <link href="/css/jquery-weui.min.css" rel="stylesheet"/>
 <link href="/css/app.css" rel="stylesheet" media="screen" />
+<style>
+.click_board_left {
+    float: left;
+    height: 1.5rem;
+    width: 1.48rem;
+    margin: 0 0.08rem;
+    box-shadow: 0 0 0 1px #ddd inset;
+    border-radius: 8px;
+    padding-top: 1.1rem;
+    background-repeat: no-repeat;
+    background-size: 1.44rem 1.15rem;
+    background-position: top center;
+}
+.click_board_right {
+    float: left;
+    height: 1.5rem;
+    width: 1.48rem;
+    margin: 0 0.08rem 0 0;
+    box-shadow: 0 0 0 1px #ddd inset;
+    border-radius: 8px;
+    padding-top: 1.1rem;
+    background-repeat: no-repeat;
+    background-size: 1.44rem 1.15rem;
+    background-position: top center;
+}
+.click_board_line {
+    overflow: hidden;
+    margin: 0.08rem 0 0 0;
+    font-family:Arial, Helvetica, 微软雅黑, sans-serif;
+}
+.zjy_p1_title {
+    font-size: 0.14rem;
+    color: #2f2f30;
+    line-height: 1.4;
+    margin-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+}
+.zjy_p1_title_small {
+    font-size: 0.08rem;
+    color: #2f2f30;
+    text-align: center;
+}
+</style>
 </head>
 <body>
     <div class="weui-flex">
@@ -14,37 +59,53 @@
            <img alt="" height="200" src="/images/derivation.jpg" style="display: block; margin: 0 auto;" width="100%"/>
        </div>
     </div>
-	<div class="container" id="container">
-		<div class="page grid js_show">
-			<div class="weui-module-grids">
-				<a href="/derivation/works" class="weui-module-grid">
-					<div class="weui-grid-dsx-icon">
-						<img src="/images/works.jpg" alt="1" width="120" height="120"/>
-					</div>
-					<p class="weui-grid__label">作品集</p>
-				</a> 
-				<a href="/derivation/gift" class="weui-module-grid">
-					<div class="weui-grid-dsx-icon">
-						<img src="/images/gift.jpg" alt="2" width="120" height="120"/>
-					</div>
-					<p class="weui-grid__label">礼品</p>
-				</a> 
-				<a href="/derivation/literature" class="weui-module-grid">
-					<div class="weui-grid-dsx-icon">
-						<img src="/images/literature.jpg" alt="3" width="120" height="120"/>
-					</div>
-					<p class="weui-grid__label">文创产品</p>
-				</a> 
-				<a href="/derivation/frame" class="weui-module-grid">
-					<div class="weui-grid-dsx-icon">
-						<img src="/images/frame.jpg" alt="4" width="120" height="120"/>
-					</div>
-					<p class="weui-grid__label">画框</p>
-				</a> 
-			</div>
-		</div>
+	<div class="click_board_line">
+		<a href="/derivation/works"  class="click_board_left"
+		style="background-image:url(/images/works.jpg)">
+			<p class="zjy_p1_title">作品集</p>
+	         		<p class="zjy_p1_title_small">制作作品相关作品集</p>
+		</a> 
+		<a href="javascript:;"  class="click_board_right"
+		style="background-image:url(//xyk.cmbchina.com/LatteSubsite/store/wx_zjy_card/bg1.png)">
+			<p class="zjy_p1_title">即将到来</p>
+       		<p class="zjy_p1_title_small">敬请期待</p>
+		</a> 
+	</div>
+	<div class="click_board_line">
+		<a href="javascript:;"  class="click_board_left"
+		style="background-image:url(//xyk.cmbchina.com/LatteSubsite/store/wx_zjy_card/bg1.png)">
+			<p class="zjy_p1_title">即将到来</p>
+       		<p class="zjy_p1_title_small">敬请期待</p>
+		</a> 
+		<a href="javascript:;"  class="click_board_right"
+		style="background-image:url(//xyk.cmbchina.com/LatteSubsite/store/wx_zjy_card/bg1.png)">
+			<p class="zjy_p1_title">即将到来</p>
+       		<p class="zjy_p1_title_small">敬请期待</p>
+		</a> 
 	</div>
 	<script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
+	<script>
+	/*<![CDATA[*/	
+//https://offroadcode.com/prototypes/rem-calculator/
+//以物理尺寸375px，设计稿750px为基准，我们设定100px=1rem，这样样式里面px换算成rem的公式为(@px/2)/100，其中2(750/375)为device ratio
+//如果设计稿为640px，基准设备物理尺寸为320，需要将designDeviceWidth设为320
+(function (doc, win, designDeviceWidth) {
+    var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            var docElWidth = 100 * (clientWidth / designDeviceWidth);
+            if (docElWidth > 200) docElWidth = 200;
+            docEl.style.fontSize = docElWidth + 'px';
+        };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window, 320/* design device-width: 375 means iphone6 */);
+	/*]]>*/  
+	</script>
 </body>
 </html>

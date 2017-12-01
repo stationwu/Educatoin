@@ -7,8 +7,6 @@ import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.*;
 import com.edu.domain.dto.ImageContainer;
-import com.edu.domain.dto.StudentContainer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +43,8 @@ public class ImageCenterController {
 	
 	public final static String IMAGE_PATH = "/user/image";
 	
+	public final static String IMAGE_DEATIL_PATH = "/user/imagedetail";
+	
 	public final static String MANAGER_IMAGE_LIST_PATH = "/manager/image";
 	
 	public final static String MANAGER_IMAGE_SEARCH_PATH = "/manager/searchimage";
@@ -79,6 +79,14 @@ public class ImageCenterController {
 			imageList.addAll(imagesContainer);
 		}
 		return imageList.stream().sorted((x,y) -> (int)(y.getId() - x.getId())).collect(Collectors.toCollection(ArrayList::new));
+	}
+	
+	@GetMapping(IMAGE_DEATIL_PATH)
+	public String getImageDetail(@RequestParam(value="id") String id, Model model) {
+		Image image = imageRepository.findOne(Long.parseLong(id));
+		ImageContainer imageContainer = new ImageContainer(image);
+		model.addAttribute("image", imageContainer);
+		return "user_image";		
 	}
 
 	@GetMapping(IMAGE_COLLECTION_PATH)
