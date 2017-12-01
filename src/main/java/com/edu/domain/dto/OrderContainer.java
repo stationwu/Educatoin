@@ -9,6 +9,8 @@ import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
 import com.edu.domain.Order;
 import com.edu.domain.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +19,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OrderContainer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
+	@JsonIgnore
     private Order order;
+
+	@JsonProperty("items")
 	private List<ProductContainer> productContainers;
 
 	public Order getOrder() {
@@ -44,7 +46,9 @@ public class OrderContainer {
 			Map<DerivedProduct, Integer> derivedProductsMap, Map<ImageCollection, Integer> imageCollectionMap,
 			Map<ClassProduct, Integer> classProductMap) {
 		super();
+
 		this.order = order;
+
 		Stream<ProductContainer> productsStream = productsMap.entrySet().stream()
 				.map(x -> new ProductContainer(x.getKey(),x.getValue(), 1));
 		Stream<ProductContainer> derivedProductsStream = derivedProductsMap.entrySet().stream()
@@ -57,11 +61,27 @@ public class OrderContainer {
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public long getId() {
-        return id;
-    }
+		return order.getId();
+	}
+
+	public Order.Status getStatus() {
+		return order.getStatus();
+	}
+
+	public String getStatusText() {
+		return order.getStatusText();
+	}
+
+	public double getTotalAmount() {
+		return order.getTotalAmount();
+	}
+
+	public String getCreationDate() {
+		return order.getDate();
+	}
+
+	public int getItemCount() {
+		return productContainers.size();
+	}
 }

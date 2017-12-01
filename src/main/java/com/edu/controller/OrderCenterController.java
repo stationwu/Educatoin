@@ -25,6 +25,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 
 @Controller
 public class OrderCenterController {
+
 	@Autowired
 	private WxMpService wxMpService;
 
@@ -135,12 +136,10 @@ public class OrderCenterController {
 	}
 
 	@GetMapping(ORDER_LIST_PATH)
-	public String orderList(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			Model model) {
-		Object openIdInSession = session.getAttribute(SESSION_OPENID_KEY);
+	public String orderList(HttpSession session, Model model) {
+		String openId = (String)session.getAttribute(SESSION_OPENID_KEY);
 
-		List<OrderContainer> orders = getOrderList((String) openIdInSession);
-		model.addAttribute("orderList", orders);
+		model.addAttribute("code", openId);
 
 		return "user_order";
 	}

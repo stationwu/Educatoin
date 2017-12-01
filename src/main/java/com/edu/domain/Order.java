@@ -16,33 +16,41 @@ public class Order {
 
     private String date;
     
-    private String status;
+    private Status status;
 
     private double totalAmount;
+
+    @OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payment_id")
+	private Payment payment;
     
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_ID")
     @JsonIgnore
-    private Customer customer;  
-    
+    private Customer customer;
+
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_PRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="PRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<Product,Integer > productsMap;
 
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_DERIVEDPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="DERIVEDPRODUCT_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<DerivedProduct, Integer> derivedProductsMap;
 
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_IMAGECOLLECTION", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="IMAGECOLLECTION_ID", referencedColumnName="ID")
 	@Column(name="COPIES_IN_ORDER")
 	private Map<ImageCollection, Integer> imageCollectionMap;
 
+	@JsonIgnore
 	@ElementCollection
     @CollectionTable(name="ORDER_CLASSPRODUCT", joinColumns=@JoinColumn(name="ORDER_ID", referencedColumnName="ID"))
 	@MapKeyJoinColumn(name="CLASSPRODUCT_ID", referencedColumnName="ID")
@@ -113,12 +121,62 @@ public class Order {
 		this.name = name;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public String getStatusText() {
+		if (status == null) {
+			return "未知订单状态";
+		}
+
+		String text;
+
+		switch (status) {
+			case PAID:
+				text = "已付款";
+				break;
+			case CREATED:
+				text = "等待付款";
+				break;
+			case NOTPAY:
+				text = "付款中";
+				break;
+			case CANCELLED:
+				text = "已取消";
+				break;
+            case PAYERROR:
+                text = "付款错误";
+                break;
+			case DELIVERED:
+				text = "已发货";
+				break;
+			case REFUND_REQUESTED:
+				text = "退款申请中";
+				break;
+            case REFUND:
+                text = "已退款";
+                break;
+			default:
+				text = "未知订单状态";
+		}
+
+		return text;
+	}
+
+	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public enum Status {
+		CREATED,     // Order created at this app but not yet at wechat
+        NOTPAY,      // equals to wechat NOTPAY
+        PAID,        // equals to wechat SUCCESS
+        CANCELLED,   // equals to wechat CLOSED
+        PAYERROR,    // equals to wechat PAYERROR
+        DELIVERED,   // Paid and goods delivered
+		REFUND_REQUESTED, // paid and request to refund
+        REFUND       // equals to wechat REFUND
 	}
 
 	public Map<ClassProduct, Integer> getClassProductsMap() {
@@ -128,5 +186,12 @@ public class Order {
 	public void setClassProductsMap(Map<ClassProduct, Integer> classProductsMap) {
 		this.classProductsMap = classProductsMap;
 	}
-	
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 }

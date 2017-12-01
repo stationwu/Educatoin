@@ -1,64 +1,79 @@
 {
-	"button": [
-		{
-			"name": "课程中心",
-			"sub_button": [
-				{
-					"type": "view",
-					"name": "课程预约",
-					"url": "http://www.dashuxia.xin/user/reservecourse"
-				},
-				{
-					"type": "view",
-					"name": "我的课程",
-					"url": "http://www.dashuxia.xin/user/course"
-				}
-			]
-		},
-		{
-			"name": "个人中心",
-			"sub_button": [
-                {
-                    "type": "view",
-                    "name": "我的作品",
-                    "url": "http://www.dashuxia.xin/user/relatedimage"
-                },
-                {
-                    "type": "view",
-                    "name": "生成作品集",
-                    "url": "http://www.dashuxia.xin/user/imagecollection"
-                },
-                {
-                    "type": "view",
-                    "name": "学生注册",
-                    "url": "http://www.dashuxia.xin/user/signin"
-                },
-			]
-		},
-		{
-			"name": "大树夏",
-			"sub_button": [
-                {
-                    "type": "view",
-                    "name": "商城",
-                    "url": "http://www.dashuxia.xin/shop/mall"
-                },
-                {
-                    "type": "view",
-                    "name": "购物车",
-                    "url": "http://www.dashuxia.xin/user/cart"
-                },
-                {
-                    "type": "view",
-                    "name": "我的订单",
-                    "url": "http://www.dashuxia.xin/user/orderList"
-                },
-                {
-                    "type": "view",
-                    "name": "关于我们",
-                    "url": "http://www.dashuxia.xin/site/about"
-                }
-			]
-		}
-	]
+  "button": [
+    {
+      "name": "课程中心",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "课程介绍",
+          "url": "http://www.dashuxia.xin/user/aboutcourse",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "课程预约",
+          "url": "http://www.dashuxia.xin/user/reservecourse",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "我的课程",
+          "url": "http://www.dashuxia.xin/user/course",
+          "sub_button": []
+        }
+      ]
+    },
+    {
+      "name": "个人中心",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "我的作品",
+          "url": "http://www.dashuxia.xin/user/relatedimage",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "衍生商品",
+          "url": "http://www.dashuxia.xin/user/imagecollection",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "我就是我",
+          "url": "http://www.dashuxia.xin/user/signin",
+          "sub_button": []
+        }
+      ]
+    },
+    {
+      "name": "大树夏",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "购物车",
+          "url": "http://www.dashuxia.xin/user/cart",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "看订单",
+          "url": "http://www.dashuxia.xin/user/orderList",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "传图片",
+          "url": "http://www.dashuxia.xin/manager/search",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "关于我们",
+          "url": "http://www.dashuxia.xin/site/about",
+          "sub_button": []
+        }
+      ]
+    }
+  ]
 }

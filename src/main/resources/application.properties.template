@@ -34,3 +34,7 @@ server.port=8080
 
 logging.level.org.org.springframework.web=DEBUG
 logging.level.com.edu=DEBUG
+
+# Make sure you have full access to the directory
+# Please never move the already uploaded files to other location
+#file.storage.rootDirectory=/path/to/dashuxia/upload/images

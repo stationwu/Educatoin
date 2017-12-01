@@ -11,8 +11,6 @@ import com.edu.domain.Product;
 
 public class ProductContainer {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	private String productName;
