@@ -7,8 +7,6 @@ import com.edu.dao.ProductRepository;
 import com.edu.dao.StudentRepository;
 import com.edu.domain.*;
 import com.edu.domain.dto.ImageContainer;
-import com.edu.domain.dto.StudentContainer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
