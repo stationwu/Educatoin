@@ -1,9 +1,5 @@
 package com.edu.domain.dto;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import com.edu.domain.ClassProduct;
 import com.edu.domain.DerivedProduct;
 import com.edu.domain.ImageCollection;
@@ -12,12 +8,15 @@ import com.edu.domain.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Data
 public class OrderContainer {
 
 	@JsonIgnore
@@ -25,22 +24,6 @@ public class OrderContainer {
 
 	@JsonProperty("items")
 	private List<ProductContainer> productContainers;
-
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	public List<ProductContainer> getProductContainers() {
-		return productContainers;
-	}
-
-	public void setProductContainers(List<ProductContainer> productContainers) {
-		this.productContainers = productContainers;
-	}
 
 	public OrderContainer(Order order, Map<Product, Integer> productsMap,
 			Map<DerivedProduct, Integer> derivedProductsMap, Map<ImageCollection, Integer> imageCollectionMap,

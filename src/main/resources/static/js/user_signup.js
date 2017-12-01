@@ -41,8 +41,38 @@ var app = new Vue({
                 app.removable = true;
             }
         },
+        
         onClickGetVerificationCode: function () {
-            console.log("get veri code clicked");
+        	var mobileNumber   = $('#mobileNumber').text();
+        	var oSMSObject = {
+        		mobile: mobileNumber,
+        		type: "R"
+        	};
+        	var wait = 5 * 60;
+        	var timer = function(o) {
+        		if (wait == 0) {
+	        		o.removeAttribute("disabled");   
+	        		o.value="获取验证码";
+	        		wait = 5 * 60;
+        		} else { 
+	        		o.setAttribute("disabled", true);
+	        		o.value="重新发送(" + wait + ")";
+	        		wait--;
+	        		setTimeout(function() {
+	        			timer(o);
+	        		},1000);
+        		}
+        	};
+        	
+        	$.ajax({
+                url: '/verify',
+                contentType: 'application/json',
+                type: 'POST',
+                data: JSON.stringify(oSMSObject),
+            }).done(function (response) {
+            	timer($('#verifyCodeBtn'));
+            	$('#verifyCodeBtn').value = response;
+            });
         },
         onAddStudents: function () {
             var openCode   = $('#wxOpenCode').text();
@@ -79,11 +109,13 @@ var app = new Vue({
         },
         onSubmit: function () {
             var openCode = $('#wxOpenCode').text();
+            var verifyCodeId = $('#wxVerifyCode').text();
             var customer = {
                 "openCode": openCode,
                 "name": app.children[0].name + "家长",
                 "mobilePhone": app.mobilePhone,
                 "address": app.address,
+                "verifyCodeId": verifyCodeId,
                 "children": []
             };
             for (var i = 0; i < app.children.length; ++i) {
