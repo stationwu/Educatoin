@@ -8,6 +8,8 @@ import com.edu.domain.dto.ChildContainer;
 import com.edu.domain.dto.CustomerContainer;
 import com.edu.utils.Constant;
 import org.apache.http.HttpException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,10 @@ public class CustomerController {
 
     public static final String PATH = "/api/v1/Customer";
 
+    public static final String SIGNUP_PATH = PATH + "/SignUp";
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @GetMapping(path = PATH + "/{id}")
     public ResponseEntity<Customer> show(@PathVariable("id") Long id) {
         Customer entity = repository.findOne(id);
@@ -38,7 +44,7 @@ public class CustomerController {
         return repository.save(customer);
     }
 
-    @PostMapping(path = PATH + "/SignUp")
+    @PostMapping(path = SIGNUP_PATH)
     public Customer create(@RequestBody @Valid CustomerContainer customerDTO) {
         Customer customer;
 

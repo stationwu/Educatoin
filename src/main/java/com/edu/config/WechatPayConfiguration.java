@@ -28,6 +28,7 @@ public class WechatPayConfiguration {
         payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
         payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
         payConfig.setKeyPath(this.properties.getKeyPath());
+        payConfig.setTradeType("JSAPI");
 
         return payConfig;
     }

@@ -145,9 +145,9 @@ public class Order {
 			case CANCELLED:
 				text = "已取消";
 				break;
-            case PAYERROR:
-                text = "付款错误";
-                break;
+//            case PAYERROR:
+//                text = "付款错误";
+//                break;
 			case DELIVERED:
 				text = "已发货";
 				break;
@@ -173,7 +173,7 @@ public class Order {
         NOTPAY,      // equals to wechat NOTPAY
         PAID,        // equals to wechat SUCCESS
         CANCELLED,   // equals to wechat CLOSED
-        PAYERROR,    // equals to wechat PAYERROR
+        // PAYERROR,    // equals to wechat PAYERROR
         DELIVERED,   // Paid and goods delivered
 		REFUND_REQUESTED, // paid and request to refund
         REFUND       // equals to wechat REFUND
