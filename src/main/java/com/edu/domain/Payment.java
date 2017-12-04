@@ -13,37 +13,37 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    /**
-     * 预支付交易会话标识
-     * 微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时
-     */
-    private String prepayId;
+//    /**
+//     * 预支付交易会话标识
+//     * 微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时
+//     */
+//    private String prepayId;
 
-    /**
-     * 返回状态码
-     * SUCCESS/FAIL
-     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
-     */
-    private String returnCode;
+//    /**
+//     * 返回状态码
+//     * SUCCESS/FAIL
+//     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
+//     */
+//    private String returnCode;
 
-    /**
-     * 返回信息
-     * 返回信息，如非空，为错误原因
-     * 签名失败
-     * 参数格式校验错误
-     */
-    private String returnMsg;
+//    /**
+//     * 返回信息
+//     * 返回信息，如非空，为错误原因
+//     * 签名失败
+//     * 参数格式校验错误
+//     */
+//    private String returnMsg;
 
     /**
      * 微信支付分配的终端设备号
      */
     private String deviceInfo;
 
-    /**
-     * 业务结果
-     * SUCCESS/FAIL
-     */
-    private String resultCode;
+//    /**
+//     * 业务结果
+//     * SUCCESS/FAIL
+//     */
+//    private String resultCode;
 
     /**
      * 错误代码
@@ -63,7 +63,7 @@ public class Payment {
     /**
      * 用户是否关注公众账号，Y-关注，N-未关注，仅在公众账号类型支付有效
      */
-    private boolean isSubsribe = false;
+    private String isSubsribe = "Y";
 
     /**
      * 交易类型
@@ -142,11 +142,11 @@ public class Payment {
      */
     private String timeStart;
 
-    /**
-     * 交易结束时间
-     * 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则
-     */
-    private String timeExpire;
+//    /**
+//     * 交易结束时间
+//     * 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则
+//     */
+//    private String timeExpire;
 
     /**
      * 支付完成时间
@@ -161,44 +161,12 @@ public class Payment {
         return id;
     }
 
-    public String getPrepayId() {
-        return prepayId;
-    }
-
-    public void setPrepayId(String prepayId) {
-        this.prepayId = prepayId;
-    }
-
-    public String getReturnCode() {
-        return returnCode;
-    }
-
-    public void setReturnCode(String returnCode) {
-        this.returnCode = returnCode;
-    }
-
-    public String getReturnMsg() {
-        return returnMsg;
-    }
-
-    public void setReturnMsg(String returnMsg) {
-        this.returnMsg = returnMsg;
-    }
-
     public String getDeviceInfo() {
         return deviceInfo;
     }
 
     public void setDeviceInfo(String deviceInfo) {
         this.deviceInfo = deviceInfo;
-    }
-
-    public String getResultCode() {
-        return resultCode;
-    }
-
-    public void setResultCode(String resultCode) {
-        this.resultCode = resultCode;
     }
 
     public String getErrCode() {
@@ -225,12 +193,12 @@ public class Payment {
         this.openId = openId;
     }
 
-    public boolean isSubsribe() {
+    public String getIsSubsribe() {
         return isSubsribe;
     }
 
-    public void setSubsribe(boolean subsribe) {
-        isSubsribe = subsribe;
+    public void setIsSubsribe(String isSubsribe) {
+        isSubsribe = isSubsribe;
     }
 
     public String getTradeType() {
@@ -317,8 +285,8 @@ public class Payment {
         return coupons;
     }
 
-    public void setCoupons(Set<Coupon> coupons) {
-        this.coupons = coupons;
+    public void addCoupon(Coupon coupon) {
+        this.coupons.add(coupon);
     }
 
     public String getTransactionId() {
@@ -343,14 +311,6 @@ public class Payment {
 
     public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
-    }
-
-    public String getTimeExpire() {
-        return timeExpire;
-    }
-
-    public void setTimeExpire(String timeExpire) {
-        this.timeExpire = timeExpire;
     }
 
     public String getTimeEnd() {
