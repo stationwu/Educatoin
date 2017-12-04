@@ -1,42 +1,28 @@
 package com.edu.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.edu.dao.*;
 import com.edu.domain.*;
-import com.edu.domain.dto.OrderContainer;
 import com.edu.domain.dto.ProductContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import me.chanjar.weixin.mp.api.WxMpService;
-
 @Controller
 public class OrderCenterController {
-
-	@Autowired
-	private WxMpService wxMpService;
 
 	@Autowired
 	private OrderRepository orderRepo;
 
 	@Autowired
 	private CustomerRepository custRepo;
-	
-	@Autowired
-	private StudentRepository studentRepository;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -59,7 +45,7 @@ public class OrderCenterController {
 
 	public final static String SESSION_OPENID_KEY = "openCode";
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	//private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@PostMapping("/user/order")
 	@ResponseBody
@@ -99,7 +85,7 @@ public class OrderCenterController {
 				ClassProduct classProduct = classProductRepository.findOne(productContainer.getId());
 				classProductMap.put(classProduct, productContainer.getQuantity());
 				amount += productContainer.getProductPrice() * productContainer.getQuantity();
-				Student student = classProduct.getStudent();
+				//Student student = classProduct.getStudent();
 //				student.setClassPeriod(student.getClassPeriod()+classProduct.getProduct().getClassPeriod());
 //				student.setLeftPeriods(student.getClassPeriod()-student.getDonePeriods());
 //				studentRepository.save(student);
@@ -144,15 +130,15 @@ public class OrderCenterController {
 		return "user_order";
 	}
 
-	private List<OrderContainer> getOrderList(String openId) {
-		if (null == openId) {
-			return new ArrayList<OrderContainer>();
-		}
-
-		Customer customer = custRepo.findOneByOpenCode(openId);
-		return customer.getOrders().stream()
-				.map(x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(),
-						x.getImageCollectionMap(), x.getClassProductsMap()))
-				.collect(Collectors.toCollection(ArrayList::new));
-	}
+//	private List<OrderContainer> getOrderList(String openId) {
+//		if (null == openId) {
+//			return new ArrayList<OrderContainer>();
+//		}
+//
+//		Customer customer = custRepo.findOneByOpenCode(openId);
+//		return customer.getOrders().stream()
+//				.map(x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(),
+//						x.getImageCollectionMap(), x.getClassProductsMap()))
+//				.collect(Collectors.toCollection(ArrayList::new));
+//	}
 }

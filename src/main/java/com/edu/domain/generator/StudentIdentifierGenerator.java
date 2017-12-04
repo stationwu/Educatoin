@@ -4,7 +4,6 @@ import com.edu.domain.Identifiable;
 import com.edu.utils.GoodNumberGenerator;
 import org.hibernate.MappingException;
 import org.hibernate.engine.config.spi.ConfigurationService;
-import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
@@ -39,8 +38,8 @@ public class StudentIdentifierGenerator
     public void configure(
             Type type, Properties params, ServiceRegistry serviceRegistry)
             throws MappingException {
-        final JdbcEnvironment jdbcEnvironment =
-                serviceRegistry.getService(JdbcEnvironment.class);
+//        final JdbcEnvironment jdbcEnvironment =
+//                serviceRegistry.getService(JdbcEnvironment.class);
 
         final ConfigurationService configurationService =
                 serviceRegistry.getService(ConfigurationService.class);
@@ -62,6 +61,7 @@ public class StudentIdentifierGenerator
     @Override
     public Serializable generate(SessionImplementor session, Object obj) {
         if (obj instanceof Identifiable) {
+            @SuppressWarnings("rawtypes")
             Identifiable identifiable = (Identifiable) obj;
             Serializable id = identifiable.getId();
             if (id != null) {

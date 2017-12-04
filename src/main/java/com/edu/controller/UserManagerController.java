@@ -29,7 +29,6 @@ public class UserManagerController {
 	@PostMapping(MANAGER_SEARCH_PATH)
 	@ResponseBody
 	public List<Student> searchStudent(@RequestParam(value="keyword") String keyword, HttpSession session) {
-		@SuppressWarnings("unchecked")
 		List<Student> students = studentRepository.search(keyword);
 		return students;
 	}

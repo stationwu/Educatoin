@@ -19,9 +19,10 @@ import com.edu.domain.dto.SmsReturnValue;
 
 @RestController
 public class VerifyCodeController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    public static final String PATH = "/verify";
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+    static final String PATH = "/verify";
     static final String SMS_URL = "https://dx.ipyy.net/smsJson.aspx?";
+    
     @Autowired  
     private RestTemplate restTemplate;
     private VerifyCodeRepository repo;
@@ -30,6 +31,7 @@ public class VerifyCodeController {
     public RestTemplate buildRestTemplate(){
         return new RestTemplate();
     }
+    
     @Autowired
     public VerifyCodeController(VerifyCodeRepository verifyCodeRepository) {
         this.repo = verifyCodeRepository;
@@ -42,7 +44,16 @@ public class VerifyCodeController {
         VerifyCode savedVerifyCode = repo.save(verifyCode);
 
         if (savedVerifyCode != null) {
-            String content = "欢迎注册大树夏微信公众号，您的验证码为" + code + "，【大树夏】";
+            String content = "";
+            switch (smsContainer.getType()) {
+                case "R"://register
+                    content = "欢迎注册大树夏微信公众号，您的验证码为" + code + "，请不要告诉别人哦【大树夏】";
+                    break;
+                case "P"://payment
+                    content = "您的支付验证码为" + code + "，请不要告诉别人哦【大树夏】";
+                    break;
+            }
+            
             String sUrl = SMS_URL
                     + "action=send&userid=&account=AG00126&password=AG0012689&mobile="
                     + smsContainer.getMobile() + "&content=" + content

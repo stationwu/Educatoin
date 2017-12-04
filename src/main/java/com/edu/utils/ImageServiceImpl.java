@@ -3,9 +3,7 @@ package com.edu.utils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -15,8 +13,6 @@ import com.edu.config.ImageProperties;
 import com.edu.domain.Course;
 import com.edu.domain.Student;
 import com.edu.storage.FileStorageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class ImageServiceImpl implements ImageService {
-    private static final Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
+    //private static final Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Autowired
     private ImageRepository imageRepository;
@@ -46,11 +42,13 @@ public class ImageServiceImpl implements ImageService {
         this.fileStorageService = fileStorageService;
     }
 
+    @Override
     public Image find(Long id) {
         return imageRepository.findOne(id);
     }
 
-	@Transactional
+	@Override
+    @Transactional
     public Image save(String imageName, String contentType, byte[] fileContent) {
         Image image = new Image();
         image.setImageName(imageName);
@@ -66,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
         image.setThumbnailPath(pathToThumbnail);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDate localDate = LocalDate.now();
+        //LocalDate localDate = LocalDate.now();
         image.setDate(LocalDateTime.now().format(formatter));
         return imageRepository.save(image);
     }
@@ -96,7 +94,7 @@ public class ImageServiceImpl implements ImageService {
         img.setContentType(file.getContentType());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDate localDate = LocalDate.now();
+        //LocalDate localDate = LocalDate.now();
         img.setDate(LocalDateTime.now().format(formatter));
         return imageRepository.save(img);
     }
@@ -124,9 +122,9 @@ public class ImageServiceImpl implements ImageService {
 
         if (ratioW > ratioH) {
             scaledWidth = maxWidth;
-            scaledHeight = (int)((float)height / ratioW);
+            scaledHeight = (int)(height / ratioW);
         } else {
-            scaledWidth = (int)((float)width / ratioH);
+            scaledWidth = (int)(width / ratioH);
             scaledHeight = maxHeight;
         }
 
@@ -165,25 +163,25 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    private static byte[] generateThumbnail(byte[] image)
-        throws IOException
-    {
-        BufferedImage original = ImageIO.read(new ByteArrayInputStream(image));
-        ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
-
-        //don't force jpg for thumbnails
-        int imageType =  BufferedImage.TYPE_INT_RGB;
-        BufferedImage scaledBI = new BufferedImage(100, 100, imageType);
-        Graphics2D g = scaledBI.createGraphics();
-
-        g.setComposite(AlphaComposite.Src);
-
-        g.drawImage(original, 0, 0, 100, 100, null);
-        g.dispose();
-
-        ImageIO.write(scaledBI, "jpg", out);
-        return out.toByteArray();
-    }
+//    private static byte[] generateThumbnail(byte[] image)
+//        throws IOException
+//    {
+//        BufferedImage original = ImageIO.read(new ByteArrayInputStream(image));
+//        ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+//
+//        //don't force jpg for thumbnails
+//        int imageType =  BufferedImage.TYPE_INT_RGB;
+//        BufferedImage scaledBI = new BufferedImage(100, 100, imageType);
+//        Graphics2D g = scaledBI.createGraphics();
+//
+//        g.setComposite(AlphaComposite.Src);
+//
+//        g.drawImage(original, 0, 0, 100, 100, null);
+//        g.dispose();
+//
+//        ImageIO.write(scaledBI, "jpg", out);
+//        return out.toByteArray();
+//    }
 
 	@Override
 	public Image save(String imageName, MultipartFile file) {

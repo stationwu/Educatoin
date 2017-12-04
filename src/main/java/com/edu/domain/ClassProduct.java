@@ -1,10 +1,6 @@
 package com.edu.domain;
 
-import java.util.Set;
-
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "classprod")

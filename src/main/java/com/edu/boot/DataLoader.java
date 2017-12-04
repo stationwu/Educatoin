@@ -1,11 +1,8 @@
 package com.edu.boot;
 
-import com.edu.controller.WxErrorController;
 import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.utils.ImageServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -22,9 +19,8 @@ import java.time.*;
 import java.util.*;
 
 @Component
-// test data loader
 public class DataLoader {
-    private static final Logger logger = LoggerFactory.getLogger(WxErrorController.class);
+    //private static final Logger logger = LoggerFactory.getLogger(WxErrorController.class);
 
     @Bean
     @Transactional
@@ -77,7 +73,7 @@ public class DataLoader {
                 LocalDateTime localDateTimeFrom8 = LocalDateTime.of(localDate, timeFrom8);
                 LocalDateTime localDateTimeTo8 = LocalDateTime.of(localDate, timeTo8);
                 ZoneId zone = ZoneId.systemDefault();
-                Instant instant = localDate.atStartOfDay().atZone(zone).toInstant();
+                //Instant instant = localDate.atStartOfDay().atZone(zone).toInstant();
                 Instant instantFrom1 = localDateTimeFrom1.atZone(zone).toInstant();
                 Instant instantTo1 = localDateTimeTo1.atZone(zone).toInstant();
                 Instant instantFrom2 = localDateTimeFrom2.atZone(zone).toInstant();
@@ -94,7 +90,7 @@ public class DataLoader {
                 Instant instantTo7 = localDateTimeTo7.atZone(zone).toInstant();
                 Instant instantFrom8 = localDateTimeFrom8.atZone(zone).toInstant();
                 Instant instantTo8 = localDateTimeTo8.atZone(zone).toInstant();
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 DateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 for (int i = 0; i < 10; i++) {
                     LocalDate date = localDate.plusDays(i);
