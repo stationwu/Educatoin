@@ -11,7 +11,6 @@ import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 public class CustomerController {
@@ -100,10 +96,10 @@ public class CustomerController {
         return "客户激活成功!";
     }
 
-    private Resource<Customer> buildResource(Customer customer) {
-        Resource<Customer> resource = new Resource<>(customer);
-        // Links
-        resource.add(linkTo(methodOn(CustomerController.class).show(customer.getId())).withSelfRel());
-        return resource;
-    }
+//    private Resource<Customer> buildResource(Customer customer) {
+//        Resource<Customer> resource = new Resource<>(customer);
+//        // Links
+//        resource.add(linkTo(methodOn(CustomerController.class).show(customer.getId())).withSelfRel());
+//        return resource;
+//    }
 }
