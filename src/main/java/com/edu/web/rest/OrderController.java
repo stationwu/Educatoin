@@ -21,6 +21,7 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
+import com.github.binarywang.wxpay.service.impl.WxPayServiceAbstractImpl;
 import com.github.binarywang.wxpay.util.SignUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,9 +112,10 @@ public class OrderController {
                 .openid(openId)
                 .build();
 
-        WxPayUnifiedOrderResult unifiedOrderResult = null;
+        WxPayMpOrderResult payResult = null;
         try {
-            unifiedOrderResult = wxPayService.unifiedOrder(payRequest);
+            // In version 2.8.0 this API is not exposed via interface
+            payResult = ((WxPayServiceAbstractImpl)wxPayService).createOrder(payRequest);
         } catch (WxPayException e) {
             throw new PaymentException("创建预付单失败", e);
         }
@@ -132,11 +134,6 @@ public class OrderController {
         order.setPayment(payment);
         order.setStatus(Order.Status.NOTPAY);
         orderRepository.save(order);
-
-        String timestamp = String.valueOf(System.currentTimeMillis() / 1000L);
-        String nonceStr = String.valueOf(System.currentTimeMillis());
-        WxPayMpOrderResult payResult = WxPayMpOrderResult.newBuilder().appId(unifiedOrderResult.getAppid()).timeStamp(timestamp).nonceStr(nonceStr).packageValue("prepay_id=" + unifiedOrderResult.getPrepayId()).signType("MD5").build();
-        payResult.setPaySign(SignUtils.createSign(payResult, wxPayService.getConfig().getMchKey(), (String)null));
 
         return payResult;
     }
