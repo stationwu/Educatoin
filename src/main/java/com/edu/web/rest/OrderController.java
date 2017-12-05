@@ -14,6 +14,7 @@ import com.edu.errorhandler.InvalidOrderException;
 import com.edu.errorhandler.PaymentException;
 import com.edu.errorhandler.RequestDeniedException;
 import com.edu.utils.*;
+import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyCoupon;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
@@ -139,14 +140,12 @@ public class OrderController {
     }
 
     @PostMapping(NOTIFY_PATH)
-    public void onNotify(@RequestBody String xmlData) {
+    public String onNotify(@RequestBody String xmlData) {
         WxPayOrderNotifyResult result = null;
 
         try {
             result = wxPayService.parseOrderNotifyResult(xmlData);
         } catch (WxPayException e) {
-            logger.error("异步接受微信支付结果通知时收到了无效的XML数据： {}", xmlData);
-            logger.error("错误详细信息： {}", e.getMessage());
             throw new PaymentException("无效数据", e);
         }
 
@@ -192,5 +191,7 @@ public class OrderController {
 
         order.setStatus(Order.Status.PAID);
         orderRepository.save(order);
+
+        return WxPayNotifyResponse.success("成功");
     }
 }
