@@ -13,17 +13,19 @@ import com.edu.domain.dto.OrderContainer;
 import com.edu.errorhandler.InvalidOrderException;
 import com.edu.errorhandler.PaymentException;
 import com.edu.errorhandler.RequestDeniedException;
-import com.edu.utils.*;
+import com.edu.utils.Constant;
+import com.edu.utils.URLUtil;
+import com.edu.utils.WebUtils;
+import com.edu.utils.WxTimeStampUtil;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyCoupon;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
-import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
+import com.github.binarywang.wxpay.bean.result.WxPayOrderCloseResult;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceAbstractImpl;
-import com.github.binarywang.wxpay.util.SignUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.edu.utils.WxPayConstants.DEVICE_WEB;
-import static com.edu.utils.WxPayConstants.FEE_TYPE_CNY;
-import static com.edu.utils.WxPayConstants.TRADE_TYPE_MP;
+import static com.edu.utils.WxPayConstants.*;
 
 @RestController
 public class OrderController {
@@ -95,7 +94,10 @@ public class OrderController {
         Order order = orderRepository.findOne(id);
 
         if (order == null) {
-            throw new InvalidOrderException("Order " + id + " does not exist");
+            throw new InvalidOrderException("订单号（" + id + "）不存在");
+        }
+        if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
+            throw new InvalidOrderException("订单（" + id + "）已关闭，无法继续支付");
         }
 
         String clientIpAddr = webUtils.getClientIp(request);
@@ -153,7 +155,10 @@ public class OrderController {
         Order order = orderRepository.findOne(orderId);
 
         if (order == null) {
-            throw new InvalidOrderException("Order " + orderId + " does not exist");
+            throw new InvalidOrderException("订单号（" + orderId + "）不存在");
+        }
+        if (order.getStatus() != Order.Status.NOTPAY) {
+            throw new InvalidOrderException("订单（" + orderId + "）状态错误（" + order.getStatusText() + "），无法继续支付");
         }
 
         Payment payment = order.getPayment();
@@ -193,5 +198,47 @@ public class OrderController {
         orderRepository.save(order);
 
         return WxPayNotifyResponse.success("成功");
+    }
+
+    @PostMapping(PATH + "/{id}/cancelPay")
+    public WxPayOrderCloseResult cancelPay(@PathVariable("id") long id) {
+        Order order = orderRepository.findOne(id);
+
+        if (order == null) {
+            throw new InvalidOrderException("订单号（" + id + "）不存在");
+        }
+        if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
+            throw new InvalidOrderException("订单（" + id + "）已关闭，无法取消");
+        }
+
+        order.setStatus(Order.Status.CANCELLED);
+        orderRepository.save(order);
+
+        WxPayOrderCloseResult result;
+
+        try {
+            result = wxPayService.closeOrder(String.valueOf(id));
+        } catch (WxPayException e) {
+            throw new PaymentException("取消付款时发生了错误", e);
+        }
+
+        return result;
+    }
+
+    @PostMapping(PATH + "/{id}/requestRefund")
+    public void requestRefund(@PathVariable("id") long id) {
+        Order order = orderRepository.findOne(id);
+
+        if (order == null) {
+            throw new InvalidOrderException("订单号（" + id + "）不存在");
+        }
+        if (order.getStatus() != Order.Status.PAID) {
+            throw new InvalidOrderException("订单（" + id + "）未支付，无法申请退款");
+        }
+
+        order.setStatus(Order.Status.REFUND_REQUESTED);
+        orderRepository.save(order);
+
+        throw new PaymentException("尚不支持退款");
     }
 }
