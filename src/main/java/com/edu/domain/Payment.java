@@ -13,37 +13,10 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-//    /**
-//     * 预支付交易会话标识
-//     * 微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时
-//     */
-//    private String prepayId;
-
-//    /**
-//     * 返回状态码
-//     * SUCCESS/FAIL
-//     * 此字段是通信标识，非交易标识，交易是否成功需要查看result_code来判断
-//     */
-//    private String returnCode;
-
-//    /**
-//     * 返回信息
-//     * 返回信息，如非空，为错误原因
-//     * 签名失败
-//     * 参数格式校验错误
-//     */
-//    private String returnMsg;
-
     /**
      * 微信支付分配的终端设备号
      */
     private String deviceInfo;
-
-//    /**
-//     * 业务结果
-//     * SUCCESS/FAIL
-//     */
-//    private String resultCode;
 
     /**
      * 错误代码
@@ -142,12 +115,6 @@ public class Payment {
      */
     private String timeStart;
 
-//    /**
-//     * 交易结束时间
-//     * 订单失效时间，格式为yyyyMMddHHmmss，如2009年12月27日9点10分10秒表示为20091227091010。其他详见时间规则
-//     */
-//    private String timeExpire;
-
     /**
      * 支付完成时间
      * 格式为yyyyMMddHHmmss，如2009年12月25日9点10分10秒表示为20091225091010。其他详见时间规则
@@ -156,6 +123,10 @@ public class Payment {
 
     @OneToOne(mappedBy = "payment")
     private Order order;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "refund_id")
+    private Refund refund; // 不支持部分退款
 
     public long getId() {
         return id;
@@ -327,5 +298,13 @@ public class Payment {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Refund getRefund() {
+        return refund;
+    }
+
+    public void setRefund(Refund refund) {
+        this.refund = refund;
     }
 }

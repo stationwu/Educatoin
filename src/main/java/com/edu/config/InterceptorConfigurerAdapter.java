@@ -35,6 +35,7 @@ public class InterceptorConfigurerAdapter extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(webAPIInterceptor())
 				.addPathPatterns("/api/**")
 				.excludePathPatterns(CustomerController.SIGNUP_PATH)
-				.excludePathPatterns(OrderController.NOTIFY_PATH);
+				.excludePathPatterns(OrderController.PAYMENT_NOTIFY_PATH)
+				.excludePathPatterns(OrderController.REFUND_NOTIFY_PATH);
 	}
 }
