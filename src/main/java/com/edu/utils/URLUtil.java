@@ -1,10 +1,15 @@
 package com.edu.utils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class URLUtil {
     private static final Pattern p = Pattern.compile("https?://\\w+\\.\\w+\\.\\w+");
+
+    public static String getHostUrl(HttpServletRequest request) {
+        return getHost(request.getRequestURL().toString());
+    }
 
     public static String getHost(String url) {
         Matcher m = p.matcher(url);
