@@ -20,6 +20,10 @@ public class Order {
 
     private double totalAmount;
 
+    public static String[] ALL_STATUS = {
+    		"等待付款", "付款中", "已付款", "已取消", "已发货", "退款申请中", "已退款"
+	};
+
     @OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_id")
 	private Payment payment;
@@ -129,39 +133,10 @@ public class Order {
 		if (status == null) {
 			return "未知订单状态";
 		}
-
-		String text;
-
-		switch (status) {
-			case PAID:
-				text = "已付款";
-				break;
-			case CREATED:
-				text = "等待付款";
-				break;
-			case NOTPAY:
-				text = "付款中";
-				break;
-			case CANCELLED:
-				text = "已取消";
-				break;
-//            case PAYERROR:
-//                text = "付款错误";
-//                break;
-			case DELIVERED:
-				text = "已发货";
-				break;
-			case REFUND_REQUESTED:
-				text = "退款申请中";
-				break;
-            case REFUND:
-                text = "已退款";
-                break;
-			default:
-				text = "未知订单状态";
+		if (status.ordinal() >= ALL_STATUS.length) {
+			return "未知订单状态";
 		}
-
-		return text;
+		return ALL_STATUS[status.ordinal()];
 	}
 
 	public void setStatus(Status status) {
@@ -173,7 +148,6 @@ public class Order {
         NOTPAY,      // equals to wechat NOTPAY
         PAID,        // equals to wechat SUCCESS
         CANCELLED,   // equals to wechat CLOSED
-        // PAYERROR,    // equals to wechat PAYERROR
         DELIVERED,   // Paid and goods delivered
 		REFUND_REQUESTED, // paid and request to refund
         REFUND       // equals to wechat REFUND
