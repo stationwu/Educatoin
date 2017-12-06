@@ -53,8 +53,10 @@
                        v-if="order.status === 'CREATED'" v-on:click="onPay(index, $event)">付款</a>
                     <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
                        v-if="order.status === 'CREATED'" v-on:click="onCancel(index, $event)">取消</a>
+                    <!--
                     <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_warn"
                        v-if="order.status === 'PAID'" v-on:click="onRefund(index, $event)">申请退款</a>
+                    -->
                 </div>
             </div>
         </div>
@@ -101,7 +103,18 @@
                         });
                     },
                     onCancel : function(index, event) {
-
+                        var order = app.orders[index];
+                        $.ajax({
+                            url: '/api/v1/Order/' + order.id + '/cancelPay',
+                            contentType: 'application/json',
+                            accept: 'application/json',
+                            type: 'POST',
+                            //data: JSON.stringify(order),
+                        }).done(function (response) {
+                            order.status = 'CANCELLED';
+                            order.statusText = '已取消';
+                            Vue.set(app.orders, index, order);
+                        });
                     },
                     onRefund : function(index, event) {
 
