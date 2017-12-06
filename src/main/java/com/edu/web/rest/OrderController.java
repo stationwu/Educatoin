@@ -4,6 +4,7 @@ import com.edu.config.WechatPayProperties;
 import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.domain.dto.OrderContainer;
+import com.edu.domain.dto.ProductContainer;
 import com.edu.errorhandler.RequestDeniedException;
 import com.edu.utils.Constant;
 import com.edu.utils.URLUtil;
@@ -32,10 +33,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.edu.utils.WxPayConstants.*;
@@ -68,6 +67,21 @@ public class OrderController {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private DerivedProductRepository derivedProductRepository;
+
+    @Autowired
+    private ImageCollectionRepository imageCollectionRepository;
+
+    @Autowired
+    private ClassProductRepository classProductRepository;
+
+    @Autowired
+    private ProductCartRepository cartRepository;
+
+    @Autowired
     private WxPayService wxPayService;
 
     @Autowired
@@ -96,6 +110,70 @@ public class OrderController {
                 .map(x -> new OrderContainer(x, x.getProductsMap(), x.getDerivedProductsMap(),
                         x.getImageCollectionMap(), x.getClassProductsMap()))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = PATH, method = RequestMethod.POST)
+    public OrderContainer placeOrder(@RequestBody List<ProductContainer> products, HttpSession session) {
+        String openId = (String)session.getAttribute(Constant.SESSION_OPENID_KEY);
+
+        Customer customer = customerRepository.findOneByOpenCode(openId);
+
+        ProductCart cart = customer.getCart();
+        Order order = new Order();
+        Map<Product, Integer> productMap = new HashMap<>();
+        Map<DerivedProduct, Integer> derivedProductMap = new HashMap<>();
+        Map<ImageCollection, Integer> imageCollectionMap = new HashMap<>();
+        Map<ClassProduct, Integer> classProductMap = new HashMap<>();
+        double amount = 0d;
+        for (ProductContainer productContainer : products) {
+            switch (productContainer.getType()) {
+                case 1:
+                    Product product = productRepository.findOne(productContainer.getId());
+                    productMap.put(product, productContainer.getQuantity());
+                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
+                    cart.removeProduct(product);
+                    break;
+                case 2:
+                    DerivedProduct derivedProduct = derivedProductRepository.findOne(productContainer.getId());
+                    derivedProductMap.put(derivedProduct, productContainer.getQuantity());
+                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
+                    cart.removeDerivedProduct(derivedProduct);
+                    break;
+                case 3:
+                    ImageCollection imageCollection = imageCollectionRepository.findOne(productContainer.getId());
+                    imageCollectionMap.put(imageCollection, productContainer.getQuantity());
+                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
+                    cart.removeImageCollection(imageCollection);
+                    break;
+                case 4:
+                    ClassProduct classProduct = classProductRepository.findOne(productContainer.getId());
+                    classProductMap.put(classProduct, productContainer.getQuantity());
+                    amount += productContainer.getProductPrice() * productContainer.getQuantity();
+                    cart.removeClassProduct(classProduct);
+                    break;
+            }
+        }
+
+        cartRepository.save(cart);
+
+        order.setProductsMap(productMap);
+        order.setDerivedProductsMap(derivedProductMap);
+        order.setImageCollectionMap(imageCollectionMap);
+        order.setClassProductsMap(classProductMap);
+        order.setTotalAmount(amount);
+        LocalDate localDate = LocalDate.now();
+        order.setDate(localDate.toString());
+        order.setCustomer(customer);
+        orderRepository.save(order);
+
+        return new OrderContainer(
+                order,
+                order.getProductsMap(),
+                order.getDerivedProductsMap(),
+                order.getImageCollectionMap(),
+                order.getClassProductsMap()
+        );
     }
 
     @RequestMapping(value = PAY_PATH, method = RequestMethod.POST)

@@ -48,8 +48,8 @@
     <script src="/js/jquery.min.js"></script>
 	<script src="/js/jquery-weui.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/vue.min.js"></script>	
-    
+	<script src="/js/vue.min.js"></script>
+    <script src="/js/wxpay.js"></script>
     <script type="text/javascript">
     /*<![CDATA[*/
 	    $(document).ready(function () {
@@ -131,14 +131,21 @@
 							}
 							$.ajax({
 								  type: "POST",
-								  url: "/user/order",
+								  url: "/api/v1/Order",
 								  data: JSON.stringify(buylist),
 								  contentType:"application/json; charset=utf-8",
 								}).done(function( data ) {
-									$.get( "/user/cartcontent?code="+$('#code').text()).done(function(data){
-										products.productList = data;
-									})
-									$.alert(data,"消息");
+									var orderId = data.id;
+									$.ajax({
+										$.ajax({
+											url: '/api/v1/Order/' + order.id + '/initiatePay',
+											contentType: 'application/json',
+											accept: 'application/json',
+											type: 'POST',
+										}).done(function (response) {
+											initiatePay(response);
+										});
+									});
 							    });
 						}
 					},
