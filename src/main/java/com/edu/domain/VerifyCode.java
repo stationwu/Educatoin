@@ -12,10 +12,12 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "verify_code")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class VerifyCode {
     @Id
