@@ -68,7 +68,7 @@
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/vue.js"></script>
-        <script src="/js/wxpay.js"></script>
+        <script src="/js/jweixin-1.2.0.js"></script>
         <script type="text/javascript">
             var app = new Vue({
                 el: '#orderList',
@@ -98,7 +98,17 @@
                             type: 'POST',
                             //data: JSON.stringify(order),
                         }).done(function (response) {
-                            initiatePay(response);
+                            wx.chooseWXPay({
+                                timestamp: response.timestamp,
+                                nonceStr: response.nonceStr,
+                                package: response.package,
+                                signType: response.signType,
+                                paySign: response.paySign,
+                                success: function(res) {
+                                    console.log(res);
+                                    //TODO: Navigate to "You paid" page
+                                }
+                            });
                         });
                     },
                     onCancel : function(index, event) {
