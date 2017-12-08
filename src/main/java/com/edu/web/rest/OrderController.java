@@ -5,8 +5,6 @@ import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.domain.dto.OrderContainer;
 import com.edu.domain.dto.ProductContainer;
-import com.edu.errorhandler.InvalidOrderException;
-import com.edu.errorhandler.PaymentException;
 import com.edu.errorhandler.RequestDeniedException;
 import com.edu.utils.Constant;
 import com.edu.utils.URLUtil;
@@ -32,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -52,6 +51,7 @@ public class OrderController {
     public static final String REQ_REFUND_PATH = PATH + "/{id}/requestRefund";
     public static final String REFUND_PATH = "/manager/api/v1/order/{id}/refund";
     public static final String REFUND_NOTIFY_PATH = "/api/v1/refund/notify";
+    public static final String PAY_RESULT_VIEW = "/paymentResult/{orderId}";
 
     @Autowired
     private OrderRepository orderRepository;
@@ -231,6 +231,7 @@ public class OrderController {
         return PayResult.ok(payResult);
     }
 
+    @ResponseBody
     @RequestMapping(value = PAYMENT_NOTIFY_PATH, method = RequestMethod.POST)
     public String onPaymentNotify(@RequestBody String xmlData) {
         WxPayOrderNotifyResult result = null;
@@ -381,6 +382,7 @@ public class OrderController {
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 
+    @ResponseBody
     @RequestMapping(value = REFUND_NOTIFY_PATH, method = RequestMethod.POST)
     public String onRefundNotify(@RequestBody String xmlData) {
         WxPayRefundNotifyResult result = null;
@@ -416,6 +418,33 @@ public class OrderController {
 
         return success("退款完成");
     }
+
+    @RequestMapping(value = PAY_RESULT_VIEW, method = RequestMethod.GET)
+    public ModelAndView onSuccessfulPay(@PathVariable("orderId") long orderId) {
+        ModelAndView mav = new ModelAndView();
+        Order order = orderRepository.findOne(orderId);
+
+        if (order == null) {
+            mav.addObject("orderId", orderId);
+            mav.addObject("errorMessage", "订单 #" + orderId + " 不存在");
+            mav.addObject("hintMessage", "您可以到“我的订单”中检查您的订单。如果您已经支付，请联系客服人员。");
+            mav.setViewName("payment_error");
+            return mav;
+        }
+        if (order.getStatus() != Order.Status.PAID) {
+            mav.addObject("orderId", orderId);
+            mav.addObject("errorMessage", "订单 #" + orderId + " 支付未成功");
+            mav.addObject("hintMessage", "您可以到“我的订单”中继续支付。如果您已经支付，请联系客服人员。");
+            mav.setViewName("payment_error");
+            return mav;
+        }
+
+        mav.addObject("orderId", orderId);
+        mav.addObject("detailMessage", "订单 #" + orderId);
+        mav.setViewName("payment_done");
+        return mav;
+    }
+
 
     private String buildBody(Order order) {
         List<String> list = new LinkedList<>();

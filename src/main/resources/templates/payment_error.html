@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>未完成支付</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="/css/weui.min.css" rel="stylesheet" />
+    <link href="/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="/css/app.css" media="screen" rel="stylesheet"/>
+</head>
+<body>
+<div class="page__bd page__bd_spacing">
+    <div class="icon-box">
+        <i class="weui-icon-info weui-icon_msg">
+        </i>
+    </div>
+    <div class="icon-box">
+        <i class="weui-icon-info weui-icon_msg"></i>
+        <div class="icon-box__ctn">
+            <h3 class="icon-box__title">未完成支付</h3>
+            <p class="icon-box__desc" th:text="${errorMessage}"></p>
+            <p class="icon-box__desc" th:text="${hintMessage}"></p>
+        </div>
+        <div id="orderId" style="display:none" th:text="${orderId}" />
+    </div>
+</div>
+</body>
+</html>
