@@ -50,6 +50,7 @@
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/vue.min.js"></script>
     <script src="/js/jweixin-1.2.0.js"></script>
+	<script src="/js/wxjssdk.js"></script>
     <script type="text/javascript">
     /*<![CDATA[*/
 	    $(document).ready(function () {
@@ -143,17 +144,22 @@
 											accept: 'application/json',
 											type: 'POST',
 										}).done(function (response) {
-											wx.chooseWXPay({
-												timestamp: response.timestamp,
-												nonceStr: response.nonceStr,
-												package: response.package,
-												signType: response.signType,
-												paySign: response.paySign,
-												success: function(res) {
-													console.log(res);
-													//TODO: Navigate to "You paid" page
-												}
-											});
+											if (response.success) {
+												wx.chooseWXPay({
+													timestamp: response.timestamp,
+													nonceStr: response.nonceStr,
+													package: response.package,
+													signType: response.signType,
+													paySign: response.paySign,
+													success: function(res) {
+														console.log(res);
+														window.location.href = "/paymentResult/" + order.id;
+													}
+												});
+											} else {
+												alert(response.message);
+												window.location.href = "/paymentResult/" + order.id;
+											}
 										});
 									});
 							    });
