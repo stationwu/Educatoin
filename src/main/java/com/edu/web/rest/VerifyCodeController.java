@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +39,26 @@ public class VerifyCodeController {
         this.repo = verifyCodeRepository;
     }
     
+    /**
+     * 根据Id查询验证码，如果没有找到，返回code: -1, mobile: 0
+     * @param id
+     * @return
+     */
+    @GetMapping(path= PATH + "/{id}")
+    public VerifyCode findOne(@PathVariable("id") Long id) {
+        VerifyCode code = repo.findOneVerifyCodeById(id);
+        if(null == code ) {
+            return new VerifyCode("-1", "0");
+        } 
+        return code;
+    }
+    /**
+     * 通过短信网关发送验证码，实体对象包含手机号和类型，
+     *  R: 注册类型信息
+     *  P：支付类型信息
+     * @param smsContainer
+     * @return
+     */
     @PostMapping(path = PATH)
     public Long create(@RequestBody @Valid SmsContainer smsContainer) {
         String code = String.valueOf(System.nanoTime()).substring(7, 13);

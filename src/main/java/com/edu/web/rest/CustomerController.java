@@ -2,8 +2,10 @@ package com.edu.web.rest;
 
 import com.edu.dao.CustomerRepository;
 import com.edu.dao.StudentRepository;
+import com.edu.dao.VerifyCodeRepository;
 import com.edu.domain.Customer;
 import com.edu.domain.Student;
+import com.edu.domain.VerifyCode;
 import com.edu.domain.dto.ChildContainer;
 import com.edu.domain.dto.CustomerContainer;
 import com.edu.utils.Constant;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.List;
 
 @RestController
@@ -26,6 +31,9 @@ public class CustomerController {
 
     @Autowired
     private StudentRepository studentRepository;
+    
+    @Autowired
+    private VerifyCodeRepository verifyCodeRepository;
 
     public static final String PATH = "/api/v1/Customer";
 
@@ -45,25 +53,43 @@ public class CustomerController {
     }
 
     @PostMapping(path = SIGNUP_PATH)
-    public Customer create(@RequestBody @Valid CustomerContainer customerDTO) {
+    public ResponseEntity<Customer> create(
+        @RequestBody @Valid CustomerContainer customerDTO) {
         Customer customer;
-
         if (repository.isCustomerAlreadyRegistered(customerDTO.getOpenCode())) {
             customer = repository.findOneByOpenCode(customerDTO.getOpenCode());
         } else {
-            customer = new Customer(customerDTO.getOpenCode(), customerDTO.getName(),
-                    customerDTO.getMobilePhone(), customerDTO.getAddress());
+            /**
+             * 没有填写验证码
+             */
+            Long id = customerDTO.getVerifyCodeId();
+            if(null == id) {
+                return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
+            }
+            /**
+             * 验证码过期或者没有找到
+             */
+            VerifyCode verifyCode = verifyCodeRepository.findOneVerifyCodeById(id);
+            
+            if (null == verifyCode) {
+                return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
+            }
+            
+            customer = new Customer(customerDTO.getOpenCode(), customerDTO
+                    .getName(), customerDTO.getMobilePhone(), customerDTO
+                            .getAddress());
             customer = repository.save(customer);
 
             for (ChildContainer childDTO : customerDTO.getChildren()) {
-                Student student = new Student(childDTO.getChildName(), childDTO.getBirthday());
+                Student student = new Student(childDTO.getChildName(), childDTO
+                        .getBirthday());
                 student.setCustomer(customer);
                 student = studentRepository.save(student);
                 customer.addStudent(student);
             }
         }
 
-        return customer;
+        return new ResponseEntity<Customer>(customer, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(path = PATH + "/AddChild")
