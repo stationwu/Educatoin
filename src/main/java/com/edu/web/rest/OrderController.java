@@ -180,16 +180,15 @@ public class OrderController {
 
     @ResponseBody
     @RequestMapping(value = PAY_PATH, method = RequestMethod.POST)
-    public WxPayMpOrderResult pay(@PathVariable("id") long id,
-                                      HttpServletRequest request) {
+    public PayResult pay(@PathVariable("id") long id, HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
         Order order = orderRepository.findOne(id);
 
         if (order == null) {
-            throw new InvalidOrderException( "订单号（" + id + "）不存在" );
+            return PayResult.fail( "订单号（" + id + "）不存在" );
         }
         if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
-            throw new InvalidOrderException( "订单（" + id + "）已关闭，无法继续支付" );
+            return PayResult.fail( "订单（" + id + "）已关闭，无法继续支付" );
         }
 
         WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
@@ -211,7 +210,7 @@ public class OrderController {
             // In version 2.8.0 this API is not exposed via interface
             payResult = ((WxPayServiceAbstractImpl) wxPayService).createOrder(payRequest);
         } catch (WxPayException e) {
-            throw new PaymentException("创建预付单失败, 原因:{" + e.getMessage() + "}", e);
+            return PayResult.fail("创建预付单失败, 原因:{" + e.getMessage() + "}");
         }
 
         Payment payment;
@@ -229,7 +228,7 @@ public class OrderController {
         order.setStatus(Order.Status.NOTPAY);
         orderRepository.save(order);
 
-        return payResult;
+        return PayResult.ok(payResult);
     }
 
     @RequestMapping(value = PAYMENT_NOTIFY_PATH, method = RequestMethod.POST)
@@ -447,6 +446,70 @@ public class OrderController {
             return body.substring(0, 126) + "等";
         } else {
             return body;
+        }
+    }
+
+    /**
+     * In order to response the JS client with a JSON object
+     * instead of an XML string
+     */
+    public static class PayResult {
+        private String timestamp;
+        private String nonceStr;
+        private String packageValue; // can't name it 'package' as it's keyword
+        private String signType;
+        private String paySign;
+        private String message; // In case error happens
+        private boolean success;
+
+        private PayResult(WxPayMpOrderResult wxResult) {
+            this.timestamp = wxResult.getTimeStamp();
+            this.nonceStr = wxResult.getNonceStr();
+            this.packageValue = wxResult.getPackageValue();
+            this.signType = wxResult.getSignType();
+            this.paySign = wxResult.getPaySign();
+            this.success = true;
+        }
+
+        private PayResult(String message) {
+            this.message = message;
+            this.success = false;
+        }
+
+        public static PayResult ok(WxPayMpOrderResult wxResult) {
+            return new PayResult(wxResult);
+        }
+
+        public static PayResult fail(String message) {
+            return new PayResult(message);
+        }
+
+        public String getTimestamp() {
+            return timestamp;
+        }
+
+        public String getNonceStr() {
+            return nonceStr;
+        }
+
+        public String getPackage() {
+            return packageValue;
+        }
+
+        public String getSignType() {
+            return signType;
+        }
+
+        public String getPaySign() {
+            return paySign;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public boolean isSuccess() {
+            return success;
         }
     }
 }
