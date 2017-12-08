@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -338,24 +339,36 @@ public class OrderController {
         return new ResponseEntity<>("尚不支持退款", HttpStatus.NOT_IMPLEMENTED);
     }
 
+    @Transactional
     @RequestMapping(value = REFUND_PATH, method = RequestMethod.POST)
     public ResponseEntity<String> refund(@PathVariable("id") long id) {
         Order order = orderRepository.findOne(id);
 
         if (order == null) {
-            return new ResponseEntity<>("订单号（" + id + "）不存在", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("订单 #" + id + " 不存在", HttpStatus.NOT_FOUND);
         }
         if (order.getStatus() != Order.Status.REFUND_REQUESTED) {
-            return new ResponseEntity<>("订单（" + id + "）未申请退款", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("订单 #" + id + " 未申请退款", HttpStatus.BAD_REQUEST);
         }
 
         Payment payment = order.getPayment();
-        Refund refund = new Refund();
-        refund.setPayment(payment);
-        refund.setCashFee(payment.getCashFee());
-        refund.setCashFeeType(payment.getCashFeeType());
+        if (payment == null) {
+            return new ResponseEntity<>("订单 #" + id + " 尚未付款", HttpStatus.NOT_FOUND);
+        }
 
-        refund = refundRepository.save(refund);
+        // Lock entry to prevent two people approve refund at same time
+        paymentRepository.findOneForUpdate(payment.getId());
+
+        Refund refund;
+        if (payment.getRefund() != null) { // Already requested once
+            refund = payment.getRefund();
+        } else {
+            refund = new Refund();
+            refund.setPayment(payment);
+            refund.setCashFee(payment.getCashFee());
+            refund.setCashFeeType(payment.getCashFeeType());
+            refund = refundRepository.save(refund);
+        }
 
         WxPayRefundRequest refundRequest = WxPayRefundRequest.newBuilder()
                 .outTradeNo(String.valueOf(order.getId()))
