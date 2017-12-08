@@ -5,6 +5,8 @@ import com.edu.dao.*;
 import com.edu.domain.*;
 import com.edu.domain.dto.OrderContainer;
 import com.edu.domain.dto.ProductContainer;
+import com.edu.errorhandler.InvalidOrderException;
+import com.edu.errorhandler.PaymentException;
 import com.edu.errorhandler.RequestDeniedException;
 import com.edu.utils.Constant;
 import com.edu.utils.URLUtil;
@@ -176,17 +178,18 @@ public class OrderController {
         );
     }
 
+    @ResponseBody
     @RequestMapping(value = PAY_PATH, method = RequestMethod.POST)
-    public ResponseEntity<String> pay(@PathVariable("id") long id,
+    public WxPayMpOrderResult pay(@PathVariable("id") long id,
                                       HttpServletRequest request) {
         String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
         Order order = orderRepository.findOne(id);
 
         if (order == null) {
-            return new ResponseEntity<>("订单号（" + id + "）不存在", HttpStatus.NOT_FOUND);
+            throw new InvalidOrderException( "订单号（" + id + "）不存在" );
         }
         if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
-            return new ResponseEntity<>("订单（" + id + "）已关闭，无法继续支付", HttpStatus.BAD_REQUEST);
+            throw new InvalidOrderException( "订单（" + id + "）已关闭，无法继续支付" );
         }
 
         WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
@@ -208,7 +211,7 @@ public class OrderController {
             // In version 2.8.0 this API is not exposed via interface
             payResult = ((WxPayServiceAbstractImpl) wxPayService).createOrder(payRequest);
         } catch (WxPayException e) {
-            return new ResponseEntity<>("创建预付单失败, 原因:{" + e.getMessage() + "}", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new PaymentException("创建预付单失败, 原因:{" + e.getMessage() + "}", e);
         }
 
         Payment payment;
@@ -226,7 +229,7 @@ public class OrderController {
         order.setStatus(Order.Status.NOTPAY);
         orderRepository.save(order);
 
-        return new ResponseEntity<>(payResult.toString(), HttpStatus.OK);
+        return payResult;
     }
 
     @RequestMapping(value = PAYMENT_NOTIFY_PATH, method = RequestMethod.POST)

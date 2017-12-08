@@ -31,17 +31,22 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ResponseBody
     @ExceptionHandler(InvalidOrderException.class)
-    public ResponseEntity<Object> handleInvalidOrderException(InvalidOrderException ex, WebRequest request) {
-        String body = ex.getMessage();
-        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    public ResponseEntity<String> handleInvalidOrderException(InvalidOrderException ex, HttpServletRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseBody
     @ExceptionHandler(PaymentException.class)
-    public ModelAndView handlePaymentException(PaymentException ex, HttpServletRequest request) {
+    public ResponseEntity<String> handlePaymentException(PaymentException ex, HttpServletRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(RedirectToErrorPageException.class)
+    public ModelAndView redirectToErrorPage(RedirectToErrorPageException ex, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", ex);
         mav.addObject("url", request.getRequestURL());
-        mav.setViewName("payment_error");
+        mav.setViewName("error_page");
         return mav;
     }
 }
