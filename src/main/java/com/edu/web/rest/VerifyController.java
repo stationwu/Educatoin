@@ -10,4 +10,9 @@ public class VerifyController {
 	public String read(){
 		return "HHA3VDSY1Q3Zn9r1";
 	}
+
+	@GetMapping("/MP_verify_T7ILea1OMIoUi2kI.txt")
+	public String verify(){
+		return "T7ILea1OMIoUi2kI";
+	}
 }
