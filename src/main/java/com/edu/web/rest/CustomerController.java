@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.List;
 
 @RestController
@@ -88,8 +86,7 @@ public class CustomerController {
                 customer.addStudent(student);
             }
         }
-
-        return new ResponseEntity<Customer>(customer, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
     @PostMapping(path = PATH + "/AddChild")
