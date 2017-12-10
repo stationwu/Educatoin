@@ -110,12 +110,14 @@ var app = new Vue({
             }
         },
         onSubmit: function () {
+        	var verifyCode = $('#wxVerifyCode').text();
             var openCode = $('#wxOpenCode').text();
             var customer = {
                 "openCode": openCode,
                 "name": app.children[0].name + "家长",
                 "mobilePhone": app.mobilePhone,
                 "address": app.address,
+                "verifyCodeId": verifyCode,
                 "children": []
             };
             for (var i = 0; i < app.children.length; ++i) {
