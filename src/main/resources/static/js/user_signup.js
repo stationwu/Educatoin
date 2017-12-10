@@ -41,9 +41,9 @@ var app = new Vue({
                 app.removable = true;
             }
         },
-        
         onClickGetVerificationCode: function () {
-        	var mobileNumber   = $('#mobileNumber').text();
+        	var mobileNumber   = $('#mobileNumber').val();
+        	$.alert("您输入的手机号为:" + mobileNumber, "提醒");
         	var oSMSObject = {
         		mobile: mobileNumber,
         		type: "R"
@@ -51,17 +51,18 @@ var app = new Vue({
         	var wait = 5 * 60;
         	var timer = function(o) {
         		if (wait == 0) {
-	        		o.removeAttribute("disabled");   
-	        		o.value="获取验证码";
+        			o.attr('onclick',"onClickGetVerificationCode");
+	        		o.text("获取验证码");
 	        		wait = 5 * 60;
+	        		return;
         		} else { 
-	        		o.setAttribute("disabled", true);
-	        		o.value="重新发送(" + wait + ")";
+        			o.removeAttr('onclick');
+	        		o.text("重新发送(" + wait + ")");
 	        		wait--;
-	        		setTimeout(function() {
-	        			timer(o);
-	        		},1000);
         		}
+        		setTimeout(function() {
+        			timer(o);
+        		},1000);
         	};
         	
         	$.ajax({
@@ -70,10 +71,12 @@ var app = new Vue({
                 type: 'POST',
                 data: JSON.stringify(oSMSObject),
             }).done(function (response) {
+            	$.alert("发送成功", "提醒");
             	timer($('#verifyCodeBtn'));
-            	$('#verifyCodeBtn').value = response;
+            	$('#wxVerifyCode').attr("value",'response');;
             });
-        },
+        },        
+
         onAddStudents: function () {
             var openCode   = $('#wxOpenCode').text();
             var customerid = $('#customerid').text();

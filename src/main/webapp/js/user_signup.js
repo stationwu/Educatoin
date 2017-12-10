@@ -42,7 +42,39 @@ var app = new Vue({
             }
         },
         onClickGetVerificationCode: function () {
-            console.log("get veri code clicked");
+        	var mobileNumber   = $('#mobileNumber').val();
+        	$.alert("您输入的手机号为:" + mobileNumber, "提醒");
+        	var oSMSObject = {
+        		mobile: mobileNumber,
+        		type: "R"
+        	};
+        	var wait = 5 * 60;
+        	var timer = function(o) {
+        		if (wait == 0) {
+        			o.attr('onclick',"onClickGetVerificationCode");
+	        		o.text("获取验证码");
+	        		wait = 5 * 60;
+	        		return;
+        		} else { 
+        			o.removeAttr('onclick');
+	        		o.text("重新发送(" + wait + ")");
+	        		wait--;
+        		}
+        		setTimeout(function() {
+        			timer(o);
+        		},1000);
+        	};
+        	
+        	$.ajax({
+                url: '/verify',
+                contentType: 'application/json',
+                type: 'POST',
+                data: JSON.stringify(oSMSObject),
+            }).done(function (response) {
+            	$.alert("发送成功", "提醒");
+            	timer($('#verifyCodeBtn'));
+            	$('#wxVerifyCode').attr("value",'response');;
+            });
         },
         onAddStudents: function () {
             var openCode   = $('#wxOpenCode').text();
