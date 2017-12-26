@@ -15,4 +15,14 @@ public class VerifyController {
 	public String verify(){
 		return "T7ILea1OMIoUi2kI";
 	}
+
+	@GetMapping("/.well-known/acme-challenge/mkNBT-2Ooxe1V7-KGHmEvdbsPqaLWhAqA7IwSGyMeh0")
+	public String acmeVerify1() {
+		return "mkNBT-2Ooxe1V7-KGHmEvdbsPqaLWhAqA7IwSGyMeh0.ozVtOSdqKRbxQDbQ2dmLVtob0bmuR46bYDMNtwmwlho";
+	}
+
+	@GetMapping("/.well-known/acme-challenge/phHGlir3-1PkkTRYZgbq9HX6BrFfc9tsHxEdXsU0qnE")
+	public String acmeVerify2() {
+		return "phHGlir3-1PkkTRYZgbq9HX6BrFfc9tsHxEdXsU0qnE.ozVtOSdqKRbxQDbQ2dmLVtob0bmuR46bYDMNtwmwlho";
+	}
 }
