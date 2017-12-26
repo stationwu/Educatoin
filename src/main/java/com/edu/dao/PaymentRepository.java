@@ -10,6 +10,6 @@ import javax.persistence.LockModeType;
 public interface PaymentRepository extends CrudRepository<Payment, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select * from Payment where id = ?1")
+    @Query("select p from Payment p where p.id = ?1")
     Payment findOneForUpdate(Long id);
 }
