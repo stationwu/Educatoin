@@ -64,12 +64,17 @@ public class CustomerController {
             if(null == id) {
                 return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
             }
+
             /**
              * 验证码过期或者没有找到
              */
             VerifyCode verifyCode = verifyCodeRepository.findOneVerifyCodeById(id);
             
             if (null == verifyCode) {
+                return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
+            }
+
+            if (!verifyCode.getCode().equals(customerDTO.getVerifyCode())) {
                 return new ResponseEntity<Customer>(HttpStatus.BAD_REQUEST);
             }
             

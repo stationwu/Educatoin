@@ -54,6 +54,8 @@ public class OrderController {
     public static final String REFUND_NOTIFY_PATH = "/api/v1/refund/notify";
     public static final String PAY_RESULT_VIEW = "/paymentResult/{orderId}";
 
+    public static final String PAY_TEST_PATH = "/pay";
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -168,6 +170,7 @@ public class OrderController {
         LocalDate localDate = LocalDate.now();
         order.setDate(localDate.toString());
         order.setCustomer(customer);
+        order.setStatus(Order.Status.CREATED);
         orderRepository.save(order);
 
         return new OrderContainer(
@@ -177,6 +180,59 @@ public class OrderController {
                 order.getImageCollectionMap(),
                 order.getClassProductsMap()
         );
+    }
+
+    @ResponseBody
+    @RequestMapping(value = PAY_TEST_PATH, method = RequestMethod.POST)
+    public PayResult testPay(@RequestParam("orderId") long orderId, HttpServletRequest request) {
+        String openId = (String) request.getSession().getAttribute(Constant.SESSION_OPENID_KEY);
+        Order order = orderRepository.findOne(orderId);
+
+        if (order == null) {
+            return PayResult.fail( "订单号（" + orderId + "）不存在" );
+        }
+        if (order.getStatus() != Order.Status.CREATED && order.getStatus() != Order.Status.NOTPAY) {
+            return PayResult.fail( "订单（" + orderId + "）已关闭，无法继续支付" );
+        }
+
+        WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
+                .outTradeNo(String.valueOf(order.getId()))
+                .openid(openId)
+                .body(buildBody(order))
+                .spbillCreateIp(webUtils.getClientIp(request))
+                .timeStart(wxTimeStampUtil.getCurrentTimeStamp())
+                .timeExpire(wxTimeStampUtil.builder().now().afterMinutes(wxPayProperties.getExpiryInMinutes()).build())
+                .notifyURL(URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH)
+                .totalFee(WxPayBaseRequest.yuanToFee(String.valueOf(order.getTotalAmount()))) // 198.99 -> "198.99" -> 19899
+                .feeType(FEE_TYPE_CNY)
+                .tradeType(TRADE_TYPE_MP)
+                .deviceInfo(DEVICE_WEB)
+                .build();
+
+        WxPayMpOrderResult payResult = null;
+        try {
+            // In version 2.8.0 this API is not exposed via interface
+            payResult = ((WxPayServiceAbstractImpl) wxPayService).createOrder(payRequest);
+        } catch (WxPayException e) {
+            return PayResult.fail("创建预付单失败, 原因:{" + e.getMessage() + "}");
+        }
+
+        Payment payment;
+        if (order.getPayment() != null) {
+            payment = order.getPayment();
+        } else {
+            payment = new Payment();
+        }
+
+        payment.setTimeStart(payRequest.getTimeStart());
+        payment.setSpBillCreateIp(payRequest.getSpbillCreateIp());
+        payment = paymentRepository.save(payment);
+
+        order.setPayment(payment);
+        order.setStatus(Order.Status.NOTPAY);
+        orderRepository.save(order);
+
+        return PayResult.ok(payResult);
     }
 
     @ResponseBody

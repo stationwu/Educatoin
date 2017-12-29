@@ -73,7 +73,7 @@ var app = new Vue({
             }).done(function (response) {
             	$.alert("发送成功", "提醒");
             	timer($('#verifyCodeBtn'));
-            	$('#wxVerifyCode').attr("value",'response');;
+            	$('#wxVerifyCode').attr("value",response);
             });
         },
         onAddStudents: function () {
@@ -110,7 +110,7 @@ var app = new Vue({
             }
         },
         onSubmit: function () {
-        	var verifyCode = $('#wxVerifyCode').text();
+        	var verifyCode = $('#wxVerifyCode').attr("value");
             var openCode = $('#wxOpenCode').text();
             var customer = {
                 "openCode": openCode,
@@ -118,6 +118,7 @@ var app = new Vue({
                 "mobilePhone": app.mobilePhone,
                 "address": app.address,
                 "verifyCodeId": verifyCode,
+                "verifyCode": app.verificationCode,
                 "children": []
             };
             for (var i = 0; i < app.children.length; ++i) {
