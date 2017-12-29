@@ -6,10 +6,7 @@ import com.edu.domain.*;
 import com.edu.domain.dto.OrderContainer;
 import com.edu.domain.dto.ProductContainer;
 import com.edu.errorhandler.RequestDeniedException;
-import com.edu.utils.Constant;
-import com.edu.utils.URLUtil;
-import com.edu.utils.WebUtils;
-import com.edu.utils.WxTimeStampUtil;
+import com.edu.utils.*;
 import com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyCoupon;
 import com.github.binarywang.wxpay.bean.notify.WxPayOrderNotifyResult;
@@ -97,6 +94,9 @@ public class OrderController {
 
     @Autowired
     private WechatPayProperties wxPayProperties;
+
+    @Autowired
+    private WxPayConversionUtil wxPayConvUtil;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -196,7 +196,8 @@ public class OrderController {
         }
 
         WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
-                .outTradeNo(String.valueOf(order.getId()))
+                //.appid()
+                .outTradeNo(wxPayConvUtil.toOutTradeNo(order.getId()))
                 .openid(openId)
                 .body(buildBody(order))
                 .spbillCreateIp(webUtils.getClientIp(request))
@@ -249,7 +250,7 @@ public class OrderController {
         }
 
         WxPayUnifiedOrderRequest payRequest = WxPayUnifiedOrderRequest.newBuilder()
-                .outTradeNo(String.valueOf(order.getId()))
+                .outTradeNo(wxPayConvUtil.toOutTradeNo(order.getId()))
                 .openid(openId)
                 .body(buildBody(order))
                 .spbillCreateIp(webUtils.getClientIp(request))
