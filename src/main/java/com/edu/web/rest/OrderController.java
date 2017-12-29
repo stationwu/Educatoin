@@ -205,9 +205,6 @@ public class OrderController {
                 .timeExpire(wxTimeStampUtil.builder().now().afterMinutes(wxPayProperties.getExpiryInMinutes()).build())
                 .notifyURL(URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH)
                 .totalFee(WxPayBaseRequest.yuanToFee(String.valueOf(order.getTotalAmount()))) // 198.99 -> "198.99" -> 19899
-                .feeType(FEE_TYPE_CNY)
-                .tradeType(TRADE_TYPE_MP)
-                .deviceInfo(DEVICE_WEB)
                 .build();
 
         WxPayMpOrderResult payResult = null;
@@ -258,9 +255,6 @@ public class OrderController {
                 .timeExpire(wxTimeStampUtil.builder().now().afterMinutes(wxPayProperties.getExpiryInMinutes()).build())
                 .notifyURL(URLUtil.getHostUrl(request) + PAYMENT_NOTIFY_PATH)
                 .totalFee(WxPayBaseRequest.yuanToFee(String.valueOf(order.getTotalAmount()))) // 198.99 -> "198.99" -> 19899
-                .feeType(FEE_TYPE_CNY)
-                .tradeType(TRADE_TYPE_MP)
-                .deviceInfo(DEVICE_WEB)
                 .build();
 
         WxPayMpOrderResult payResult = null;
