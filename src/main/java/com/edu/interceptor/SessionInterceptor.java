@@ -35,7 +35,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
         String requestUrl = request.getRequestURL().toString();
         if (null == openIdInSession && null == authCode) {
             String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(
-                    requestUrl, WxConsts.OAUTH2_SCOPE_BASE, DUMMY_STATE);
+                    requestUrl, WxConsts.OAuth2Scope.SNSAPI_BASE, DUMMY_STATE);
             response.sendRedirect(authorizationUrl);
             return false;
         } else if (null != authCode) {

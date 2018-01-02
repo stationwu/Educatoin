@@ -23,5 +23,7 @@ public class CustomerContainer {
     
     private Long verifyCodeId;
 
+    private String verifyCode;
+
     private List<ChildContainer> children = new ArrayList<>();
 }

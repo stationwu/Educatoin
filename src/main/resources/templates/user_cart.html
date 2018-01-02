@@ -50,7 +50,6 @@
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/vue.min.js"></script>
     <script src="/js/jweixin-1.2.0.js"></script>
-	<script src="/js/wxjssdk.js"></script>
     <script type="text/javascript">
     /*<![CDATA[*/
 	    $(document).ready(function () {
@@ -135,32 +134,79 @@
 								  url: "/api/v1/Order",
 								  data: JSON.stringify(buylist),
 								  contentType:"application/json; charset=utf-8",
-								}).done(function( data ) {
-									var orderId = data.id;
+								}).done(function( order ) {
 									$.ajax({
-										$.ajax({
-											url: '/api/v1/Order/' + order.id + '/initiatePay',
-											contentType: 'application/json',
-											accept: 'application/json',
-											type: 'POST',
-										}).done(function (response) {
-											if (response.success) {
-												wx.chooseWXPay({
-													timestamp: response.timestamp,
-													nonceStr: response.nonceStr,
-													package: response.package,
-													signType: response.signType,
-													paySign: response.paySign,
-													success: function(res) {
-														console.log(res);
-														window.location.href = "/paymentResult/" + order.id;
-													}
+										url: '/pay?orderId=' + order.id,
+										contentType: 'application/json',
+										accept: 'application/json',
+										type: 'POST',
+									}).done(function (response) {
+										if (response.success) {
+											var body = {
+												url : window.location.href
+											};
+
+											$.ajax({
+												url: '/api/v1/JsApiSignature',
+												contentType: 'application/json',
+												accept: 'application/json',
+												type: 'POST',
+												data: JSON.stringify(body),
+											}).done(function (signature) {
+												wx.config({
+													debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+													appId: signature.appId, // 必填，公众号的唯一标识
+													timestamp: signature.timestamp, // 必填，生成签名的时间戳
+													nonceStr: signature.nonceStr, // 必填，生成签名的随机串
+													signature: signature.signature, // 必填，签名，见附录1
+													jsApiList: [  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+														'chooseWXPay'
+													]
 												});
-											} else {
-												alert(response.message);
-												window.location.href = "/paymentResult/" + order.id;
-											}
-										});
+
+												//上方的config检测通过后，会执行ready方法
+												wx.ready(function(){
+													// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+													console.log("JSSDK config信息验证成功");
+
+													wx.chooseWXPay({
+														timestamp: response.timestamp,
+														nonceStr: response.nonceStr,
+														package: response.package,
+														signType: response.signType,
+														paySign: response.paySign,
+														success: function(res) {
+															console.log(res);
+															window.location.href = "/paymentResult/" + order.id;
+														},
+														//该complete回调函数，相当于try{}catch(){}异常捕捉中的finally，无论支付成功与否，都会执行complete回调函数。即使wx.error执行了，也会执行该回调函数.
+														complete : function(res) {
+															//  /!*注意：res对象的errMsg属性名称，是没有下划线的，与WeixinJSBridge支付里面的err_msg是不一样的。而且，值也是不同的。*!/
+															if (res.errMsg == "chooseWXPay:ok") {
+																//window.location.href = data[0].sendUrl;
+															} else if (res.errMsg == "chooseWXPay:cancel") {
+																alert("你手动取消支付");
+															} else if (res.errMsg == "chooseWXPay:fail") {
+																alert("支付失败");
+															} else if (res.errMsg == "config:invalid signature") {
+																alert("支付签名验证错误，请检查签名正确与否 or 支付授权目录正确与否等");
+															}
+														}
+													});
+												});
+
+												wx.error(function(res) {
+												   if (res.errMsg == "config:invalid url domain") {
+													   alert("微信支付(测试)授权目录设置有误");
+												   } else {
+													   alert("检测出问题:" + res.errMsg);
+												   }
+												});
+											});
+										} else {
+											alert(response.message);
+											window.location.href = "/paymentResult/" + order.id;
+										}
 									});
 							    });
 						}
