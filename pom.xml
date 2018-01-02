@@ -5,7 +5,7 @@
 
 	<groupId>com.edu</groupId>
 	<artifactId>education</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>education</name>
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<weixin-java-mp.version>2.8.0</weixin-java-mp.version>
+		<weixin-java-mp.version>2.9.0</weixin-java-mp.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.locales>zh_CN</project.build.locales>

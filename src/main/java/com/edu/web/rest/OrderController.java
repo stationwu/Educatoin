@@ -209,8 +209,7 @@ public class OrderController {
 
         WxPayMpOrderResult payResult = null;
         try {
-            // In version 2.8.0 this API is not exposed via interface
-            payResult = ((WxPayServiceAbstractImpl) wxPayService).createOrder(payRequest);
+            payResult = wxPayService.createOrder(payRequest);
         } catch (WxPayException e) {
             return PayResult.fail("创建预付单失败, 原因:{" + e.getMessage() + "}");
         }
@@ -259,8 +258,7 @@ public class OrderController {
 
         WxPayMpOrderResult payResult = null;
         try {
-            // In version 2.8.0 this API is not exposed via interface
-            payResult = ((WxPayServiceAbstractImpl) wxPayService).createOrder(payRequest);
+            payResult = wxPayService.createOrder(payRequest);
         } catch (WxPayException e) {
             return PayResult.fail("创建预付单失败, 原因:{" + e.getMessage() + "}");
         }

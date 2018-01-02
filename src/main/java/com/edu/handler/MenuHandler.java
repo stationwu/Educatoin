@@ -23,7 +23,7 @@ public class MenuHandler extends AbstractHandler {
         String msg = String.format("type:%s, event:%s, key:%s, fromUser: %s",
                 wxMessage.getMsgType(), wxMessage.getEvent(),
                 wxMessage.getEventKey(), wxMessage.getFromUser());
-        if (WxConsts.BUTTON_VIEW.equals(wxMessage.getEvent())) {
+        if (WxConsts.MenuButtonType.VIEW.equals(wxMessage.getEvent())) {
             return null;
         }
 
