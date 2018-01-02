@@ -204,7 +204,7 @@ public class DataLoader {
                 imageSet.add(images.get(0));
                 product.setProductImages(imageSet);
                 products.add(productRepository.save(product));
-                Product derivedProduct = new Product("T恤衍生品", productCategories.get(1), 200d, "衍生品", true, false,false,0);
+                Product derivedProduct = new Product("T恤衍生品", productCategories.get(1), 0.1d, "衍生品", true, false,false,0);
                 imageSet.clear();
                 imageSet.add(images.get(1));
                 derivedProduct.setProductImages(imageSet);
